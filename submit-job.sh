@@ -1,15 +1,15 @@
 #!/bin/bash -l
-### PBS -l nodes=70:system=polaris
-### PBS -l walltime=01:00:00
-### PBS -q debug-scaling
-### PBS -A VeloC
-### PBS -l filesystems=home:grand
+#PBS -l nodes=1
+#PBS -l walltime=01:00:00
+#PBS -q debug-scaling
+#PBS -A VeloC
+#PBS -l filesystems=home:grand
+
 echo "Submitted job"
-NNODES=$(wc -l < $COBALT_NODEFILE)
+NNODES=$(wc -l < $PBS_NODEFILE)
 echo "NUM_OF_NODES= ${NNODES}"
-source ~/.bash_profile
-dlconda
-cd ~/dl-io/DeepSpeed/
+
+restart_perf_env
 rm -rf /local/scratch/*
 cd ~/
 
@@ -45,7 +45,7 @@ set_model_size() {
         declare -g U=2048
         declare -g S=8
         declare -g K=10
-        declare -g T=1
+        declare -g T=4
         declare -g M=1
         declare -g B=1
         declare -g R=1
@@ -219,7 +219,7 @@ model_sizes=(3)
 for model_size in "${model_sizes[@]}"; do
     set_model_size $model_size
     B=$((M * D ))
-    bash config-n-run.sh -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
+    bash ~/restart_perf/llm-restart-perf/config-n-run.sh -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
 done
 ############### Run for diff model sizes.
 
