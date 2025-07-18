@@ -232,16 +232,15 @@ EXP_DIR=${HOME}/experiments/results/ckpt_reshape
 LOG_DIR="${EXP_DIR}/tensorboard/tp${TP}_pp${PP}_dp${DP}_hd${HIDDEN}_nl${LAYERS}_gbsz${GLOBAL_BATCH}_mbsz${MICRO_BATCH}_z${ZERO_STAGE}_LR_${LR}_${MIN_LR}_${DTYPE}_cont"
 mkdir -p $LOG_DIR
 
-# --ffn-hidden-size $FFN_HIDDEN_SIZE \
 options=" \
 	--tensor-model-parallel-size $TP \
        --pipeline-model-parallel-size $PP \
        --num-layers $NUM_LAYERS \
        --hidden-size $HIDDEN_SIZE \
+       --ffn-hidden-size $FFN_HIDDEN_SIZE \
        --num-attention-heads $NUM_HEADS \
        --micro-batch-size $MICRO_BATCH \
        --global-batch-size $GLOBAL_BATCH \
-       --ffn-hidden-size $FFN_HIDDEN_SIZE
        --seq-length $SEQ_LENGTH \
        --max-position-embeddings $SEQ_LENGTH \
        --train-iters $TRAIN_ITERS \
@@ -282,10 +281,7 @@ options=" \
        --zero-stage=${ZERO_STAGE} \
         --checkpoint-activations \
         --deepspeed-activation-checkpointing \
-        --no-pipeline-parallel \
         "
-# --cpu-optimizer \
-# --use-rotary-position-embeddings \
 
 cat <<EOT > $CONFIG_JSON
 {
