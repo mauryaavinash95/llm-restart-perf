@@ -378,7 +378,7 @@ esac
 echo "${COMMON_CONFIG}${CKPT_STANZA}"'}' > "$CONFIG_JSON"
 
 
-log_str="${model_size_B}B-tp$TP-pp$PP-dp$DP-gbs$GLOBAL_BATCH-mbs-$MICRO_BATCH"
+log_str="${model_size_B}B-tp$TP-pp$PP-dp$DP-gbs$GLOBAL_BATCH-mbs-$MICRO_BATCH-ckpt$CKPT_APPROACH"
 rm -rf $output_dir/log-$log_str.log
 # pdsh -w "$(awk '{printf "%s%s",sep,$1; sep=","}' $COBALT_NODEFILE)" 'rm -rf /local/scratch/*'
 # eval "rm -rf $CHECKPOINT_PATH"
