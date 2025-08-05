@@ -7,6 +7,27 @@
 
 source ~/.bash_profile
 dlconda
+# Taken from: https://docs.alcf.anl.gov/polaris/applications-and-libraries/libraries/nccl/
+export NCCL_NET_GDR_LEVEL=PHB
+export NCCL_CROSS_NIC=1
+export NCCL_COLLNET_ENABLE=1
+export NCCL_NET="AWS Libfabric"
+export LD_LIBRARY_PATH=/soft/libraries/aws-ofi-nccl/v1.9.1-aws/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/soft/libraries/hwloc/lib/:$LD_LIBRARY_PATH
+export FI_CXI_DISABLE_HOST_REGISTER=1
+export FI_MR_CACHE_MONITOR=userfaultfd
+export FI_CXI_DEFAULT_CQ_SIZE=131072
+export FI_CXI_DEFAULT_TX_SIZE=131072
+export FI_CXI_RDZV_PROTO=alt_read
+export FI_CXI_RX_MATCH_MODE=software
+export FI_CXI_REQ_BUF_SIZE=16MB
+export FI_CXI_RDZV_GET_MIN=0
+export FI_CXI_SAFE_DEVMEM_COPY_THRESHOLD=16000
+export FI_CXI_RDZV_THRESHOLD=2000
+unset NCCL_NET_GDR_LEVEL NCCL_CROSS_NIC NCCL_COLLNET_ENABLE NCCL_NET
+
+CKPT_APPROACH=0
+HOST_CACHE=0
 model_size_B=0
 HIDDEN_SIZE=0
 FFN_HIDDEN_SIZE=0
@@ -23,8 +44,24 @@ SAVE_INTERVAL=1
 MICRO_BATCH=1
 GLOBAL_BATCH=1
 
-while getopts ":m:H:F:N:L:U:S:K:M:B:P:T:I:D:" opt; do
+while getopts ":c:h:m:H:F:N:L:U:S:K:M:B:P:T:I:D:" opt; do
   case $opt in
+    c)
+      if [[ "$OPTARG" =~ ^[0-9]+$ ]]; then
+        CKPT_APPROACH="$OPTARG"
+      else
+        echo "Invalid CKPT_APPROACH: $OPTARG is not a valid integer." >&2
+        exit 1
+      fi
+      ;;
+    h)
+      if [[ "$OPTARG" =~ ^[0-9]+$ ]]; then
+        HOST_CACHE="$OPTARG"
+      else
+        echo "Invalid HOST_CACHE: $OPTARG is not a valid integer." >&2
+        exit 1
+      fi
+      ;;
     m)
       if [[ "$OPTARG" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
         model_size_B="$OPTARG"
@@ -152,6 +189,8 @@ if [ -z "$model_size_B" ] || [ -z "$HIDDEN_SIZE" ] || [ -z "$FFN_HIDDEN_SIZE" ] 
 fi
 
 # Perform further processing with the parsed parameters
+echo "CKPT_APPROACH: $CKPT_APPROACH"
+echo "HOST_CACHE: $HOST_CACHE"
 echo "model_size_B: $model_size_B"
 echo "HIDDEN_SIZE: $HIDDEN_SIZE"
 echo "FFN_HIDDEN_SIZE: $FFN_HIDDEN_SIZE"
@@ -228,9 +267,6 @@ DTYPE="bf16"
 LR_WARMUP_STEPS=1
 WEIGHT_DECAY=0.1
 GRAD_CLIP=1
-EXP_DIR=${HOME}/experiments/results/ckpt_reshape
-LOG_DIR="${EXP_DIR}/tensorboard/tp${TP}_pp${PP}_dp${DP}_hd${HIDDEN}_nl${LAYERS}_gbsz${GLOBAL_BATCH}_mbsz${MICRO_BATCH}_z${ZERO_STAGE}_LR_${LR}_${MIN_LR}_${DTYPE}_cont"
-mkdir -p $LOG_DIR
 
 options=" \
 	--tensor-model-parallel-size $TP \
@@ -283,27 +319,63 @@ options=" \
         --deepspeed-activation-checkpointing \
         "
 
-cat <<EOT > $CONFIG_JSON
+# Compose common config
+COMMON_CONFIG=$(cat <<EOC
 {
-	"train_batch_size": $GLOBAL_BATCH,
-	"train_micro_batch_size_per_gpu": $MICRO_BATCH,
-	"steps_per_print": 1,
-	"zero_optimization": {
-		"stage": $ZERO_STAGE
-	},
-	"bf16": {
-		"enabled": true
-	}, 
-	"data_types": {
-		"grad_accum_dtype": "bf16"
- 	},
-	"wall_clock_breakdown": false,
-	"memory_breakdown": false,
-	"flops_profiler": {
-		"enabled": false
-	}
-}
-EOT
+    "train_batch_size": $GLOBAL_BATCH,
+    "train_micro_batch_size_per_gpu": $MICRO_BATCH,
+    "steps_per_print": 1,
+    "zero_optimization": {
+        "stage": $ZERO_STAGE
+    },
+    "bf16": {
+        "enabled": true
+    },
+    "data_types": {
+        "grad_accum_dtype": "fp32"
+    },
+    "wall_clock_breakdown": true,
+    "memory_breakdown": false,
+    "flops_profiler": {
+        "enabled": true
+    }
+EOC
+)
+
+# Decide on checkpoint approach and extension
+case $CKPT_APPROACH in
+    0)
+        echo "Checkpointing using None Checkpointing approach"
+        CKPT_STANZA=', "none_ckpt_config": true'
+        ;;
+    1)
+        echo "Checkpointing with FastPersist approach"
+        CKPT_STANZA=', "checkpoint": { "writer": { "type": "FAST", "decoupled": true } }'
+        ;;
+    2)
+        echo "Checkpointing with default Torch.save()"
+        CKPT_STANZA=''
+        ;;
+    3)
+        echo "Checkpointing using Python Based AysncTorch approach"
+        CKPT_STANZA=', "async_ckpt_config": { "host_cache": -1 }'
+        ;;
+    4)
+        echo "Checkpointing using VELOC Checkpointing approach"
+        CKPT_STANZA=', "datastates_ckpt": { "host_cache_size": '"$HOST_CACHE"', "parser_threads": 8 }'
+        ;;
+    5)
+        echo "Checkpointing using TorchSnapshot Async approach"
+        CKPT_STANZA=', "torchsnapshot_ckpt": { "enabled": true }'
+        ;;
+    *)
+        echo "Invalid CKPT_APPROACH: $CKPT_APPROACH"
+        exit 1
+        ;;
+esac
+
+# Write full JSON
+echo "${COMMON_CONFIG}${CKPT_STANZA}"'}' > "$CONFIG_JSON"
 
 
 log_str="${model_size_B}B-tp$TP-pp$PP-dp$DP-gbs$GLOBAL_BATCH-mbs-$MICRO_BATCH"
