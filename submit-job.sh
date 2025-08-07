@@ -16,7 +16,6 @@ module load nvhpc-mixed/23.9
 rm -rf /local/scratch/*
 cd ~/
 
-
 set_model_size() {
     model_size=$1
     if [[ $model_size == 1 ]]; then
