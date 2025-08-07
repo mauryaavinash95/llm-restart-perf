@@ -1,0 +1,390 @@
+execve("/usr/bin/ls", ["ls"], 0x2444210 /* 232 vars */) = 0
+brk(NULL)                               = 0x56143c9f7000
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x14f879d14000
+openat(AT_FDCWD, "/soft/xalt/3.0.2-202408282050/lib64/libxalt_init.so", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\0\0\0\0\0\0\0\0"..., 832) = 832
+fstat(3, {st_mode=S_IFREG|0755, st_size=473576, ...}) = 0
+mmap(NULL, 171416, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x14f879cea000
+mmap(0x14f879d11000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x26000) = 0x14f879d11000
+mmap(0x14f879d13000, 3480, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x14f879d13000
+close(3)                                = 0
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/soft/perftools/darshan/darshan-3.4.4/lib/tls/x86_64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/soft/perftools/darshan/darshan-3.4.4/lib/tls/x86_64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/soft/perftools/darshan/darshan-3.4.4/lib/tls/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/soft/perftools/darshan/darshan-3.4.4/lib/tls/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/soft/perftools/darshan/darshan-3.4.4/lib/tls/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/soft/perftools/darshan/darshan-3.4.4/lib/tls/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/soft/perftools/darshan/darshan-3.4.4/lib/tls/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/soft/perftools/darshan/darshan-3.4.4/lib/tls", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/soft/perftools/darshan/darshan-3.4.4/lib/x86_64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/soft/perftools/darshan/darshan-3.4.4/lib/x86_64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/soft/perftools/darshan/darshan-3.4.4/lib/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/soft/perftools/darshan/darshan-3.4.4/lib/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/soft/perftools/darshan/darshan-3.4.4/lib/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/soft/perftools/darshan/darshan-3.4.4/lib/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/soft/perftools/darshan/darshan-3.4.4/lib/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/soft/perftools/darshan/darshan-3.4.4/lib", {st_mode=S_IFDIR|S_ISGID|0755, st_size=4096, ...}) = 0
+openat(AT_FDCWD, "/opt/cray/pe/papi/7.0.1.2/lib64/tls/x86_64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/cray/pe/papi/7.0.1.2/lib64/tls/x86_64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/pe/papi/7.0.1.2/lib64/tls/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/cray/pe/papi/7.0.1.2/lib64/tls/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/pe/papi/7.0.1.2/lib64/tls/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/cray/pe/papi/7.0.1.2/lib64/tls/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/pe/papi/7.0.1.2/lib64/tls/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/cray/pe/papi/7.0.1.2/lib64/tls", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/pe/papi/7.0.1.2/lib64/x86_64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/cray/pe/papi/7.0.1.2/lib64/x86_64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/pe/papi/7.0.1.2/lib64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/cray/pe/papi/7.0.1.2/lib64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/pe/papi/7.0.1.2/lib64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/cray/pe/papi/7.0.1.2/lib64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/pe/papi/7.0.1.2/lib64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/cray/pe/papi/7.0.1.2/lib64", {st_mode=S_IFDIR|0755, st_size=264, ...}) = 0
+openat(AT_FDCWD, "/opt/cray/libfabric/1.15.2.0/lib64/tls/x86_64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/cray/libfabric/1.15.2.0/lib64/tls/x86_64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/libfabric/1.15.2.0/lib64/tls/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/cray/libfabric/1.15.2.0/lib64/tls/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/libfabric/1.15.2.0/lib64/tls/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/cray/libfabric/1.15.2.0/lib64/tls/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/libfabric/1.15.2.0/lib64/tls/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/cray/libfabric/1.15.2.0/lib64/tls", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/libfabric/1.15.2.0/lib64/x86_64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/cray/libfabric/1.15.2.0/lib64/x86_64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/libfabric/1.15.2.0/lib64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/cray/libfabric/1.15.2.0/lib64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/libfabric/1.15.2.0/lib64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/cray/libfabric/1.15.2.0/lib64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/libfabric/1.15.2.0/lib64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/cray/libfabric/1.15.2.0/lib64", {st_mode=S_IFDIR|0755, st_size=137, ...}) = 0
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nvshmem/lib/tls/x86_64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nvshmem/lib/tls/x86_64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nvshmem/lib/tls/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nvshmem/lib/tls/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nvshmem/lib/tls/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nvshmem/lib/tls/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nvshmem/lib/tls/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nvshmem/lib/tls", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nvshmem/lib/x86_64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nvshmem/lib/x86_64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nvshmem/lib/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nvshmem/lib/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nvshmem/lib/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nvshmem/lib/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nvshmem/lib/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nvshmem/lib", {st_mode=S_IFDIR|0755, st_size=1250, ...}) = 0
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nccl/lib/tls/x86_64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nccl/lib/tls/x86_64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nccl/lib/tls/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nccl/lib/tls/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nccl/lib/tls/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nccl/lib/tls/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nccl/lib/tls/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nccl/lib/tls", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nccl/lib/x86_64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nccl/lib/x86_64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nccl/lib/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nccl/lib/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nccl/lib/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nccl/lib/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nccl/lib/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nccl/lib", {st_mode=S_IFDIR|0755, st_size=131, ...}) = 0
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/math_libs/lib64/tls/x86_64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/math_libs/lib64/tls/x86_64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/math_libs/lib64/tls/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/math_libs/lib64/tls/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/math_libs/lib64/tls/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/math_libs/lib64/tls/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/math_libs/lib64/tls/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/math_libs/lib64/tls", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/math_libs/lib64/x86_64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/math_libs/lib64/x86_64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/math_libs/lib64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/math_libs/lib64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/math_libs/lib64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/math_libs/lib64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/math_libs/lib64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/math_libs/lib64", {st_mode=S_IFDIR|0755, st_size=1374, ...}) = 0
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/lib/tls/x86_64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/lib/tls/x86_64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/lib/tls/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/lib/tls/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/lib/tls/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/lib/tls/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/lib/tls/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/lib/tls", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/lib/x86_64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/lib/x86_64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/lib/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/lib/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/lib/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/lib/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/lib/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/lib", {st_mode=S_IFDIR|0755, st_size=4011, ...}) = 0
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/extras/qd/lib/tls/x86_64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/extras/qd/lib/tls/x86_64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/extras/qd/lib/tls/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/extras/qd/lib/tls/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/extras/qd/lib/tls/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/extras/qd/lib/tls/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/extras/qd/lib/tls/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/extras/qd/lib/tls", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/extras/qd/lib/x86_64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/extras/qd/lib/x86_64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/extras/qd/lib/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/extras/qd/lib/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/extras/qd/lib/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/extras/qd/lib/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/extras/qd/lib/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/extras/qd/lib", {st_mode=S_IFDIR|0755, st_size=326, ...}) = 0
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/extras/CUPTI/lib64/tls/x86_64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/extras/CUPTI/lib64/tls/x86_64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/extras/CUPTI/lib64/tls/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/extras/CUPTI/lib64/tls/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/extras/CUPTI/lib64/tls/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/extras/CUPTI/lib64/tls/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/extras/CUPTI/lib64/tls/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/extras/CUPTI/lib64/tls", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/extras/CUPTI/lib64/x86_64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/extras/CUPTI/lib64/x86_64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/extras/CUPTI/lib64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/extras/CUPTI/lib64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/extras/CUPTI/lib64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/extras/CUPTI/lib64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/extras/CUPTI/lib64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/extras/CUPTI/lib64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/lib64/tls/x86_64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/lib64/tls/x86_64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/lib64/tls/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/lib64/tls/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/lib64/tls/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/lib64/tls/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/lib64/tls/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/lib64/tls", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/lib64/x86_64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/lib64/x86_64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/lib64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/lib64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/lib64/x86_64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/lib64/x86_64", 0x7ffe85a946e0) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/lib64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+stat("/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/lib64", {st_mode=S_IFDIR|0755, st_size=2068, ...}) = 0
+openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=98700, ...}) = 0
+mmap(NULL, 98700, PROT_READ, MAP_PRIVATE, 3, 0) = 0x14f879cd1000
+close(3)                                = 0
+openat(AT_FDCWD, "/lib64/libselinux.so.1", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0000x\0\0\0\0\0\0"..., 832) = 832
+fstat(3, {st_mode=S_IFREG|0755, st_size=159704, ...}) = 0
+mmap(NULL, 4361032, PROT_NONE, MAP_PRIVATE|MAP_ANONYMOUS|MAP_DENYWRITE, -1, 0) = 0x14f8798a8000
+mmap(0x14f879a00000, 2263880, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0) = 0x14f879a00000
+munmap(0x14f8798a8000, 1409024)         = 0
+munmap(0x14f879c29000, 686920)          = 0
+mprotect(0x14f879a26000, 2093056, PROT_NONE) = 0
+mmap(0x14f879c25000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x25000) = 0x14f879c25000
+mmap(0x14f879c27000, 6984, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x14f879c27000
+close(3)                                = 0
+openat(AT_FDCWD, "/soft/perftools/darshan/darshan-3.4.4/lib/libcap.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/pe/papi/7.0.1.2/lib64/libcap.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/libfabric/1.15.2.0/lib64/libcap.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nvshmem/lib/libcap.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nccl/lib/libcap.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/math_libs/lib64/libcap.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/lib/libcap.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/extras/qd/lib/libcap.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/lib64/libcap.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib64/libcap.so.2", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\320l\0\0\0\0\0\0"..., 832) = 832
+fstat(3, {st_mode=S_IFREG|0755, st_size=39664, ...}) = 0
+mmap(NULL, 41624, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x14f879cc6000
+mmap(0x14f879ccf000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x8000) = 0x14f879ccf000
+close(3)                                = 0
+openat(AT_FDCWD, "/soft/perftools/darshan/darshan-3.4.4/lib/libc.so.6", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/pe/papi/7.0.1.2/lib64/libc.so.6", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/libfabric/1.15.2.0/lib64/libc.so.6", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nvshmem/lib/libc.so.6", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nccl/lib/libc.so.6", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/math_libs/lib64/libc.so.6", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/lib/libc.so.6", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/extras/qd/lib/libc.so.6", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/lib64/libc.so.6", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/lib64/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\316S\3\0\0\0\0\0"..., 832) = 832
+fstat(3, {st_mode=S_IFREG|0755, st_size=2300456, ...}) = 0
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x14f879cc4000
+mmap(NULL, 2058296, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x14f879809000
+mmap(0x14f8799f1000, 45056, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1e7000) = 0x14f8799f1000
+mmap(0x14f8799fc000, 14392, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x14f8799fc000
+close(3)                                = 0
+openat(AT_FDCWD, "/soft/perftools/darshan/darshan-3.4.4/lib/libdl.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/pe/papi/7.0.1.2/lib64/libdl.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/libfabric/1.15.2.0/lib64/libdl.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nvshmem/lib/libdl.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nccl/lib/libdl.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/math_libs/lib64/libdl.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/lib/libdl.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/extras/qd/lib/libdl.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/lib64/libdl.so.2", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/lib64/libdl.so.2", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\0\0\0\0\0\0\0\0"..., 832) = 832
+fstat(3, {st_mode=S_IFREG|0755, st_size=18120, ...}) = 0
+mmap(NULL, 16688, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x14f879cbf000
+mmap(0x14f879cc2000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x2000) = 0x14f879cc2000
+close(3)                                = 0
+openat(AT_FDCWD, "/soft/perftools/darshan/darshan-3.4.4/lib/libm.so.6", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/pe/papi/7.0.1.2/lib64/libm.so.6", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/libfabric/1.15.2.0/lib64/libm.so.6", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nvshmem/lib/libm.so.6", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nccl/lib/libm.so.6", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/math_libs/lib64/libm.so.6", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/lib/libm.so.6", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/extras/qd/lib/libm.so.6", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/lib64/libm.so.6", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/lib64/libm.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\0\0\0\0\0\0\0\0"..., 832) = 832
+fstat(3, {st_mode=S_IFREG|0755, st_size=1463568, ...}) = 0
+mmap(NULL, 1358424, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x14f8796bd000
+mmap(0x14f879806000, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x148000) = 0x14f879806000
+close(3)                                = 0
+openat(AT_FDCWD, "/soft/perftools/darshan/darshan-3.4.4/lib/libpcre.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/pe/papi/7.0.1.2/lib64/libpcre.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/cray/libfabric/1.15.2.0/lib64/libpcre.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nvshmem/lib/libpcre.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/nccl/lib/libpcre.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/math_libs/lib64/libpcre.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/lib/libpcre.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/extras/qd/lib/libpcre.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/cuda/lib64/libpcre.so.1", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib64/libpcre.so.1", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\0\27\0\0\0\0\0\0"..., 832) = 832
+fstat(3, {st_mode=S_IFREG|0755, st_size=559440, ...}) = 0
+mmap(NULL, 4751848, PROT_NONE, MAP_PRIVATE|MAP_ANONYMOUS|MAP_DENYWRITE, -1, 0) = 0x14f879234000
+mmap(0x14f879400000, 2654696, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0) = 0x14f879400000
+munmap(0x14f879234000, 1884160)         = 0
+munmap(0x14f879689000, 209384)          = 0
+mprotect(0x14f879488000, 2093056, PROT_NONE) = 0
+mmap(0x14f879687000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x87000) = 0x14f879687000
+close(3)                                = 0
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x14f879cbd000
+arch_prctl(ARCH_SET_FS, 0x14f879cbdf40) = 0
+mprotect(0x14f8799f1000, 12288, PROT_READ) = 0
+mprotect(0x14f879687000, 4096, PROT_READ) = 0
+mprotect(0x14f879806000, 4096, PROT_READ) = 0
+mprotect(0x14f879cc2000, 4096, PROT_READ) = 0
+mprotect(0x14f879ccf000, 4096, PROT_READ) = 0
+mprotect(0x14f879c25000, 4096, PROT_READ) = 0
+mprotect(0x14f879d11000, 4096, PROT_READ) = 0
+mprotect(0x56143b820000, 4096, PROT_READ) = 0
+mprotect(0x14f879d41000, 4096, PROT_READ) = 0
+munmap(0x14f879cd1000, 98700)           = 0
+prctl(PR_CAPBSET_READ, CAP_MAC_OVERRIDE) = 1
+prctl(PR_CAPBSET_READ, 0x30 /* CAP_??? */) = -1 EINVAL (Invalid argument)
+prctl(PR_CAPBSET_READ, CAP_CHECKPOINT_RESTORE) = 1
+prctl(PR_CAPBSET_READ, 0x2c /* CAP_??? */) = -1 EINVAL (Invalid argument)
+prctl(PR_CAPBSET_READ, 0x2a /* CAP_??? */) = -1 EINVAL (Invalid argument)
+prctl(PR_CAPBSET_READ, 0x29 /* CAP_??? */) = -1 EINVAL (Invalid argument)
+statfs("/sys/fs/selinux", 0x7ffe85a954e0) = -1 ENOENT (No such file or directory)
+statfs("/selinux", {f_type=OVERLAYFS_SUPER_MAGIC, f_bsize=4096, f_blocks=65955170, f_bfree=65434150, f_bavail=65434150, f_files=65955170, f_ffree=65866769, f_fsid={val=[0x5fb8ee02, 0x77ad087e]}, f_namelen=256, f_frsize=4096, f_flags=ST_VALID|ST_RELATIME}) = 0
+brk(NULL)                               = 0x56143c9f7000
+brk(0x56143ca18000)                     = 0x56143ca18000
+openat(AT_FDCWD, "/proc/filesystems", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0444, st_size=0, ...}) = 0
+read(3, "nodev\tsysfs\nnodev\ttmpfs\nnodev\tbd"..., 1024) = 451
+read(3, "", 1024)                       = 0
+close(3)                                = 0
+access("/etc/selinux/config", F_OK)     = -1 ENOENT (No such file or directory)
+getpid()                                = 3132797
+uname({sysname="Linux", nodename="x3002c0s19b1n0", ...}) = 0
+readlink("/proc/self/exe", "/usr/bin/ls", 4096) = 11
+openat(AT_FDCWD, "/usr/lib/locale/locale-archive", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/share/locale/locale.alias", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=2940, ...}) = 0
+read(3, "# Locale name alias data base.\n#"..., 1024) = 1024
+read(3, "und for the time being for\n# bac"..., 1024) = 1024
+read(3, "859-1\ngalego\t\tgl_ES.ISO-8859-1\ng"..., 1024) = 892
+read(3, "", 1024)                       = 0
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/en_US.UTF-8/LC_IDENTIFICATION", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/en_US.utf8/LC_IDENTIFICATION", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=369, ...}) = 0
+mmap(NULL, 369, PROT_READ, MAP_PRIVATE, 3, 0) = 0x14f879ce9000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib64/gconv/gconv-modules.cache", O_RDONLY) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=26988, ...}) = 0
+mmap(NULL, 26988, PROT_READ, MAP_SHARED, 3, 0) = 0x14f879ce2000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/en_US.UTF-8/LC_MEASUREMENT", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/en_US.utf8/LC_MEASUREMENT", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=23, ...}) = 0
+mmap(NULL, 23, PROT_READ, MAP_PRIVATE, 3, 0) = 0x14f879ce1000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/en_US.UTF-8/LC_TELEPHONE", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/en_US.utf8/LC_TELEPHONE", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=59, ...}) = 0
+mmap(NULL, 59, PROT_READ, MAP_PRIVATE, 3, 0) = 0x14f879ce0000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/en_US.UTF-8/LC_ADDRESS", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/en_US.utf8/LC_ADDRESS", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=167, ...}) = 0
+mmap(NULL, 167, PROT_READ, MAP_PRIVATE, 3, 0) = 0x14f879cdf000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/en_US.UTF-8/LC_NAME", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/en_US.utf8/LC_NAME", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=77, ...}) = 0
+mmap(NULL, 77, PROT_READ, MAP_PRIVATE, 3, 0) = 0x14f879cde000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/en_US.UTF-8/LC_PAPER", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/en_US.utf8/LC_PAPER", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=34, ...}) = 0
+mmap(NULL, 34, PROT_READ, MAP_PRIVATE, 3, 0) = 0x14f879cdd000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/en_US.UTF-8/LC_MESSAGES", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/en_US.utf8/LC_MESSAGES", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFDIR|0755, st_size=38, ...}) = 0
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/en_US.utf8/LC_MESSAGES/SYS_LC_MESSAGES", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=57, ...}) = 0
+mmap(NULL, 57, PROT_READ, MAP_PRIVATE, 3, 0) = 0x14f879cdc000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/en_US.UTF-8/LC_MONETARY", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/en_US.utf8/LC_MONETARY", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=286, ...}) = 0
+mmap(NULL, 286, PROT_READ, MAP_PRIVATE, 3, 0) = 0x14f879cdb000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/en_US.UTF-8/LC_COLLATE", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/en_US.utf8/LC_COLLATE", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=2586930, ...}) = 0
+mmap(NULL, 2586930, PROT_READ, MAP_PRIVATE, 3, 0) = 0x14f879188000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/en_US.UTF-8/LC_TIME", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/en_US.utf8/LC_TIME", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=3284, ...}) = 0
+mmap(NULL, 3284, PROT_READ, MAP_PRIVATE, 3, 0) = 0x14f879cda000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/en_US.UTF-8/LC_NUMERIC", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/en_US.utf8/LC_NUMERIC", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=54, ...}) = 0
+mmap(NULL, 54, PROT_READ, MAP_PRIVATE, 3, 0) = 0x14f879cd9000
+close(3)                                = 0
+openat(AT_FDCWD, "/usr/lib/locale/en_US.UTF-8/LC_CTYPE", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/usr/lib/locale/en_US.utf8/LC_CTYPE", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=340640, ...}) = 0
+mmap(NULL, 340640, PROT_READ, MAP_PRIVATE, 3, 0) = 0x14f879c69000
+close(3)                                = 0
+ioctl(1, TCGETS, {c_iflag=BRKINT|IGNPAR|ICRNL|IXON|IMAXBEL, c_oflag=NL0|CR0|TAB0|BS0|VT0|FF0|OPOST|ONLCR, c_cflag=B38400|CS8|CREAD, c_lflag=ISIG|ICANON|ECHO|ECHOE|ECHOK|IEXTEN|ECHOCTL|ECHOKE, ...}) = 0
+ioctl(1, TIOCGWINSZ, {ws_row=12, ws_col=158, ws_xpixel=0, ws_ypixel=0}) = 0
+openat(AT_FDCWD, ".", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY) = 3
+fstat(3, {st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+getdents64(3, 0x56143ca019a0 /* 25 entries */, 32768) = 976
+getdents64(3, 0x56143ca019a0 /* 0 entries */, 32768) = 0
+close(3)                                = 0
+fstat(1, {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0), ...}) = 0
+write(1, "config-n-run_cleaned.sh  modelsi"..., 118) = 118
+write(1, "config-n-run.sh\t\t modelsize3.tar"..., 109) = 109
+write(1, "darshan_config.cfg\t modelsize7.t"..., 103) = 103
+write(1, "hostfile\t\t nsys-test.sh\t    subm"..., 88) = 88
+close(1)                                = 0
+close(2)                                = 0
+getpid()                                = 3132797
+exit_group(0)                           = ?
++++ exited with 0 +++
