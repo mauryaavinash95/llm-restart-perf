@@ -25,11 +25,14 @@ class PGWrapper:
     """
 
     def __init__(self, pg: Optional[dist.ProcessGroup]) -> None:
-        if pg is None and dist.is_initialized():
-            # pyre-ignore
-            self.pg = dist.group.WORLD
-        else:
-            self.pg = pg
+        # if pg is None and dist.is_initialized():
+        #     # pyre-ignore
+        #     self.pg = dist.group.WORLD
+        # else:
+        #     self.pg = pg
+
+        # Added to force single process operation (amaurya@anl.gov)
+        self.pg = None
 
     def get_rank(self) -> int:
         if self.pg is None:

@@ -869,8 +869,6 @@ class Snapshot:
         # TODO: use a single all_gather for both path and replicated.
         # Only emit a single message for path inconsistency.
         obj_list = [path]
-        # Added by amaurya@anl.gov for ignorning replication checks with DeepSpeed.
-        return obj_list[0], set(replicated)
         pg_wrapper.broadcast_object_list(obj_list, src=0)
         if obj_list[0] != path:
             logger.warning(

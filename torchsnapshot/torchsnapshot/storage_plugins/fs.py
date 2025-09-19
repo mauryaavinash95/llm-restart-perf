@@ -36,9 +36,6 @@ class FSStoragePlugin(StoragePlugin):
         async with aiofiles.open(path, "wb+") as f:
             # pyre-ignore: memoryview is actually supported
             await f.write(write_io.buf)
-            await f.flush()
-            fd = f._file.fileno()
-            os.fsync(fd)
 
     async def read(self, read_io: ReadIO) -> None:
         path = os.path.join(self.root, read_io.path)

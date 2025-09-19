@@ -5,13 +5,12 @@
 ### PBS -A VeloC
 ### PBS -l filesystems=home:grand
 echo "Submitted job"
-NNODES=$(wc -l < $COBALT_NODEFILE)
+NNODES=$(wc -l < $PBS_NODEFILE)
 echo "NUM_OF_NODES= ${NNODES}"
 source ~/.bash_profile
 dlconda
-cd ~/dl-io/DeepSpeed/
 rm -rf /local/scratch/*
-cd ~/
+SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 set_model_size() {
     model_size=$1
@@ -19,9 +18,9 @@ set_model_size() {
         echo "================== 1.3B OPT model (1 node)"
         declare -g m=1
         declare -g H=2048
-        declare -g F=8192
+        declare -g F=5504
         declare -g N=24
-        declare -g L=32
+        declare -g L=16
         declare -g U=2048
         declare -g S=8
         declare -g K=5
@@ -143,7 +142,7 @@ set_model_size() {
     set -x
     echo "Forcing common value of here...."
     declare -g K=5
-    declare -g M=16
+    declare -g M=1
     declare -g U=2048
     if [[ -v NUM_ITERS ]]; then
         declare -g K=$NUM_ITERS
@@ -154,16 +153,16 @@ set_model_size() {
 ############### Run for diff model sizes.
 # -c refers to checkpointing approach (0: no checkpointing; 1: FastPersist; 2: default torch.save; 3: Async ckpt (not implemented yet); 4: DataStates; 5. TorchSnapshot)
 # -h refers to host cache (0 for no host cache)
-model_sizes=(3)
+model_sizes=(1)
 for model_size in "${model_sizes[@]}"; do
     set_model_size $model_size
     B=$((M * D ))
     # Checkpoint with default torch.save approach and provide 0 host cache.
-    bash config-n-run.sh -c 2 -h 0 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
+    bash $SCRIPT_DIR/config-n-run.sh -c 2 -h 0 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
     # Checkpoint with DataStates approach and provide 16GB host cache per rank.
-    bash config-n-run.sh -c 4 -h 16 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
+    # bash $SCRIPT_DIR/config-n-run.sh -c 4 -h 16 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
     # Checkpoint with TorchSnapshot approach.
-    bash config-n-run.sh -c 5 -h 0 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
+    # bash $SCRIPT_DIR/config-n-run.sh -c 5 -h 0 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
 done
 ############### Run for diff model sizes.
 

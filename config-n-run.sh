@@ -36,7 +36,7 @@ NUM_HEADS=0
 SEQ_LENGTH=0
 NUM_KV_HEADS=0
 TRAIN_ITERS=0
-NNODES=$(wc -l < $COBALT_NODEFILE)
+NNODES=$(wc -l < $PBS_NODEFILE)
 PP=$NNODES
 TP=4
 DP=1
@@ -209,7 +209,7 @@ cd ${DIR}
 DATETIME=$(date +'date_%y-%m-%d_time_%H-%M-%S')
 
 BASE_DATA_PATH=$HOME/dl-io/datasets
-DATASET="${BASE_DATA_PATH}/my-new-gpt2_text_document"
+DATASET="${BASE_DATA_PATH}/meg-gpt2_text_document"
 TOKENIZER_PATH=$HOME/dl-io/datasets/llama2/tokenizer.model
 VOCAB_PATH=${BASE_DATA_PATH}/gpt2-vocab.json
 MERGE_PATH=${BASE_DATA_PATH}/gpt2-merges.txt
@@ -240,7 +240,7 @@ else
   NRANKS_PER_NODE=$((DP*TP))
 fi
 
-sed "s/$/ slots=$NRANKS_PER_NODE/" $COBALT_NODEFILE > $HOSTFILE
+sed "s/$/ slots=$NRANKS_PER_NODE/" $PBS_NODEFILE > $HOSTFILE
 
 WORLD_SIZE=$(( NNODES * NRANKS_PER_NODE ))
 LAUNCH_PARAMS="--include localhost:"
@@ -281,6 +281,7 @@ options=" \
        --max-position-embeddings $SEQ_LENGTH \
        --train-iters $TRAIN_ITERS \
        --save $CHECKPOINT_PATH \
+       --load $LOAD_CHECKPOINT_PATH \
        --data-path $DATASET \
        --vocab-file ${VOCAB_PATH} \
 	     --merge-file ${MERGE_PATH} \
@@ -380,7 +381,7 @@ echo "${COMMON_CONFIG}${CKPT_STANZA}"'}' > "$CONFIG_JSON"
 
 log_str="${model_size_B}B-tp$TP-pp$PP-dp$DP-gbs$GLOBAL_BATCH-mbs-$MICRO_BATCH-ckpt$CKPT_APPROACH"
 rm -rf $output_dir/log-$log_str.log
-# pdsh -w "$(awk '{printf "%s%s",sep,$1; sep=","}' $COBALT_NODEFILE)" 'rm -rf /local/scratch/*'
+# pdsh -w "$(awk '{printf "%s%s",sep,$1; sep=","}' $PBS_NODEFILE)" 'rm -rf /local/scratch/*'
 # eval "rm -rf $CHECKPOINT_PATH"
 run_cmd="{ time deepspeed ${LAUNCH_PARAMS} ${DIR}/pretrain_gpt.py ${options} ;} | tee -a $output_dir/log-$log_str.log"
 # run_cmd="nsys profile --force-overwrite true -o $output_dir/log-$log_str-nsys -t cuda,nvtx deepspeed ${LAUNCH_PARAMS} ${DIR}/pretrain_gpt.py ${options} | tee $output_dir/log-$log_str.log 2>&1"
