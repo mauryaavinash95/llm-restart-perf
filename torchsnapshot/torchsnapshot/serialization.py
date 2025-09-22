@@ -272,7 +272,7 @@ def torch_save_as_bytes(tensor: torch.Tensor) -> bytes:
 
 
 def torch_load_from_bytes(buf: bytes) -> torch.Tensor:
-    return torch.load(io.BytesIO(buf))
+    return torch.load(io.BytesIO(buf), weights_only=False)
 
 
 def per_tensor_qtensor_as_bytes(tensor: torch.Tensor) -> bytes:
