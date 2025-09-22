@@ -22,9 +22,9 @@ set_model_size() {
         echo "================== 1.3B OPT model (1 node)"
         declare -g m=1
         declare -g H=2048
-        declare -g F=8192
+        declare -g F=5504
         declare -g N=24
-        declare -g L=32
+        declare -g L=16
         declare -g U=2048
         declare -g S=8
         declare -g K=5
@@ -145,8 +145,8 @@ set_model_size() {
     fi
     set -x
     echo "Forcing common value of here...."
-    declare -g K=4
-    declare -g M=16
+    declare -g K=5
+    declare -g M=1
     declare -g U=2048
     if [[ -v NUM_ITERS ]]; then
         declare -g K=$NUM_ITERS

@@ -229,7 +229,29 @@ echo "https_proxy=${https_proxy}" >> .deepspeed_env
 echo "CC=gcc" >> .deepspeed_env
 echo "CXX=g++" >> .deepspeed_env
 echo "IBV_FORK_SAFE=1" >> .deepspeed_env
-echo "TORCH_CUDA_ARCH_LIST=8.0" >> .deepspeed_env
+echo "CUDA_DEVICE_MAX_CONNECTIONS=1" >> .deepspeed_env
+echo "TORCHSNAPSHOT_PER_RANK_MEMORY_BUDGET_BYTES=34359738368" >> .deepspeed_env
+echo "_DEFAULT_MAX_PER_RANK_IO_CONCURRENCY=1" >> .deepspeed_env
+echo "_MAX_PER_RANK_IO_CONCURRENCY=1" >> .deepspeed_env
+
+echo "Number of nodes found as $NNODES"
+NRANKS_PER_NODE=4
+if [ $((DP*TP)) -gt 3 ]; then
+  NRANKS_PER_NODE=4
+else
+  NRANKS_PER_NODE=$((DP*TP))
+fi
+
+sed "s/$/ slots=$NRANKS_PER_NODE/" $PBS_NODEFILE > $HOSTFILE
+
+WORLD_SIZE=$(( NNODES * NRANKS_PER_NODE ))
+LAUNCH_PARAMS="--include localhost:"
+for ((gpu_id=0; gpu_id<NRANKS_PER_NODE; gpu_id++)); do
+    LAUNCH_PARAMS+="$gpu_id"
+    if [ $gpu_id -lt $((NRANKS_PER_NODE - 1)) ]; then
+        LAUNCH_PARAMS+=","
+    fi
+done
 
 USE_DEEPSPEED=1
 ZERO_STAGE=1
@@ -279,7 +301,11 @@ options=" \
        --max-position-embeddings $SEQ_LENGTH \
        --train-iters $TRAIN_ITERS \
        --save $CHECKPOINT_PATH \
+<<<<<<< HEAD
        --load $CHECKPOINT_PATH \
+=======
+       --load $LOAD_CHECKPOINT_PATH \
+>>>>>>> a40bb5cf463fac6b2fdb90fef9e97b5295ea5eaa
        --data-path $DATASET \
        --vocab-file ${VOCAB_PATH} \
 	     --merge-file ${MERGE_PATH} \
@@ -392,12 +418,22 @@ else
     exit 1
 fi
 
+<<<<<<< HEAD
 export EXIT_AFTER_IT=2
 export CUDA_DEVICE_MAX_CONNECTIONS=1
 #vmtouch -e $CHECKPOINT_PATH
 #run_cmd="nsys profile --force-overwrite true -o $TMPDIR/log-$log_str-nsys-checkpoint -t cuda,nvtx -e LD_PRELOAD$DARSHAN_LIB:$LD_PRELOAD,DARSHAN_LOGDIR=$DARSHAN_LOGDIR,DARSHAN_ENABLE_NONMPI=1,DARSHAN_CONFIG_PATH=$DARSHAN_CONFIG_PATH,DXT_ENABLE_IO_TRACE=1 deepspeed ${DIR}/pretrain_gpt.py ${options} | tee $output_dir/log-$log_str-before-stop.log 2>&1"
 #run_cmd="nsys profile --force-overwrite true -o $TMPDIR/log-$log_str-nsys-checkpoint -t cuda,nvtx deepspeed ${DIR}/pretrain_gpt.py ${options} | tee $output_dir/log-$log_str-before-stop.log 2>&1"
 run_cmd="deepspeed ${DIR}/pretrain_gpt.py ${options} | tee $output_dir/log-$log_str-before-stop.log 2>&1"
+=======
+log_str="${model_size_B}B-tp$TP-pp$PP-dp$DP-gbs$GLOBAL_BATCH-mbs-$MICRO_BATCH-ckpt$CKPT_APPROACH"
+rm -rf $output_dir/log-$log_str.log
+# pdsh -w "$(awk '{printf "%s%s",sep,$1; sep=","}' $PBS_NODEFILE)" 'rm -rf /local/scratch/*'
+# eval "rm -rf $CHECKPOINT_PATH"
+run_cmd="{ time deepspeed ${LAUNCH_PARAMS} ${DIR}/pretrain_gpt.py ${options} ;} | tee -a $output_dir/log-$log_str.log"
+# run_cmd="nsys profile --force-overwrite true -o $output_dir/log-$log_str-nsys -t cuda,nvtx deepspeed ${LAUNCH_PARAMS} ${DIR}/pretrain_gpt.py ${options} | tee $output_dir/log-$log_str.log 2>&1"
+
+>>>>>>> a40bb5cf463fac6b2fdb90fef9e97b5295ea5eaa
 echo $run_cmd
 eval ${run_cmd}
 mkdir -p $output_dir/checkpoint
