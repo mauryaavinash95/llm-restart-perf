@@ -1,6 +1,6 @@
 #!/bin/bash -l
 #PBS -l nodes=1
-#PBS -l walltime=06:00:00
+#PBS -l walltime=09:00:00
 #PBS -q preemptable
 #PBS -A VeloC
 #PBS -l filesystems=home:grand
@@ -9,8 +9,7 @@
 
 source ~/.bashrc
 restart_perf_env
-
-#module load craype-accel-nvidia80
+module load nvhpc-mixed/23.9
 
 echo "Submitted job"
 NNODES=$(wc -l < $PBS_NODEFILE)
@@ -145,7 +144,7 @@ set_model_size() {
     fi
     set -x
     echo "Forcing common value of here...."
-    declare -g K=4
+    declare -g K=5
     declare -g M=16
     declare -g U=2048
     if [[ -v NUM_ITERS ]]; then
@@ -157,20 +156,15 @@ set_model_size() {
 ############### Run for diff model sizes.
 # -c refers to checkpointing approach (0: no checkpointing; 1: FastPersist; 2: default torch.save; 3: Async ckpt (not implemented yet); 4: DataStates; 5. TorchSnapshot)
 # -h refers to host cache (0 for no host cache)
-for it in {0..0}; do
-    model_sizes=(1)
+for it in {0..1}; do
+    model_sizes=(3)
     for model_size in "${model_sizes[@]}"; do
         set_model_size $model_size
-        if [ "$model_size" -eq 1 ]; then
-            T=4
-        else 
-            T=1
-        fi
         B=$((M * D ))
         # Checkpoint with default torch.save approach and provide 0 host cache.
-        #bash config-n-run.sh -i $it -c 2 -h 0 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
+        bash config-n-run.sh -i $it -c 2 -h 0 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
         # Checkpoint with DataStates approach and provide 16GB host cache per rank.
-        bash config-n-run.sh -i $it -c 4 -h 16 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
+        #bash config-n-run.sh -c 4 -h 16 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
         # Checkpoint with TorchSnapshot approach.
         #bash config-n-run.sh -c 5 -h 0 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
     done

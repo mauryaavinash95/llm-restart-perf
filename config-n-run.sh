@@ -1,14 +1,14 @@
-#!/bin/bash
+#!/bin/bash -l
+# PBS -l nodes=2:system=polaris
+# PBS -l walltime=01:00:00
+# PBS -q debug-scaling
+# PBS -A VeloC
+# PBS -l filesystems=home:grand
 
-source ~/.bash_profile
-dlconda
 # Taken from: https://docs.alcf.anl.gov/polaris/applications-and-libraries/libraries/nccl/
 export NCCL_NET_GDR_LEVEL=PHB
 export NCCL_CROSS_NIC=1
 export NCCL_COLLNET_ENABLE=1
-export NCCL_NET="AWS Libfabric"
-export LD_LIBRARY_PATH=/soft/libraries/aws-ofi-nccl/v1.9.1-aws/lib:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=/soft/libraries/hwloc/lib/:$LD_LIBRARY_PATH
 export FI_CXI_DISABLE_HOST_REGISTER=1
 export FI_MR_CACHE_MONITOR=userfaultfd
 export FI_CXI_DEFAULT_CQ_SIZE=131072
@@ -32,15 +32,24 @@ SEQ_LENGTH=0
 NUM_KV_HEADS=0
 TRAIN_ITERS=0
 NNODES=$(wc -l < $PBS_NODEFILE)
-PP=2
+PP=$NNODES
 TP=4
 DP=1
 SAVE_INTERVAL=1
 MICRO_BATCH=1
 GLOBAL_BATCH=1
+iter=0
 
-while getopts ":c:h:m:H:F:N:L:U:S:K:M:B:P:T:I:D:" opt; do
+while getopts ":i:c:h:m:H:F:N:L:U:S:K:M:B:P:T:I:D:" opt; do
   case $opt in
+    i)
+      if [[ "$OPTARG" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+        iter="$OPTARG"
+      else
+        echo "Invalid iteration number: $OPTARG is not a valid integer." >&2
+        exit 1
+      fi
+      ;;
     c)
       if [[ "$OPTARG" =~ ^[0-9]+$ ]]; then
         CKPT_APPROACH="$OPTARG"
@@ -141,16 +150,14 @@ while getopts ":c:h:m:H:F:N:L:U:S:K:M:B:P:T:I:D:" opt; do
       if [[ "$OPTARG" =~ ^[0-9]+$ ]]; then
         PP="$OPTARG"
       else
-	 echo "Invalid PIPELINE PARALLELISM: $OPTARG is not a valid integer." >&2
-	 exit 1
+        PP=$NNODES
       fi
       ;;
     T)
       if [[ "$OPTARG" =~ ^[0-9]+$ ]]; then
         TP="$OPTARG"
       else
-        echo "Invalid TESNOR PARALLELISM: $OPTARG is not a valid integer." >&2
-	exit 1
+        TP=4
       fi
       ;;
     I)
@@ -201,99 +208,34 @@ echo "TENSOR PARALLEL: $TP"
 echo "DATA PARALLEL: $DP"
 echo "SAVE_INTERVAL: $SAVE_INTERVAL"
 
-if [[ "$model_size_B" -eq 3 && "$TP" -eq 1 ]]; then
-    echo "Invalid Configurations, skipping"
-    exit 1
-fi
-
 DIR=$HOME/restart_perf/Megatron-DeepSpeed/
-cd ${DIR}
 DATETIME=$(date +'date_%y-%m-%d_time_%H-%M-%S')
-
 BASE_DATA_PATH=$HOME/restart_perf/dataset
 DATASET="${BASE_DATA_PATH}/my-gpt2_text_document"
 TOKENIZER_PATH=$HOME/restart_perf/dataset/tokenizer.model
 VOCAB_PATH=${BASE_DATA_PATH}/gpt2-vocab.json
 MERGE_PATH=${BASE_DATA_PATH}/gpt2-merges.txt
 
-output_dir="$HOME/restart_perf/outputs/${model_size_B}B-output/llama2-NN$NNODES/"
+rm -rf /local/scratch/*
+output_dir="/grand/VeloC/mikailg/DeepSpeed-restart-perf/${model_size_B}Bparams/CKPT_APPROACH${CKPT_APPROACH}-tp${TP}-iter${iter}/"
 mkdir -p "$output_dir"
 CONFIG_JSON="$output_dir/ds_config.json"
 DEEPSPEED_HOSTFILE="$output_dir/ds_hostfile"
-MPI_HOSTFILE="$output_dir/mpi_hostfile"
+
 echo "PATH=${PATH}" >> .deepspeed_env
 echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}" >> .deepspeed_env
 echo "http_proxy=${http_proxy}" >> .deepspeed_env
 echo "https_proxy=${https_proxy}" >> .deepspeed_env
-#echo "CC=gcc" >> .deepspeed_env
-#echo "CXX=g++" >> .deepspeed_env
-#echo "IBV_FORK_SAFE=1" >> .deepspeed_env
-#echo "CFLAGS=-I/soft/datascience/conda/2023-01-10/mconda3/include/" >> .deepspeed_env
-#echo "LDFLAGS=-L/soft/datascience/conda/2023-01-10/mconda3/lib/" >> .deepspeed_env
-#echo "CUDA_DEVICE_MAX_CONNECTIONS=1" >> .deepspeed_env
-#echo "TORCHSNAPSHOT_PER_RANK_MEMORY_BUDGET_BYTES=34359738368" >> .deepspeed_env
-#echo "_DEFAULT_MAX_PER_RANK_IO_CONCURRENCY=1" >> .deepspeed_env
-#echo "_MAX_PER_RANK_IO_CONCURRENCY=1" >> .deepspeed_env
-
-
-echo "Number of nodes found as $NNODES"
-NRANKS_PER_NODE=4
-#if need to change to other number of GPUs/host
-if [ $((DP*TP)) -gt 3 ]; then
-  NRANKS_PER_NODE=4
-else
-  NRANKS_PER_NODE=$((DP*TP))
-fi
-WORLD_SIZE=$(( NNODES * NRANKS_PER_NODE ))
-LAUNCH_PARAMS="--include localhost: "
-for ((gpu_id=0; gpu_id<NRANKS_PER_NODE; gpu_id++)); do
-    LAUNCH_PARAMS+="$gpu_id"
-    if [ $gpu_id -lt $((NRANKS_PER_NODE - 1)) ]; then
-        LAUNCH_PARAMS+=","
-    fi
-done
-sort -u $PBS_NODEFILE > $MPI_HOSTFILE
-sort -u $PBS_NODEFILE > $DEEPSPEED_HOSTFILE
-sed "s/$/ slots=$NRANKS_PER_NODE/" $PBS_NODEFILE > $DEEPSPEED_HOSTFILE
-NPROCS=$((NRANKS_PER_NODE * NNODES))
-MASTER_ADDR=$(head -n1 $PBS_NODEFILE)
-MASTER_PORT=6006
-
-export MPICH_GPU_SUPPORT_ENABLED=1
-CHECKPOINT_PATH=/grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize${model_size_B}_tp${TP}_pp${PP}_dp${DP}
-mkdir -p $CHECKPOINT_PATH
-DARSHAN_LIB=$HOME/restart_perf/software/installs/darshan/lib/libdarshan.so
-export DARSHAN_LOGS=$CHECKPOINT_PATH/darshan_logs
-#export LD_PRELOAD=$DARSHAN_LIB
-#export DARSHAN_ENABLE_NONMPI=1
-mkdir -p $DARSHAN_LOGS/$(date +%Y/%-m/%-d)
-MPI_LAUNCH_PARAMS="mpirun -np $NPROCS --hostfile $MPI_HOSTFILE \
-	-env MASTER_ADDR=$MASTER_ADDR \
-	-env MASTER_PORT=$MASTER_PORT \
-	-env LD_LIBRARY_PATH="$LD_LIBRARY_PATH" \
-	-env PATH="$PATH" \
-	-env LD_PRELOAD=${DARSHAN_LIB} \
-	-env DARSHAN_LOGDIR=${DARSHAN_LOGS} \
-	-env DARSHAN_ENABLE_NONMPI=1 \
-	-env MPICH_GPU_SUPPORT_ENABLED=1 \
-	"
-
-DEEPSPEED_PARAMS="python -u -m deepspeed.launcher.launch \
-	--no_local_rank 
-	"
-NCCL_IB_DISABLE=1 >> .deepspeed_env
-NCCL_SOCKET_IFNAME=eth0 >> .deepspeed_env
-
-sed -i 's/,//g' $DEEPSPEED_HOSTFILE        # Remove commas
-sed -i 's/[[:space:]]*$//' $DEEPSPEED_HOSTFILE  # Remove trailing spaces
-LAUNCH_PARAMS="--hostfile=$DEEPSPEED_HOSTFILE"
-#
+echo "CC=gcc" >> .deepspeed_env
+echo "CXX=g++" >> .deepspeed_env
+echo "IBV_FORK_SAFE=1" >> .deepspeed_env
+echo "TORCH_CUDA_ARCH_LIST=8.0" >> .deepspeed_env
 
 USE_DEEPSPEED=1
 ZERO_STAGE=1
 
 EXIT_INTERVAL=20
-DP=$(((NNODES * 4) / (PP * TP)))
+#DP=$(((NNODES * 4) / (PP * TP)))
 WORLD_SIZE=$((TP*PP*DP))
 
 
@@ -303,6 +245,26 @@ DTYPE="bf16"
 LR_WARMUP_STEPS=1
 WEIGHT_DECAY=0.1
 GRAD_CLIP=1
+CHECKPOINT_PATH=/grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize${model_size_B}_tp${TP}_pp${PP}_dp${DP}
+rm -rf $CHECKPOINT_PATH
+mkdir -p $CHECKPOINT_PATH
+
+DARSHAN_LIB=$HOME/restart_perf/software/installs/darshan/lib/libdarshan.so
+export DARSHAN_LOGDIR=$CHECKPOINT_PATH/darshan_logs
+DARSHAN_CONFIG_PATH=$HOME/restart_perf/llm-restart-perf/darshan_config.cfg
+mkdir -p $DARSHAN_LOGDIR
+export DXT_ENABLE_IO_TRACE=1
+export MPICH_GPU_SUPPORT_ENABLED=1
+export DARSHAN_ENABLE_NONMPI=1
+
+
+echo "NCCL_IB_DISABLE=1" >> .deepspeed_env
+echo "NCCL_SOCKET_IFNAME=eth0" >> .deepspeed_env
+echo "DARSHAN_LOGDIR=$DARSHAN_LOGDIR" >> .deepspeed_env
+echo "DARSHAN_ENABLE_NONMPI=1" >> .deepspeed_env
+echo "DARSHAN_CONFIG_PATH=$DARSHAN_CONFIG_PATH" >> .deepspeed_env
+echo "LD_PRELOAD=$DARSHAN_LIB" >> .deepspeed_env
+echo "EXIT_AFTER_IT=$EXIT_ITER" >> .deepspeed_env
 
 options=" \
 	--tensor-model-parallel-size $TP \
@@ -322,8 +284,7 @@ options=" \
        --vocab-file ${VOCAB_PATH} \
 	     --merge-file ${MERGE_PATH} \
        --data-impl mmap \
-       --tokenizer-type GPTSentencePieceTokenizer \
-       --tokenizer-model ${TOKENIZER_PATH} \
+       --tokenizer-type GPT2BPETokenizer \
        --split 949,50,1 \
        --distributed-backend nccl \
        --lr $LR \
@@ -356,6 +317,7 @@ options=" \
         --checkpoint-activations \
         --deepspeed-activation-checkpointing \
         "
+
 
 # Compose common config
 COMMON_CONFIG=$(cat <<EOC
@@ -415,44 +377,44 @@ esac
 # Write full JSON
 echo "${COMMON_CONFIG}${CKPT_STANZA}"'}' > "$CONFIG_JSON"
 
-
-log_str="${model_size_B}B-tp$TP-pp$PP-dp$DP-gbs$GLOBAL_BATCH-mbs-$MICRO_BATCH-ckpt$CKPT_APPROACH"
-rm -rf $output_dir/log-$log_str.log
-# pdsh -w "$(awk '{printf "%s%s",sep,$1; sep=","}' $COBALT_NODEFILE)" 'rm -rf /local/scratch/*'
-# eval "rm -rf $CHECKPOINT_PATH"
-TMPDIR=/local/scratch/nsys-profile
-mpirun -n $NNODES mkdir -p $TMPDIR
-export NSYS_LAUNCH_LOG=debug
-run_cmd="{ time deepspeed ${LAUNCH_PARAMS} ${DIR}/pretrain_gpt.py ${options} ;} | tee -a $output_dir/log-$log_str.log"
-#run_cmd="nsys profile --force-overwrite true --stop-on-exit true -o $output_dir/log-$log_str-nsys -t cuda,nvtx deepspeed ${DIR}/pretrain_gpt.py ${options} > $output_dir/log-$log_str.log 2>&1"
-#run_cmd="${MPI_LAUNCH_PARAMS} nsys profile --force-overwrite=true -o $output_dir/log-$log_str-%p-nsys -t cuda,nvtx,cudnn bash -c 'export PATH=$PATH; export LD_LIBRARY_PATH=$LD_LIBRARY_PATH; export LD_PRELOAD=${DARSHAN_LIB}; export DARSHAN_LOGDIR=${DARSHAN_LOGS}; export DARSHAN_ENABLE_NONMPI=1; deepspeed ${LAUNCH_PARAMS} ${DIR}/pretrain_gpt.py ${options} | tee $output_dir/log-$log_str.log 2>&1'"
-#run_cmd="export LD_PRELOAD=${DARSHAN_LIB}; export DARSHAN_LOGDIR=${DARSHAN_LOGS}; export DARSHAN_ENABLE_NONMPI=1; deepspeed ${LAUNCH_PARAMS} ${DIR}/pretrain_gpt.py ${options} | tee $output_dir/log-$log_str.log 2>&1"
-#echo "deepspeed --no_python ./nsys_test.sh ${LAUNCH_PARAMS} ${DIR}/pretrain_gpt.py ${options}"
-#deepspeed --no_python /home/mgossman/restart_perf/llm-restart-perf/nsys-test.sh ${LAUNCH_PARAMS} ${DIR}/pretrain_gpt.py ${options}
+log_str="${model_size_B}B-ckpt$CKPT_APPROACH-tp$TP-pp$PP-dp$DP-gbs$GLOBAL_BATCH-mbs-$MICRO_BATCH-iter$iter"
+#TMPDIR=/local/scratch/nsys-profile
+#mpirun -n $NNODES mkdir -p $TMPDIR
+#export NSYS_LAUNCH_LOG=debug
 if [ "$TP" -eq 1 ]; then
     export CUDA_VISIBLE_DEVICES=0
 elif [ "$TP" -eq 2 ]; then
     export CUDA_VISIBLE_DEVICES=0,1
-elif [ "$TP" -eq 3 ]; then
-    export CUDA_VISIBLE_DEVICES=0,1,2
 elif [ "$TP" -eq 4 ]; then
     export CUDA_VISIBLE_DEVICES=0,1,2,3
 else
     echo "Unsupported T value: $TP"
     exit 1
 fi
-#export LD_PRELOAD=${DARSHAN_LIB}; export DARSHAN_LOGDIR=${DARSHAN_LOGS}; export DARSHAN_ENABLE_NONMPI=1;
-run_cmd="nsys profile --force-overwrite true -o $output_dir/log-$log_str-nsys-before-stop -t cuda,nvtx,osrt deepspeed ${DIR}/pretrain_gpt.py ${options} | tee $output_dir/log-$log_str-before-stop.log 2>&1"
+
+export EXIT_AFTER_IT=2
+export CUDA_DEVICE_MAX_CONNECTIONS=1
+#vmtouch -e $CHECKPOINT_PATH
+#run_cmd="nsys profile --force-overwrite true -o $TMPDIR/log-$log_str-nsys-checkpoint -t cuda,nvtx -e LD_PRELOAD$DARSHAN_LIB:$LD_PRELOAD,DARSHAN_LOGDIR=$DARSHAN_LOGDIR,DARSHAN_ENABLE_NONMPI=1,DARSHAN_CONFIG_PATH=$DARSHAN_CONFIG_PATH,DXT_ENABLE_IO_TRACE=1 deepspeed ${DIR}/pretrain_gpt.py ${options} | tee $output_dir/log-$log_str-before-stop.log 2>&1"
+#run_cmd="nsys profile --force-overwrite true -o $TMPDIR/log-$log_str-nsys-checkpoint -t cuda,nvtx deepspeed ${DIR}/pretrain_gpt.py ${options} | tee $output_dir/log-$log_str-before-stop.log 2>&1"
+run_cmd="deepspeed ${DIR}/pretrain_gpt.py ${options} | tee $output_dir/log-$log_str-before-stop.log 2>&1"
 echo $run_cmd
-
-export EXIT_AFTER_5=1
 eval ${run_cmd}
-unset EXIT_AFTER_5
-run_cmd="nsys profile --force-overwrite true -o $output_dir/log-$log_str-nsys-after-stop -t cuda,nvtx,osrt deepspeed ${DIR}/pretrain_gpt.py ${options} | tee $output_dir/log-$log_str-after-stop.log 2>&1"
-eval ${run_cmd}
+mkdir -p $output_dir/checkpoint
+mv $TMPDIR/*.nsys-rep $output_dir/checkpoint
+mv /tmp/mgossman_python*.darshan $output_dir/checkpoint
+rm -rf /tmp/*.darshan
 
-ls -ltrh "$CHECKPOINT_PATH/global_step$SAVE_INTERVAL/" >> "$output_dir/log-$log_str.log"
-rm -rf $output_dir/*.sqlite
-# eval "rm -rf $CHECKPOINT_PATH"
-# rm -rf /local/scratch/*
-# set +x
+# vmtouch -e $CHECKPOINT_PATH
+
+# unset EXIT_AFTER_IT
+# run_cmd="nsys profile --force-overwrite true -o $TMPDIR/log-$log_str-nsys-restart -t cuda,nvtx -e MPICH_GPU_SUPPORT_ENABLED=1,LD_PRELOAD=/opt/cray/pe/mpich/8.1.28/gtl/lib/libmpi_gtl_cuda.so:$DARSHAN_LIB:$LD_PRELOAD,DARSHAN_LOGDIR=$DARSHAN_LOGDIR,DARSHAN_ENABLE_NONMPI=1,DARSHAN_CONFIG_PATH=$DARSHAN_CONFIG_PATH,DXT_ENABLE_IO_TRACE=1 deepspeed ${DIR}/pretrain_gpt.py ${options} | tee $output_dir/log-$log_str-after-stop.log 2>&1"
+# #run_cmd="{ time deepspeed ${LAUNCH_PARAMS} ${DIR}/pretrain_gpt.py ${options} ;} | tee -a $output_dir/log-$log_str.log"
+# eval ${run_cmd}
+# mkdir -p $output_dir/restart
+# mv /tmp/mgossman_python* $output_dir/restart
+# mv $TMPDIR/*.nsys-rep $output_dir/restart
+# rm -rf /tmp/*.darshan
+
+
+# ls -ltrh "$CHECKPOINT_PATH/global_step$SAVE_INTERVAL/" >> "$output_dir/log-$log_str.log"

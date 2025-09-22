@@ -1,20 +1,20 @@
 #!/bin/bash -l
 #PBS -l nodes=1
-#PBS -l walltime=06:00:00
+#PBS -l walltime=09:00:00
 #PBS -q preemptable
 #PBS -A VeloC
 #PBS -l filesystems=home:grand
 #PBS -r y
 
-
-source ~/.bashrc
-restart_perf_env
-
-#module load craype-accel-nvidia80
-
 echo "Submitted job"
 NNODES=$(wc -l < $PBS_NODEFILE)
 echo "NUM_OF_NODES= ${NNODES}"
+
+source ~/.bashrc
+restart_perf_env
+module load nvhpc-mixed/23.9
+rm -rf /local/scratch/*
+cd ~/
 
 set_model_size() {
     model_size=$1
@@ -46,7 +46,7 @@ set_model_size() {
         declare -g L=24           # num_attention_heads
         declare -g U=131072       # max_position_embeddings (seq length, adjust if needed)
         declare -g S=8            # num_key_value_heads
-        declare -g K=2
+        declare -g K=5
         declare -g T=4
         declare -g M=16
         declare -g B=1
@@ -56,6 +56,7 @@ set_model_size() {
         declare -g D=1
         declare -g A=1
         declare -g I=1
+	declare -g E=1
     elif [[ $model_size == 7 ]]; then
         echo "================== 7B LLAMA2 (2 nodes): https://huggingface.co/mistralai/Mistral-7B-v0.1/blob/main/config.json"
         declare -g m=7
@@ -144,8 +145,8 @@ set_model_size() {
         exit 1
     fi
     set -x
-    echo "Forcing common value of here...."
-    declare -g K=4
+    echo "Forcing some common value of here...."
+    declare -g K=2
     declare -g M=16
     declare -g U=2048
     if [[ -v NUM_ITERS ]]; then
@@ -153,28 +154,25 @@ set_model_size() {
     fi
     set +x
 }
+# m:H:F:N:L:U:S:K:T:M:B:R:G:P:D:A:O:
 
 ############### Run for diff model sizes.
-# -c refers to checkpointing approach (0: no checkpointing; 1: FastPersist; 2: default torch.save; 3: Async ckpt (not implemented yet); 4: DataStates; 5. TorchSnapshot)
-# -h refers to host cache (0 for no host cache)
+model_sizes=(3)
+tensor_sizes=(4)
 for it in {0..0}; do
-    model_sizes=(1)
     for model_size in "${model_sizes[@]}"; do
+        if[ ]
         set_model_size $model_size
-        if [ "$model_size" -eq 1 ]; then
-            T=4
-        else 
-            T=1
-        fi
         B=$((M * D ))
-        # Checkpoint with default torch.save approach and provide 0 host cache.
-        #bash config-n-run.sh -i $it -c 2 -h 0 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
-        # Checkpoint with DataStates approach and provide 16GB host cache per rank.
-        bash config-n-run.sh -i $it -c 4 -h 16 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
-        # Checkpoint with TorchSnapshot approach.
-        #bash config-n-run.sh -c 5 -h 0 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
+        for tensor_parallel in "${tensor_sizes[@]}"; do
+            if [[ "$model_size" -eq 3 && "$tensor_parallel" -eq 1 ]]; then
+                continue
+            fi
+            bash ~/restart_perf/llm-restart-perf/config-n-run_cleaned.sh -i $it -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $tensor_parallel -D $D -E $E
+        done
     done
 done
 ############### Run for diff model sizes.
+
 
 
