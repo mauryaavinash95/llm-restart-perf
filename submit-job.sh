@@ -4,21 +4,35 @@
 ### PBS -q debug-scaling
 ### PBS -A VeloC
 ### PBS -l filesystems=home:grand
+set -e
+set -x
 echo "Submitted job"
-NNODES=$(wc -l < $PBS_NODEFILE)
+
+if [[ -n "$PBS_NODEFILE" ]]; then
+    NODEFILE="$PBS_NODEFILE"
+elif [[ -n "$COBALT_NODEFILE" ]]; then
+    NODEFILE="$COBALT_NODEFILE"
+else
+    echo "Error: Neither PBS_NODEFILE nor COBALT_NODEFILE is set."
+    exit 1
+fi
+
+NNODES=$(wc -l < $NODEFILE)
 echo "NUM_OF_NODES= ${NNODES}"
 source ~/.bash_profile
 dlconda
+cd ~/dl-io/DeepSpeed/
 rm -rf /local/scratch/*
-SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+cd ~/
+
 
 set_model_size() {
     model_size=$1
     if [[ $model_size == 1 ]]; then
-        echo "================== 1.3B OPT model (1 node)"
+        echo "================== 1.3B OPT model (1 node) [WRONG MODEL]"
         declare -g m=1
-        declare -g H=2048
-        declare -g F=5504
+        declare -g H=512
+        declare -g F=2048
         declare -g N=24
         declare -g L=16
         declare -g U=2048
@@ -61,7 +75,7 @@ set_model_size() {
         declare -g L=32           # num_attention_heads
         declare -g U=32768        # max_position_embeddings
         declare -g S=8            # num_key_value_heads
-        declare -g K=10
+        declare -g K=2
         declare -g T=4
         declare -g M=16
         declare -g B=1
@@ -93,18 +107,18 @@ set_model_size() {
     elif [[ $model_size == 33 ]]; then
         echo "================== 33B DeepSeek (8 nodes): https://huggingface.co/deepseek-ai/deepseek-coder-33b-instruct/blob/main/config.json"
         declare -g m=33
-        declare -g H=7168          # hidden_size
-        declare -g F=19200         # ffn_hidden_size (intermediate_size)
-        declare -g N=62            # num_hidden_layers
-        declare -g L=56            # num_attention_heads
-        declare -g U=16384         # max_position_embeddings
-        declare -g S=8             # num_key_value_heads
-        # declare -g H=6656          # hidden_size
-        # declare -g F=17920         # ffn_hidden_size (intermediate_size)
-        # declare -g N=64            # num_hidden_layers
-        # declare -g L=52            # num_attention_heads
+        # declare -g H=7168          # hidden_size
+        # declare -g F=19200         # ffn_hidden_size (intermediate_size)
+        # declare -g N=62            # num_hidden_layers
+        # declare -g L=56            # num_attention_heads
         # declare -g U=16384         # max_position_embeddings
-        # declare -g S=4             # num_key_value_heads
+        # declare -g S=8             # num_key_value_heads
+        declare -g H=6656          # hidden_size
+        declare -g F=17920         # ffn_hidden_size (intermediate_size)
+        declare -g N=60            # num_hidden_layers
+        declare -g L=52            # num_attention_heads
+        declare -g U=2048         # max_position_embeddings
+        declare -g S=4             # num_key_value_heads
         declare -g K=10
         declare -g T=4
         declare -g M=16
@@ -141,30 +155,41 @@ set_model_size() {
     fi
     set -x
     echo "Forcing common value of here...."
-    declare -g K=5
-    declare -g M=1
+    declare -g K=15
+    declare -g M=16
     declare -g U=2048
     if [[ -v NUM_ITERS ]]; then
         declare -g K=$NUM_ITERS
     fi
     set +x
 }
+# m:H:F:N:L:U:S:K:T:M:B:R:G:P:D:A:O:
 
-############### Run for diff model sizes.
-# -c refers to checkpointing approach (0: no checkpointing; 1: FastPersist; 2: default torch.save; 3: Async ckpt (not implemented yet); 4: DataStates; 5. TorchSnapshot)
-# -h refers to host cache (0 for no host cache)
-model_sizes=(1)
+eval "rm -rf $HOME/dl-io/Megatron-DeepSpeed/core.*"
+model_sizes=($MODELS)
 for model_size in "${model_sizes[@]}"; do
     set_model_size $model_size
     B=$((M * D ))
-    # Checkpoint with default torch.save approach and provide 0 host cache.
-    bash $SCRIPT_DIR/config-n-run.sh -c 2 -h 0 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
-    # Checkpoint with DataStates approach and provide 16GB host cache per rank.
-    # bash $SCRIPT_DIR/config-n-run.sh -c 4 -h 16 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
-    # Checkpoint with TorchSnapshot approach.
-    # bash $SCRIPT_DIR/config-n-run.sh -c 5 -h 0 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
+    ## Checkpoint approach 0 is no checkpointing
+    # bash ~/dl-io/vlcc-datastates/config-n-run.sh -c 0 -h 0 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
+
+    # # ## Checkpoint approach 1 is torch.save default approach
+    # bash ~/dl-io/vlcc-datastates/config-n-run.sh -c 1 -h 0 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
+
+    # # # Checkpoint approach 3 is Base DataStates
+    bash ~/dl-io/vlcc-datastates/config-n-run.sh -c 3 -h 20 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
+
+    # # # # # ## Checkpoint approach 4 is VLCC DataStates
+    bash ~/dl-io/vlcc-datastates/config-n-run.sh -c 4 -h 20 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
+
+     # # # # # ## Checkpoint approach 7 is VLCC DataStates + Aggregated Checkpointing
+    bash ~/dl-io/vlcc-datastates/config-n-run.sh -c 7 -h 20 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
+
+    # # # # # ## Checkpoint approach 5 is TorchSnapshot
+    bash ~/dl-io/vlcc-datastates/config-n-run.sh -c 5 -h 0 -m $model_size -H $H -F $F -N $N -L $L -U $U -S $S -K $K -M $M -B $B -I $I -P $P -T $T -D $D
+
+   
 done
-############### Run for diff model sizes.
 
 
-
+set +x

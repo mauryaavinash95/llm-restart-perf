@@ -7,12 +7,27 @@
 
 source ~/.bash_profile
 dlconda
+rm -rf ~/.deepspeed_env
 # Taken from: https://docs.alcf.anl.gov/polaris/applications-and-libraries/libraries/nccl/
-export NCCL_NET_GDR_LEVEL=PHB
-export NCCL_CROSS_NIC=1
-export NCCL_COLLNET_ENABLE=1
-export NCCL_NET="AWS Libfabric"
-export LD_LIBRARY_PATH=/soft/libraries/aws-ofi-nccl/v1.9.1-aws/lib:$LD_LIBRARY_PATH
+# export NCCL_NET_GDR_LEVEL=PHB
+# export NCCL_CROSS_NIC=1
+# export NCCL_COLLNET_ENABLE=1
+# export NCCL_NET="AWS Libfabric"
+# export LD_LIBRARY_PATH=/soft/libraries/aws-ofi-nccl/v1.9.1-aws/lib:$LD_LIBRARY_PATH
+# export LD_LIBRARY_PATH=/soft/libraries/hwloc/lib/:$LD_LIBRARY_PATH
+# export FI_CXI_DISABLE_HOST_REGISTER=1
+# export FI_MR_CACHE_MONITOR=userfaultfd
+# export FI_CXI_DEFAULT_CQ_SIZE=131072
+# export FI_CXI_DEFAULT_TX_SIZE=131072
+# export FI_CXI_RDZV_PROTO=alt_read
+# export FI_CXI_RX_MATCH_MODE=software
+# export FI_CXI_REQ_BUF_SIZE=16MB
+# export FI_CXI_RDZV_GET_MIN=0
+# export FI_CXI_SAFE_DEVMEM_COPY_THRESHOLD=16000
+# export FI_CXI_RDZV_THRESHOLD=2000
+unset NCCL_NET_GDR_LEVEL NCCL_CROSS_NIC NCCL_COLLNET_ENABLE NCCL_NET
+
+# The following is recommended by ChatGPT
 export LD_LIBRARY_PATH=/soft/libraries/hwloc/lib/:$LD_LIBRARY_PATH
 export FI_CXI_DISABLE_HOST_REGISTER=1
 export FI_MR_CACHE_MONITOR=userfaultfd
@@ -24,7 +39,23 @@ export FI_CXI_REQ_BUF_SIZE=16MB
 export FI_CXI_RDZV_GET_MIN=0
 export FI_CXI_SAFE_DEVMEM_COPY_THRESHOLD=16000
 export FI_CXI_RDZV_THRESHOLD=2000
-unset NCCL_NET_GDR_LEVEL NCCL_CROSS_NIC NCCL_COLLNET_ENABLE NCCL_NET
+export NCCL_SOCKET_IFNAME=hsn0
+# export NCCL_NET=ofi
+# export FI_PROVIDER=cxi
+
+# set -x
+# Define default values
+LLM_HOST="jlse"
+if [[ -n "$PBS_NODEFILE" ]]; then
+    NODEFILE="$PBS_NODEFILE"
+    LLM_HOST="polaris"
+elif [[ -n "$COBALT_NODEFILE" ]]; then
+    NODEFILE="$COBALT_NODEFILE"
+    LLM_HOST="jlse"
+else
+    echo "Error: Neither PBS_NODEFILE nor COBALT_NODEFILE is set."
+    exit 1
+fi
 
 CKPT_APPROACH=0
 HOST_CACHE=0
@@ -36,7 +67,7 @@ NUM_HEADS=0
 SEQ_LENGTH=0
 NUM_KV_HEADS=0
 TRAIN_ITERS=0
-NNODES=$(wc -l < $PBS_NODEFILE)
+NNODES=$(wc -l < $NODEFILE)
 PP=$NNODES
 TP=4
 DP=1
@@ -82,8 +113,8 @@ while getopts ":c:h:m:H:F:N:L:U:S:K:M:B:P:T:I:D:" opt; do
       if [[ "$OPTARG" =~ ^[0-9]+$ ]]; then
         FFN_HIDDEN_SIZE="$OPTARG"
       else
-        echo "Invalid FFN_HIDDEN_SIZE: $OPTARG is not a valid integer." >&2
-        exit 1
+        FFN_HIDDEN_SIZE=0
+        # echo "Invalid FFN_HIDDEN_SIZE: $OPTARG is not a valid integer." >&2
       fi
       ;;
     N)
@@ -183,7 +214,7 @@ while getopts ":c:h:m:H:F:N:L:U:S:K:M:B:P:T:I:D:" opt; do
 done
 
 # Check if required parameters are provided
-if [ -z "$model_size_B" ] || [ -z "$HIDDEN_SIZE" ] || [ -z "$FFN_HIDDEN_SIZE" ] || [ -z "$NUM_LAYERS" ] || [ -z "$NUM_HEADS" ] || [ -z "$SEQ_LENGTH" ] || [ -z "$NUM_KV_HEADS" ] || [ -z "$TRAIN_ITERS" ]; then
+if [ -z "$CKPT_APPROACH" ] || [ -z "$HOST_CACHE" ] || [ -z "$model_size_B" ] || [ -z "$HIDDEN_SIZE" ] || [ -z "$FFN_HIDDEN_SIZE" ] || [ -z "$NUM_LAYERS" ] || [ -z "$NUM_HEADS" ] || [ -z "$SEQ_LENGTH" ] || [ -z "$NUM_KV_HEADS" ] || [ -z "$TRAIN_ITERS" ]; then
   echo "Missing required parameter(s)." >&2
   exit 1
 fi
@@ -205,7 +236,24 @@ echo "DATA PARALLEL: $DP"
 echo "SAVE_INTERVAL: $SAVE_INTERVAL"
 
 DIR=$HOME/dl-io/Megatron-DeepSpeed/
-cd ${DIR}
+echo "PATH=${PATH}:/soft/applications/conda/2024-10-30-workshop/mconda3/include/" > .deepspeed_env
+echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/soft/applications/conda/2024-10-30-workshop/mconda3/lib/" >> .deepspeed_env
+echo "http_proxy=${http_proxy}" >> .deepspeed_env
+echo "https_proxy=${https_proxy}" >> .deepspeed_env
+echo "CC=gcc" >> .deepspeed_env
+echo "CXX=g++" >> .deepspeed_env
+echo "IBV_FORK_SAFE=1" >> .deepspeed_env
+echo "CFLAGS=-I/soft/applications/conda/2024-10-30-workshop/mconda3/include/" >> .deepspeed_env
+echo "LDFLAGS=-L/soft/applications/conda/2024-10-30-workshop/mconda3/lib/" >> .deepspeed_env
+echo "CPATH=$CPATH:$HOME/softwares/liburing/include" >> .deepspeed_env
+echo "LIBRARY_PATH=$LIBRARY_PATH:$HOME/softwares/liburing/lib" >> .deepspeed_env
+echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/softwares/liburing/lib" >> .deepspeed_env
+echo "TORCHSNAPSHOT_PER_RANK_MEMORY_BUDGET_BYTES=21474836480" >> .deepspeed_env # 20 GB
+echo "_DEFAULT_MAX_PER_RANK_IO_CONCURRENCY=1" >> .deepspeed_env
+echo "TORCHSNAPSHOT_MAX_PER_RANK_IO_CONCURRENCY_OVERRIDE=1" >> .deepspeed_env
+echo "TORCHSNAPSHOT_DISABLE_BATCHING=1" >> .deepspeed_env
+echo "_MAX_PER_RANK_IO_CONCURRENCY=1" >> .deepspeed_env
+
 DATETIME=$(date +'date_%y-%m-%d_time_%H-%M-%S')
 
 BASE_DATA_PATH=$HOME/dl-io/datasets
@@ -214,51 +262,29 @@ TOKENIZER_PATH=$HOME/dl-io/datasets/llama2/tokenizer.model
 VOCAB_PATH=${BASE_DATA_PATH}/gpt2-vocab.json
 MERGE_PATH=${BASE_DATA_PATH}/gpt2-merges.txt
 
-output_dir="$HOME/dl-io/dl-io-outputs/datastates-offload/${model_size_B}B-output/llama2-NN$NNODES/"
+output_dir="$HOME/dl-io/vlcc-datastates/outputs-${LLM_HOST}/${model_size_B}B"
 mkdir -p "$output_dir"
 CONFIG_JSON="$output_dir/ds_config.json"
 HOSTFILE="$output_dir/hostfile"
-echo "PATH=${PATH}" > .deepspeed_env
-echo "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}" >> .deepspeed_env
-echo "http_proxy=${http_proxy}" >> .deepspeed_env
-echo "https_proxy=${https_proxy}" >> .deepspeed_env
-echo "CC=gcc" >> .deepspeed_env
-echo "CXX=g++" >> .deepspeed_env
-echo "IBV_FORK_SAFE=1" >> .deepspeed_env
-echo "CFLAGS=-I/soft/datascience/conda/2023-01-10/mconda3/include/" >> .deepspeed_env
-echo "LDFLAGS=-L/soft/datascience/conda/2023-01-10/mconda3/lib/" >> .deepspeed_env
-echo "CUDA_DEVICE_MAX_CONNECTIONS=1" >> .deepspeed_env
-echo "TORCHSNAPSHOT_PER_RANK_MEMORY_BUDGET_BYTES=34359738368" >> .deepspeed_env
-echo "_DEFAULT_MAX_PER_RANK_IO_CONCURRENCY=1" >> .deepspeed_env
-echo "_MAX_PER_RANK_IO_CONCURRENCY=1" >> .deepspeed_env
 
 echo "Number of nodes found as $NNODES"
 NRANKS_PER_NODE=4
-if [ $((DP*TP)) -gt 3 ]; then
-  NRANKS_PER_NODE=4
-else
-  NRANKS_PER_NODE=$((DP*TP))
-fi
-
-sed "s/$/ slots=$NRANKS_PER_NODE/" $PBS_NODEFILE > $HOSTFILE
-
-WORLD_SIZE=$(( NNODES * NRANKS_PER_NODE ))
-LAUNCH_PARAMS="--include localhost:"
-for ((gpu_id=0; gpu_id<NRANKS_PER_NODE; gpu_id++)); do
-    LAUNCH_PARAMS+="$gpu_id"
-    if [ $gpu_id -lt $((NRANKS_PER_NODE - 1)) ]; then
-        LAUNCH_PARAMS+=","
-    fi
-done
+sed "s/$/ slots=$NRANKS_PER_NODE/" $NODEFILE > $HOSTFILE
+LAUNCH_PARAMS="--hostfile=$HOSTFILE"
 
 USE_DEEPSPEED=1
 ZERO_STAGE=1
 
-EXIT_INTERVAL=20
+EXIT_INTERVAL=2000
 DP=$(((NNODES * 4) / (PP * TP)))
 WORLD_SIZE=$((TP*PP*DP))
 
-CHECKPOINT_PATH=/tmp/llama2/tp${TP}_pp${PP}_dp${DP} 
+if [[ "$LLM_HOST" == "polaris" ]]; then
+  CHECKPOINT_PATH=/eagle/projects/argonne_tpc/am6429/scratch/llama2/tp${TP}_pp${PP}_dp${DP} #_saveint${SAVE_INTERVAL}
+  # CHECKPOINT_PATH=/local/scratch/llama2/tp${TP}_pp${PP}_dp${DP} 
+else
+  CHECKPOINT_PATH=/vast/users/amaurya/scratch/llama2/tp${TP}_pp${PP}_dp${DP}
+fi
 LOAD_CHECKPOINT_PATH=$CHECKPOINT_PATH
 
 LR=3e-4
@@ -267,6 +293,7 @@ DTYPE="bf16"
 LR_WARMUP_STEPS=1
 WEIGHT_DECAY=0.1
 GRAD_CLIP=1
+
 
 options=" \
 	--tensor-model-parallel-size $TP \
@@ -281,7 +308,6 @@ options=" \
        --max-position-embeddings $SEQ_LENGTH \
        --train-iters $TRAIN_ITERS \
        --save $CHECKPOINT_PATH \
-       --load $LOAD_CHECKPOINT_PATH \
        --data-path $DATASET \
        --vocab-file ${VOCAB_PATH} \
 	     --merge-file ${MERGE_PATH} \
@@ -320,6 +346,13 @@ options=" \
         --deepspeed-activation-checkpointing \
         "
 
+# --no-pipeline-parallel \
+# --cpu-optimizer \
+# --use-rotary-position-embeddings \
+
+# AM comment: BP16 does not work with deepspeed for now
+# https://www.deepspeed.ai/docs/config-json/#bfloat16-training-options
+# So switching to regular FP16.
 # Compose common config
 COMMON_CONFIG=$(cat <<EOC
 {
@@ -336,9 +369,9 @@ COMMON_CONFIG=$(cat <<EOC
         "grad_accum_dtype": "fp32"
     },
     "wall_clock_breakdown": true,
-    "memory_breakdown": false,
+    "memory_breakdown": true,
     "flops_profiler": {
-        "enabled": true
+        "enabled": false
     }
 EOC
 )
@@ -347,27 +380,36 @@ EOC
 case $CKPT_APPROACH in
     0)
         echo "Checkpointing using None Checkpointing approach"
-        CKPT_STANZA=', "none_ckpt_config": true'
+        CKPT_STANZA=', "none_ckpt": true'
         ;;
     1)
-        echo "Checkpointing with FastPersist approach"
-        CKPT_STANZA=', "checkpoint": { "writer": { "type": "FAST", "decoupled": true } }'
-        ;;
-    2)
         echo "Checkpointing with default Torch.save()"
         CKPT_STANZA=''
         ;;
+    2)
+        echo "Checkpointing with FastPersist approach"
+        CKPT_STANZA=', "checkpoint": { "writer": { "type": "FAST", "decoupled": true } }'
+        ;;
     3)
-        echo "Checkpointing using Python Based AysncTorch approach"
-        CKPT_STANZA=', "async_ckpt_config": { "host_cache": -1 }'
+        echo "Checkpointing using DataStates Base Checkpointing approach"
+        CKPT_STANZA=', "datastates_ckpt": { "host_cache_size": '"$HOST_CACHE"', "engine_type": "simple_engine", "profile_engine": true }'
         ;;
     4)
-        echo "Checkpointing using VELOC Checkpointing approach"
-        CKPT_STANZA=', "datastates_ckpt": { "host_cache_size": '"$HOST_CACHE"', "parser_threads": 8 }'
+        echo "Checkpointing using DataStates+VLCC Checkpointing approach"
+        CKPT_STANZA=', "datastates_ckpt": { "host_cache_size": '"$HOST_CACHE"', "engine_type": "state_engine", "profile_engine": true }'
         ;;
     5)
         echo "Checkpointing using TorchSnapshot Async approach"
         CKPT_STANZA=', "torchsnapshot_ckpt": { "enabled": true }'
+        ;;
+    6)
+        io_buffer_size=4194304
+        echo "Checkpointing using FastPersist approach"
+        CKPT_STANZA=', "checkpoint": { "writer": { "type": "fast", "decoupled": true, "io_buffer_size": '"$io_buffer_size"', "show_statistics": false, "data_parallel": "replica" } }'
+        ;;
+    7)
+        echo "Checkpointing using DataStates+VLCC+Aggregated Checkpointing approach"
+        CKPT_STANZA=', "datastates_ckpt": { "host_cache_size": '"$HOST_CACHE"', "engine_type": "state_aggregated_engine", "profile_engine": true }'
         ;;
     *)
         echo "Invalid CKPT_APPROACH: $CKPT_APPROACH"
@@ -378,20 +420,22 @@ esac
 # Write full JSON
 echo "${COMMON_CONFIG}${CKPT_STANZA}"'}' > "$CONFIG_JSON"
 
-
-log_str="${model_size_B}B-tp$TP-pp$PP-dp$DP-gbs$GLOBAL_BATCH-mbs-$MICRO_BATCH-ckpt$CKPT_APPROACH"
+eval "rm -rf $HOME/dl-io/Megatron-DeepSpeed/core.*"
+log_str="${model_size_B}B-tp$TP-pp$PP-dp$DP-gbs$GLOBAL_BATCH-mbs$MICRO_BATCH-iters${TRAIN_ITERS}-ckpt$CKPT_APPROACH-saveint${SAVE_INTERVAL}"
 rm -rf $output_dir/log-$log_str.log
-# pdsh -w "$(awk '{printf "%s%s",sep,$1; sep=","}' $PBS_NODEFILE)" 'rm -rf /local/scratch/*'
-# eval "rm -rf $CHECKPOINT_PATH"
+echo "PWD is $(pwd)" >> $output_dir/log-$log_str.log
+# echo "NSYS_REPORT_DIR=${output_dir}/rep-${log_str}-%n">> .deepspeed_env
+pdsh -w "$(awk '{printf "%s%s",sep,$1; sep=","}' $NODEFILE)" 'rm -rf /local/scratch/*'
+eval "rm -rf $CHECKPOINT_PATH"
+mkdir -p $CHECKPOINT_PATH
+cd $CHECKPOINT_PATH || exit 1
 run_cmd="{ time deepspeed ${LAUNCH_PARAMS} ${DIR}/pretrain_gpt.py ${options} ;} | tee -a $output_dir/log-$log_str.log"
 # run_cmd="nsys profile --force-overwrite true -o $output_dir/log-$log_str-nsys -t cuda,nvtx deepspeed ${LAUNCH_PARAMS} ${DIR}/pretrain_gpt.py ${options} | tee $output_dir/log-$log_str.log 2>&1"
-
 echo $run_cmd
 
-# echo ${run_cmd}
 eval ${run_cmd}
 ls -ltrh "$CHECKPOINT_PATH/global_step$SAVE_INTERVAL/" >> "$output_dir/log-$log_str.log"
+du -s --apparent-size "$CHECKPOINT_PATH/global_step$SAVE_INTERVAL/" >> "$output_dir/log-$log_str.log"
 rm -rf $output_dir/*.sqlite
-# eval "rm -rf $CHECKPOINT_PATH"
-# rm -rf /local/scratch/*
+eval "rm -rf $HOME/dl-io/Megatron-DeepSpeed/core.*"
 # set +x
