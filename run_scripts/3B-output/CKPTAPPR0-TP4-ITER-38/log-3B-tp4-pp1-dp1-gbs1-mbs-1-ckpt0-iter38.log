@@ -1,0 +1,1111 @@
+[2025-10-01 15:56:59,690] [INFO] [real_accelerator.py:239:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2025-10-01 15:57:02,919] [WARNING] [runner.py:215:fetch_hostfile] Unable to find hostfile, will proceed with training with local resources only.
+[2025-10-01 15:57:02,919] [INFO] [runner.py:605:main] cmd = /home/mgossman/deepspeed_env/bin/python -u -m deepspeed.launcher.launch --world_info=eyJsb2NhbGhvc3QiOiBbMCwgMSwgMiwgM119 --master_addr=127.0.0.1 --master_port=29500 --enable_each_rank_log=None /home/mgossman/restart_perf/Megatron-DeepSpeed//pretrain_gpt.py --tensor-model-parallel-size 4 --pipeline-model-parallel-size 1 --num-layers 28 --hidden-size 3072 --ffn-hidden-size 8192 --num-attention-heads 24 --micro-batch-size 1 --global-batch-size 1 --seq-length 2048 --max-position-embeddings 2048 --train-iters 10 --save /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1 --load /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1 --data-path /home/mgossman/restart_perf/dataset/my-gpt2_text_document --vocab-file /home/mgossman/restart_perf/dataset/gpt2-vocab.json --merge-file /home/mgossman/restart_perf/dataset/gpt2-merges.txt --data-impl mmap --tokenizer-type GPT2BPETokenizer --split 949,50,1 --distributed-backend nccl --lr 3e-4 --lr-decay-style cosine --min-lr 3e-5 --weight-decay 0.1 --clip-grad 1 --lr-warmup-iters 1 --optimizer adam --adam-beta1 0.9 --adam-beta2 0.95 --log-interval 1 --save-interval 1 --eval-interval 1000 --eval-iters 0 --bf16 --no-query-key-layer-scaling --attention-dropout 0 --hidden-dropout 0 --use-rotary-position-embeddings --untie-embeddings-and-output-weights --swiglu --normalization rmsnorm --disable-bias-linear --num-key-value-heads 8 --deepspeed --exit-interval 200 --deepspeed_config=/grand/VeloC/mikailg/DeepSpeed-restart-perf/3B-output/CKPTAPPR0-TP4-ITER-38//ds_config.json --zero-stage=1 --checkpoint-activations --deepspeed-activation-checkpointing
+[2025-10-01 15:57:04,440] [INFO] [real_accelerator.py:239:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2025-10-01 15:57:07,624] [INFO] [launch.py:146:main] WORLD INFO DICT: {'localhost': [0, 1, 2, 3]}
+[2025-10-01 15:57:07,624] [INFO] [launch.py:152:main] nnodes=1, num_local_procs=4, node_rank=0
+[2025-10-01 15:57:07,624] [INFO] [launch.py:163:main] global_rank_mapping=defaultdict(<class 'list'>, {'localhost': [0, 1, 2, 3]})
+[2025-10-01 15:57:07,624] [INFO] [launch.py:164:main] dist_world_size=4
+[2025-10-01 15:57:07,624] [INFO] [launch.py:168:main] Setting CUDA_VISIBLE_DEVICES=0,1,2,3
+[2025-10-01 15:57:07,625] [INFO] [launch.py:256:main] process 1862248 spawned with command: ['/home/mgossman/deepspeed_env/bin/python', '-u', '/home/mgossman/restart_perf/Megatron-DeepSpeed//pretrain_gpt.py', '--local_rank=0', '--tensor-model-parallel-size', '4', '--pipeline-model-parallel-size', '1', '--num-layers', '28', '--hidden-size', '3072', '--ffn-hidden-size', '8192', '--num-attention-heads', '24', '--micro-batch-size', '1', '--global-batch-size', '1', '--seq-length', '2048', '--max-position-embeddings', '2048', '--train-iters', '10', '--save', '/grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1', '--load', '/grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1', '--data-path', '/home/mgossman/restart_perf/dataset/my-gpt2_text_document', '--vocab-file', '/home/mgossman/restart_perf/dataset/gpt2-vocab.json', '--merge-file', '/home/mgossman/restart_perf/dataset/gpt2-merges.txt', '--data-impl', 'mmap', '--tokenizer-type', 'GPT2BPETokenizer', '--split', '949,50,1', '--distributed-backend', 'nccl', '--lr', '3e-4', '--lr-decay-style', 'cosine', '--min-lr', '3e-5', '--weight-decay', '0.1', '--clip-grad', '1', '--lr-warmup-iters', '1', '--optimizer', 'adam', '--adam-beta1', '0.9', '--adam-beta2', '0.95', '--log-interval', '1', '--save-interval', '1', '--eval-interval', '1000', '--eval-iters', '0', '--bf16', '--no-query-key-layer-scaling', '--attention-dropout', '0', '--hidden-dropout', '0', '--use-rotary-position-embeddings', '--untie-embeddings-and-output-weights', '--swiglu', '--normalization', 'rmsnorm', '--disable-bias-linear', '--num-key-value-heads', '8', '--deepspeed', '--exit-interval', '200', '--deepspeed_config=/grand/VeloC/mikailg/DeepSpeed-restart-perf/3B-output/CKPTAPPR0-TP4-ITER-38//ds_config.json', '--zero-stage=1', '--checkpoint-activations', '--deepspeed-activation-checkpointing']
+[2025-10-01 15:57:07,626] [INFO] [launch.py:256:main] process 1862249 spawned with command: ['/home/mgossman/deepspeed_env/bin/python', '-u', '/home/mgossman/restart_perf/Megatron-DeepSpeed//pretrain_gpt.py', '--local_rank=1', '--tensor-model-parallel-size', '4', '--pipeline-model-parallel-size', '1', '--num-layers', '28', '--hidden-size', '3072', '--ffn-hidden-size', '8192', '--num-attention-heads', '24', '--micro-batch-size', '1', '--global-batch-size', '1', '--seq-length', '2048', '--max-position-embeddings', '2048', '--train-iters', '10', '--save', '/grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1', '--load', '/grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1', '--data-path', '/home/mgossman/restart_perf/dataset/my-gpt2_text_document', '--vocab-file', '/home/mgossman/restart_perf/dataset/gpt2-vocab.json', '--merge-file', '/home/mgossman/restart_perf/dataset/gpt2-merges.txt', '--data-impl', 'mmap', '--tokenizer-type', 'GPT2BPETokenizer', '--split', '949,50,1', '--distributed-backend', 'nccl', '--lr', '3e-4', '--lr-decay-style', 'cosine', '--min-lr', '3e-5', '--weight-decay', '0.1', '--clip-grad', '1', '--lr-warmup-iters', '1', '--optimizer', 'adam', '--adam-beta1', '0.9', '--adam-beta2', '0.95', '--log-interval', '1', '--save-interval', '1', '--eval-interval', '1000', '--eval-iters', '0', '--bf16', '--no-query-key-layer-scaling', '--attention-dropout', '0', '--hidden-dropout', '0', '--use-rotary-position-embeddings', '--untie-embeddings-and-output-weights', '--swiglu', '--normalization', 'rmsnorm', '--disable-bias-linear', '--num-key-value-heads', '8', '--deepspeed', '--exit-interval', '200', '--deepspeed_config=/grand/VeloC/mikailg/DeepSpeed-restart-perf/3B-output/CKPTAPPR0-TP4-ITER-38//ds_config.json', '--zero-stage=1', '--checkpoint-activations', '--deepspeed-activation-checkpointing']
+[2025-10-01 15:57:07,627] [INFO] [launch.py:256:main] process 1862250 spawned with command: ['/home/mgossman/deepspeed_env/bin/python', '-u', '/home/mgossman/restart_perf/Megatron-DeepSpeed//pretrain_gpt.py', '--local_rank=2', '--tensor-model-parallel-size', '4', '--pipeline-model-parallel-size', '1', '--num-layers', '28', '--hidden-size', '3072', '--ffn-hidden-size', '8192', '--num-attention-heads', '24', '--micro-batch-size', '1', '--global-batch-size', '1', '--seq-length', '2048', '--max-position-embeddings', '2048', '--train-iters', '10', '--save', '/grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1', '--load', '/grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1', '--data-path', '/home/mgossman/restart_perf/dataset/my-gpt2_text_document', '--vocab-file', '/home/mgossman/restart_perf/dataset/gpt2-vocab.json', '--merge-file', '/home/mgossman/restart_perf/dataset/gpt2-merges.txt', '--data-impl', 'mmap', '--tokenizer-type', 'GPT2BPETokenizer', '--split', '949,50,1', '--distributed-backend', 'nccl', '--lr', '3e-4', '--lr-decay-style', 'cosine', '--min-lr', '3e-5', '--weight-decay', '0.1', '--clip-grad', '1', '--lr-warmup-iters', '1', '--optimizer', 'adam', '--adam-beta1', '0.9', '--adam-beta2', '0.95', '--log-interval', '1', '--save-interval', '1', '--eval-interval', '1000', '--eval-iters', '0', '--bf16', '--no-query-key-layer-scaling', '--attention-dropout', '0', '--hidden-dropout', '0', '--use-rotary-position-embeddings', '--untie-embeddings-and-output-weights', '--swiglu', '--normalization', 'rmsnorm', '--disable-bias-linear', '--num-key-value-heads', '8', '--deepspeed', '--exit-interval', '200', '--deepspeed_config=/grand/VeloC/mikailg/DeepSpeed-restart-perf/3B-output/CKPTAPPR0-TP4-ITER-38//ds_config.json', '--zero-stage=1', '--checkpoint-activations', '--deepspeed-activation-checkpointing']
+[2025-10-01 15:57:07,627] [INFO] [launch.py:256:main] process 1862251 spawned with command: ['/home/mgossman/deepspeed_env/bin/python', '-u', '/home/mgossman/restart_perf/Megatron-DeepSpeed//pretrain_gpt.py', '--local_rank=3', '--tensor-model-parallel-size', '4', '--pipeline-model-parallel-size', '1', '--num-layers', '28', '--hidden-size', '3072', '--ffn-hidden-size', '8192', '--num-attention-heads', '24', '--micro-batch-size', '1', '--global-batch-size', '1', '--seq-length', '2048', '--max-position-embeddings', '2048', '--train-iters', '10', '--save', '/grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1', '--load', '/grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1', '--data-path', '/home/mgossman/restart_perf/dataset/my-gpt2_text_document', '--vocab-file', '/home/mgossman/restart_perf/dataset/gpt2-vocab.json', '--merge-file', '/home/mgossman/restart_perf/dataset/gpt2-merges.txt', '--data-impl', 'mmap', '--tokenizer-type', 'GPT2BPETokenizer', '--split', '949,50,1', '--distributed-backend', 'nccl', '--lr', '3e-4', '--lr-decay-style', 'cosine', '--min-lr', '3e-5', '--weight-decay', '0.1', '--clip-grad', '1', '--lr-warmup-iters', '1', '--optimizer', 'adam', '--adam-beta1', '0.9', '--adam-beta2', '0.95', '--log-interval', '1', '--save-interval', '1', '--eval-interval', '1000', '--eval-iters', '0', '--bf16', '--no-query-key-layer-scaling', '--attention-dropout', '0', '--hidden-dropout', '0', '--use-rotary-position-embeddings', '--untie-embeddings-and-output-weights', '--swiglu', '--normalization', 'rmsnorm', '--disable-bias-linear', '--num-key-value-heads', '8', '--deepspeed', '--exit-interval', '200', '--deepspeed_config=/grand/VeloC/mikailg/DeepSpeed-restart-perf/3B-output/CKPTAPPR0-TP4-ITER-38//ds_config.json', '--zero-stage=1', '--checkpoint-activations', '--deepspeed-activation-checkpointing']
+[2025-10-01 15:57:11,459] [INFO] [real_accelerator.py:239:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2025-10-01 15:57:11,568] [INFO] [real_accelerator.py:239:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2025-10-01 15:57:11,578] [INFO] [real_accelerator.py:239:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+[2025-10-01 15:57:11,590] [INFO] [real_accelerator.py:239:get_accelerator] Setting ds_accelerator to cuda (auto detect)
+--------------------------------------------------
+DeepSpeed C++/CUDA extension op report
+--------------------------------------------------
+NOTE: Ops not installed will be just-in-time (JIT) compiled at
+      runtime if needed. Op compatibility means that your system
+      meet the required dependencies to JIT install the op.
+--------------------------------------------------
+JIT compiled ops requires ninja
+ninja .................. [92m[OKAY][0m
+--------------------------------------------------
+op name ................ installed .. compatible
+--------------------------------------------------
+--------------------------------------------------
+DeepSpeed C++/CUDA extension op report
+--------------------------------------------------
+NOTE: Ops not installed will be just-in-time (JIT) compiled at
+      runtime if needed. Op compatibility means that your system
+      meet the required dependencies to JIT install the op.
+--------------------------------------------------
+JIT compiled ops requires ninja
+ninja .................. [92m[OKAY][0m
+--------------------------------------------------
+op name ................ installed .. compatible
+--------------------------------------------------
+--------------------------------------------------
+DeepSpeed C++/CUDA extension op report
+--------------------------------------------------
+NOTE: Ops not installed will be just-in-time (JIT) compiled at
+      runtime if needed. Op compatibility means that your system
+      meet the required dependencies to JIT install the op.
+--------------------------------------------------
+JIT compiled ops requires ninja
+ninja .................. [92m[OKAY][0m
+--------------------------------------------------
+op name ................ installed .. compatible
+--------------------------------------------------
+--------------------------------------------------
+DeepSpeed C++/CUDA extension op report
+--------------------------------------------------
+NOTE: Ops not installed will be just-in-time (JIT) compiled at
+      runtime if needed. Op compatibility means that your system
+      meet the required dependencies to JIT install the op.
+--------------------------------------------------
+JIT compiled ops requires ninja
+ninja .................. [92m[OKAY][0m
+--------------------------------------------------
+op name ................ installed .. compatible
+--------------------------------------------------
+[93m [WARNING] [0m async_io requires the dev libaio .so object and headers but these were not found.
+[93m [WARNING] [0m async_io: please install the libaio-devel package with yum
+[93m [WARNING] [0m If libaio is already installed (perhaps from source), try setting the CFLAGS and LDFLAGS environment variables to where it can be found.
+async_io ............... [93m[NO][0m ....... [93m[NO][0m
+fused_adam ............. [93m[NO][0m ....... [92m[OKAY][0m
+cpu_adam ............... [93m[NO][0m ....... [92m[OKAY][0m
+cpu_adagrad ............ [93m[NO][0m ....... [92m[OKAY][0m
+cpu_lion ............... [93m[NO][0m ....... [92m[OKAY][0m
+[93m [WARNING] [0m Please specify the CUTLASS repo directory as environment variable $CUTLASS_PATH
+evoformer_attn ......... [93m[NO][0m ....... [93m[NO][0m
+[93m [WARNING] [0m FP Quantizer is using an untested triton version (3.4.0), only 2.3.(0, 1) and 3.0.0 are known to be compatible with these kernels
+fp_quantizer ........... [93m[NO][0m ....... [93m[NO][0m
+fused_lamb ............. [93m[NO][0m ....... [92m[OKAY][0m
+fused_lion ............. [93m[NO][0m ....... [92m[OKAY][0m
+[93m [WARNING] [0m async_io requires the dev libaio .so object and headers but these were not found.
+[93m [WARNING] [0m async_io requires the dev libaio .so object and headers but these were not found.
+[93m [WARNING] [0m async_io: please install the libaio-devel package with yum
+[93m [WARNING] [0m If libaio is already installed (perhaps from source), try setting the CFLAGS and LDFLAGS environment variables to where it can be found.
+async_io ............... [93m[NO][0m ....... [93m[NO][0m
+fused_adam ............. [93m[NO][0m ....... [92m[OKAY][0m
+cpu_adam ............... [93m[NO][0m ....... [92m[OKAY][0m
+cpu_adagrad ............ [93m[NO][0m ....... [92m[OKAY][0m
+cpu_lion ............... [93m[NO][0m ....... [92m[OKAY][0m
+[93m [WARNING] [0m Please specify the CUTLASS repo directory as environment variable $CUTLASS_PATH
+evoformer_attn ......... [93m[NO][0m ....... [93m[NO][0m
+[93m [WARNING] [0m async_io: please install the libaio-devel package with yum
+[93m [WARNING] [0m If libaio is already installed (perhaps from source), try setting the CFLAGS and LDFLAGS environment variables to where it can be found.
+async_io ............... [93m[NO][0m ....... [93m[NO][0m
+fused_adam ............. [93m[NO][0m ....... [92m[OKAY][0m
+cpu_adam ............... [93m[NO][0m ....... [92m[OKAY][0m
+cpu_adagrad ............ [93m[NO][0m ....... [92m[OKAY][0m
+cpu_lion ............... [93m[NO][0m ....... [92m[OKAY][0m
+[93m [WARNING] [0m Please specify the CUTLASS repo directory as environment variable $CUTLASS_PATH
+evoformer_attn ......... [93m[NO][0m ....... [93m[NO][0m
+[93m [WARNING] [0m FP Quantizer is using an untested triton version (3.4.0), only 2.3.(0, 1) and 3.0.0 are known to be compatible with these kernels
+fp_quantizer ........... [93m[NO][0m ....... [93m[NO][0m
+fused_lamb ............. [93m[NO][0m ....... [92m[OKAY][0m
+fused_lion ............. [93m[NO][0m ....... [92m[OKAY][0m
+[93m [WARNING] [0m FP Quantizer is using an untested triton version (3.4.0), only 2.3.(0, 1) and 3.0.0 are known to be compatible with these kernels
+fp_quantizer ........... [93m[NO][0m ....... [93m[NO][0m
+fused_lamb ............. [93m[NO][0m ....... [92m[OKAY][0m
+fused_lion ............. [93m[NO][0m ....... [92m[OKAY][0m
+[93m [WARNING] [0m async_io requires the dev libaio .so object and headers but these were not found.
+[93m [WARNING] [0m async_io: please install the libaio-devel package with yum
+[93m [WARNING] [0m If libaio is already installed (perhaps from source), try setting the CFLAGS and LDFLAGS environment variables to where it can be found.
+async_io ............... [93m[NO][0m ....... [93m[NO][0m
+fused_adam ............. [93m[NO][0m ....... [92m[OKAY][0m
+cpu_adam ............... [93m[NO][0m ....... [92m[OKAY][0m
+cpu_adagrad ............ [93m[NO][0m ....... [92m[OKAY][0m
+cpu_lion ............... [93m[NO][0m ....... [92m[OKAY][0m
+[93m [WARNING] [0m Please specify the CUTLASS repo directory as environment variable $CUTLASS_PATH
+evoformer_attn ......... [93m[NO][0m ....... [93m[NO][0m
+[93m [WARNING] [0m FP Quantizer is using an untested triton version (3.4.0), only 2.3.(0, 1) and 3.0.0 are known to be compatible with these kernels
+fp_quantizer ........... [93m[NO][0m ....... [93m[NO][0m
+fused_lamb ............. [93m[NO][0m ....... [92m[OKAY][0m
+fused_lion ............. [93m[NO][0m ....... [92m[OKAY][0m
+[93m [WARNING] [0m gds requires the dev libaio .so object and headers but these were not found.
+[93m [WARNING] [0m gds: please install the libaio-devel package with yum
+[93m [WARNING] [0m If libaio is already installed (perhaps from source), try setting the CFLAGS and LDFLAGS environment variables to where it can be found.
+gds .................... [93m[NO][0m ....... [93m[NO][0m
+transformer_inference .. [93m[NO][0m ....... [92m[OKAY][0m
+inference_core_ops ..... [93m[NO][0m ....... [92m[OKAY][0m
+cutlass_ops ............ [93m[NO][0m ....... [92m[OKAY][0m
+quantizer .............. [93m[NO][0m ....... [92m[OKAY][0m
+ragged_device_ops ...... [93m[NO][0m ....... [92m[OKAY][0m
+ragged_ops ............. [93m[NO][0m ....... [92m[OKAY][0m
+random_ltd ............. [93m[NO][0m ....... [92m[OKAY][0m
+[93m [WARNING] [0m sparse_attn requires a torch version >= 1.5 and < 2.0 but detected 2.8
+[93m [WARNING] [0m using untested triton version (3.4.0), only 1.0.0 is known to be compatible
+sparse_attn ............ [93m[NO][0m ....... [93m[NO][0m
+spatial_inference ...... [93m[NO][0m ....... [92m[OKAY][0m
+transformer ............ [93m[NO][0m ....... [92m[OKAY][0m
+stochastic_transformer . [93m[NO][0m ....... [92m[OKAY][0m
+--------------------------------------------------
+DeepSpeed general environment info:
+torch install path ............... ['/home/mgossman/deepspeed_env/lib/python3.11/site-packages/torch']
+torch version .................... 2.8.0+cu128
+deepspeed install path ........... ['/home/mgossman/restart_perf/datastates_deepspeed/DeepSpeed/deepspeed']
+deepspeed info ................... 0.16.6+dbb933ea, dbb933ea, multi-ckpt-engines
+torch cuda version ............... 12.8
+torch hip version ................ None
+nvcc version ..................... 12.8
+deepspeed wheel compiled w. ...... torch 0.0, cuda 0.0
+shared memory (/dev/shm) size .... 251.60 GB
+**** Git info for Megatron: git_hash=6acc370 git_branch=HEAD ****
+[93m [WARNING] [0m gds requires the dev libaio .so object and headers but these were not found.
+[93m [WARNING] [0m gds requires the dev libaio .so object and headers but these were not found.
+[93m [WARNING] [0m gds: please install the libaio-devel package with yum
+[93m [WARNING] [0m If libaio is already installed (perhaps from source), try setting the CFLAGS and LDFLAGS environment variables to where it can be found.
+gds .................... [93m[NO][0m ....... [93m[NO][0m
+[93m [WARNING] [0m gds: please install the libaio-devel package with yum
+[93m [WARNING] [0m If libaio is already installed (perhaps from source), try setting the CFLAGS and LDFLAGS environment variables to where it can be found.
+gds .................... [93m[NO][0m ....... [93m[NO][0m
+transformer_inference .. [93m[NO][0m ....... [92m[OKAY][0m
+transformer_inference .. [93m[NO][0m ....... [92m[OKAY][0m
+inference_core_ops ..... [93m[NO][0m ....... [92m[OKAY][0m
+inference_core_ops ..... [93m[NO][0m ....... [92m[OKAY][0m
+cutlass_ops ............ [93m[NO][0m ....... [92m[OKAY][0m
+quantizer .............. [93m[NO][0m ....... [92m[OKAY][0m
+cutlass_ops ............ [93m[NO][0m ....... [92m[OKAY][0m
+quantizer .............. [93m[NO][0m ....... [92m[OKAY][0m
+ragged_device_ops ...... [93m[NO][0m ....... [92m[OKAY][0m
+ragged_device_ops ...... [93m[NO][0m ....... [92m[OKAY][0m
+ragged_ops ............. [93m[NO][0m ....... [92m[OKAY][0m
+random_ltd ............. [93m[NO][0m ....... [92m[OKAY][0m
+[93m [WARNING] [0m sparse_attn requires a torch version >= 1.5 and < 2.0 but detected 2.8
+[93m [WARNING] [0m using untested triton version (3.4.0), only 1.0.0 is known to be compatible
+sparse_attn ............ [93m[NO][0m ....... [93m[NO][0m
+ragged_ops ............. [93m[NO][0m ....... [92m[OKAY][0m
+random_ltd ............. [93m[NO][0m ....... [92m[OKAY][0m
+[93m [WARNING] [0m sparse_attn requires a torch version >= 1.5 and < 2.0 but detected 2.8
+[93m [WARNING] [0m using untested triton version (3.4.0), only 1.0.0 is known to be compatible
+sparse_attn ............ [93m[NO][0m ....... [93m[NO][0m
+spatial_inference ...... [93m[NO][0m ....... [92m[OKAY][0m
+transformer ............ [93m[NO][0m ....... [92m[OKAY][0m
+stochastic_transformer . [93m[NO][0m ....... [92m[OKAY][0m
+--------------------------------------------------
+spatial_inference ...... [93m[NO][0m ....... [92m[OKAY][0m
+transformer ............ [93m[NO][0m ....... [92m[OKAY][0m
+stochastic_transformer . [93m[NO][0m ....... [92m[OKAY][0m
+--------------------------------------------------
+DeepSpeed general environment info:
+torch install path ............... ['/home/mgossman/deepspeed_env/lib/python3.11/site-packages/torch']
+torch version .................... 2.8.0+cu128
+deepspeed install path ........... ['/home/mgossman/restart_perf/datastates_deepspeed/DeepSpeed/deepspeed']
+deepspeed info ................... 0.16.6+dbb933ea, dbb933ea, multi-ckpt-engines
+torch cuda version ............... 12.8
+torch hip version ................ None
+nvcc version ..................... 12.8
+deepspeed wheel compiled w. ...... torch 0.0, cuda 0.0
+shared memory (/dev/shm) size .... 251.60 GB
+DeepSpeed general environment info:
+torch install path ............... ['/home/mgossman/deepspeed_env/lib/python3.11/site-packages/torch']
+torch version .................... 2.8.0+cu128
+deepspeed install path ........... ['/home/mgossman/restart_perf/datastates_deepspeed/DeepSpeed/deepspeed']
+deepspeed info ................... 0.16.6+dbb933ea, dbb933ea, multi-ckpt-engines
+torch cuda version ............... 12.8
+torch hip version ................ None
+nvcc version ..................... 12.8
+deepspeed wheel compiled w. ...... torch 0.0, cuda 0.0
+shared memory (/dev/shm) size .... 251.60 GB
+[93m [WARNING] [0m gds requires the dev libaio .so object and headers but these were not found.
+WARNING: WANDB writing requested but no legit wandb project or experiment name provided, therefore no WANDB logs will be written according to random generated project or experiment name.
+**** Git info for Megatron: git_hash=6acc370 git_branch=HEAD ****
+**** Git info for Megatron: git_hash=6acc370 git_branch=HEAD ****
+[93m [WARNING] [0m gds: please install the libaio-devel package with yum
+[93m [WARNING] [0m If libaio is already installed (perhaps from source), try setting the CFLAGS and LDFLAGS environment variables to where it can be found.
+gds .................... [93m[NO][0m ....... [93m[NO][0m
+using world size: 4, data-parallel-size: 1, sequence-parallel size: 1, tensor-model-parallel size: 4, pipeline-model-parallel size: 1 
+WARNING: overriding default arguments for tokenizer_type:GPT2BPETokenizer                        with tokenizer_type:GPT2BPETokenizer
+accumulate and all-reduce gradients in fp32 for bfloat16 data type.
+using torch.bfloat16 for parameters ...
+------------------------ arguments ------------------------
+  accumulate_allreduce_grads_in_fp32 .............. True
+  adam_beta1 ...................................... 0.9
+  adam_beta2 ...................................... 0.95
+  adam_eps ........................................ 1e-08
+  add_bias_linear ................................. False
+  add_position_embedding .......................... False
+  adlr_autoresume ................................. False
+  adlr_autoresume_interval ........................ 1000
+  aml_data_download_path .......................... None
+  apply_layernorm_1p .............................. False
+  apply_query_key_layer_scaling ................... False
+  apply_residual_connection_post_layernorm ........ False
+  async_tensor_model_parallel_allreduce ........... False
+  attention_dropout ............................... 0.0
+  attention_softmax_in_fp32 ....................... False
+  barrier_with_L1_time ............................ True
+  bert_binary_head ................................ True
+  bert_embedder_type .............................. megatron
+  bert_load ....................................... None
+  bf16 ............................................ True
+  bias_dropout_fusion ............................. True
+  bias_gelu_fusion ................................ False
+  biencoder_projection_dim ........................ 0
+  biencoder_shared_query_context_model ............ False
+  block_data_path ................................. None
+  checkpoint_activations .......................... True
+  checkpoint_in_cpu ............................... False
+  checkpoint_num_layers ........................... 1
+  classes_fraction ................................ 1.0
+  clip_grad ....................................... 1.0
+  compression_training ............................ False
+  consumed_train_samples .......................... 0
+  consumed_train_tokens ........................... 0
+  consumed_valid_samples .......................... 0
+  contigious_checkpointing ........................ False
+  cpu_optimizer ................................... False
+  cpu_torch_adam .................................. False
+  create_moe_param_group .......................... False
+  curriculum_learning_legacy ...................... False
+  data_cache_path ................................. None
+  data_efficiency_curriculum_learning ............. False
+  data_impl ....................................... mmap
+  data_parallel_random_init ....................... False
+  data_parallel_size .............................. 1
+  data_path ....................................... ['/home/mgossman/restart_perf/dataset/my-gpt2_text_document']
+  data_per_class_fraction ......................... 1.0
+  data_sharding ................................... True
+  dataloader_type ................................. single
+  DDP_impl ........................................ local
+  decoder_num_layers .............................. None
+  decoder_seq_length .............................. None
+  deepscale ....................................... False
+  deepscale_config ................................ None
+  deepspeed ....................................... True
+  deepspeed_activation_checkpointing .............. True
+  deepspeed_config ................................ /grand/VeloC/mikailg/DeepSpeed-restart-perf/3B-output/CKPTAPPR0-TP4-ITER-38//ds_config.json
+  dino_bottleneck_size ............................ 256
+  dino_freeze_last_layer .......................... 1
+  dino_head_hidden_size ........................... 2048
+  dino_local_crops_number ......................... 10
+  dino_local_img_size ............................. 96
+  dino_norm_last_layer ............................ False
+  dino_teacher_temp ............................... 0.07
+  dino_warmup_teacher_temp ........................ 0.04
+  dino_warmup_teacher_temp_epochs ................. 30
+  distribute_checkpointed_activations ............. False
+  distribute_saved_activations .................... False
+  distributed_backend ............................. nccl
+  distributed_timeout_minutes ..................... 10
+  ds_fused_adam ................................... False
+  ds_inference .................................... False
+  ds_pipeline_enabled ............................. True
+  ds_sequence_parallel_size ....................... 1
+  embedding_path .................................. None
+  embedding_weights_in_fp32 ....................... False
+  empty_unused_memory_level ....................... 0
+  enable_expert_tensor_parallelism ................ False
+  enable_zbh1_exact_semantics ..................... False
+  enable_zbh1_pipeline ............................ False
+  encoder_num_layers .............................. 28
+  encoder_seq_length .............................. 2048
+  end_weight_decay ................................ 0.1
+  eod_mask_loss ................................... False
+  eval_interval ................................... 1000
+  eval_iters ...................................... 0
+  evidence_data_path .............................. None
+  exit_duration_in_mins ........................... None
+  exit_interval ................................... 200
+  exit_on_missing_checkpoint ...................... False
+  exit_signal_handler ............................. False
+  expert_interval ................................. 2
+  ffn_hidden_size ................................. 8192
+  finetune ........................................ False
+  force_ds_sequence_parallel ...................... False
+  fp16 ............................................ False
+  fp16_lm_cross_entropy ........................... False
+  fp32_residual_connection ........................ False
+  fp8_amax_compute_algo ........................... most_recent
+  fp8_amax_history_len ............................ 1
+  fp8_e4m3 ........................................ False
+  fp8_hybrid ...................................... False
+  fp8_interval .................................... 1
+  fp8_margin ...................................... 0
+  fp8_wgrad ....................................... True
+  global_batch_size ............................... 1
+  gradient_accumulation_fusion .................... True
+  head_lr_mult .................................... 1.0
+  hidden_dropout .................................. 0.0
+  hidden_size ..................................... 3072
+  hidden_size_teacher ............................. None
+  hysteresis ...................................... 2
+  ict_head_size ................................... None
+  ict_load ........................................ None
+  img_h ........................................... 224
+  img_w ........................................... 224
+  indexer_batch_size .............................. 128
+  indexer_log_interval ............................ 1000
+  inference ....................................... False
+  inference_batch_times_seqlen_threshold .......... 512
+  init_method_std ................................. 0.02
+  init_method_xavier_uniform ...................... False
+  initial_loss_scale .............................. 4294967296
+  iter_per_epoch .................................. 1250
+  kd .............................................. False
+  kd_alpha_ce ..................................... 1
+  kd_beta_ce ...................................... 1
+  kd_temp ......................................... 1.0
+  kill_switch_file ................................ None
+  kv_channels ..................................... 128
+  layernorm_epsilon ............................... 1e-05
+  lazy_mpu_init ................................... None
+  load ............................................ /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1
+  load_tag ........................................ None
+  load_teacher .................................... None
+  local_rank ...................................... 0
+  log_batch_size_to_tensorboard ................... False
+  log_interval .................................... 1
+  log_learning_rate_to_tensorboard ................ True
+  log_loss_scale_to_tensorboard ................... True
+  log_memory_to_tensorboard ....................... False
+  log_num_zeros_in_grad ........................... False
+  log_optimizer_states_to_tensorboard ............. False
+  log_params_norm ................................. False
+  log_timers_to_tensorboard ....................... False
+  log_validation_ppl_to_tensorboard ............... False
+  log_world_size_to_tensorboard ................... False
+  loss_scale ...................................... None
+  loss_scale_window ............................... 1000
+  lr .............................................. 0.0003
+  lr_decay_iters .................................. None
+  lr_decay_samples ................................ None
+  lr_decay_style .................................. cosine
+  lr_decay_tokens ................................. None
+  lr_warmup_fraction .............................. None
+  lr_warmup_iters ................................. 1
+  lr_warmup_samples ............................... 0
+  lr_warmup_tokens ................................ None
+  make_vocab_size_divisible_by .................... 128
+  mask_factor ..................................... 1.0
+  mask_prob ....................................... 0.15
+  mask_type ....................................... random
+  masked_softmax_fusion ........................... True
+  max_position_embeddings ......................... 2048
+  max_tokens_to_oom ............................... 12000
+  mem_efficient_ln ................................ True
+  memory_centric_tiled_linear ..................... False
+  merge_file ...................................... /home/mgossman/restart_perf/dataset/gpt2-merges.txt
+  micro_batch_size ................................ 1
+  min_loss_scale .................................. 1.0
+  min_lr .......................................... 3e-05
+  mlp_type ........................................ standard
+  mmap_warmup ..................................... False
+  moe_eval_capacity_factor ........................ 1.0
+  moe_expert_parallel_size ........................ 1
+  moe_loss_coeff .................................. 0.1
+  moe_min_capacity ................................ 4
+  moe_token_dropping .............................. True
+  moe_top2_2nd_expert_sampling .................... True
+  moe_train_capacity_factor ....................... 1.0
+  mos ............................................. False
+  no_load_lr_state ................................ False
+  no_load_optim ................................... None
+  no_load_rng ..................................... None
+  no_persist_layer_norm ........................... False
+  no_pipeline_parallel ............................ False
+  no_save_optim ................................... None
+  no_save_rng ..................................... None
+  normalization ................................... rmsnorm
+  num_attention_heads ............................. 24
+  num_attention_heads_teacher ..................... None
+  num_channels .................................... 3
+  num_classes ..................................... 1000
+  num_experts ..................................... [1]
+  num_experts_switch .............................. None
+  num_experts_teacher ............................. [1]
+  num_key_value_heads ............................. 8
+  num_layers ...................................... 28
+  num_layers_per_virtual_pipeline_stage ........... None
+  num_layers_teacher .............................. None
+  num_workers ..................................... 2
+  onnx_safe ....................................... None
+  openai_gelu ..................................... False
+  optimizer ....................................... adam
+  output_bert_embeddings .......................... False
+  overlap_p2p_comm ................................ False
+  override_opt_param_scheduler .................... False
+  params_dtype .................................... torch.bfloat16
+  partition_activations ........................... False
+  patch_dim ....................................... 16
+  perform_initialization .......................... True
+  pipeline_model_parallel_size .................... 1
+  pipeline_model_parallel_split_rank .............. None
+  profile ......................................... None
+  profile_backward ................................ False
+  profile_ranks ................................... None
+  profile_steps ................................... 2,3
+  query_in_block_prob ............................. 0.1
+  rampup_batch_size ............................... None
+  random_ltd ...................................... False
+  rank ............................................ 0
+  recompute_granularity ........................... None
+  recompute_method ................................ None
+  recompute_num_layers ............................ 1
+  remote_device ................................... none
+  repeated_dataloader ............................. False
+  reset_attention_mask ............................ False
+  reset_iteration ................................. False
+  reset_position_ids .............................. False
+  retriever_report_topk_accuracies ................ []
+  retriever_score_scaling ......................... False
+  retriever_seq_length ............................ 256
+  retro_add_retriever ............................. False
+  retro_cyclic_train_iters ........................ None
+  retro_encoder_attention_dropout ................. 0.1
+  retro_encoder_hidden_dropout .................... 0.1
+  retro_encoder_layers ............................ 2
+  retro_num_neighbors ............................. 2
+  retro_num_retrieved_chunks ...................... 2
+  retro_return_doc_ids ............................ False
+  retro_workdir ................................... None
+  return_data_index ............................... False
+  rope_theta ...................................... 10000
+  rotary_percent .................................. 1.0
+  sample_rate ..................................... 1.0
+  save ............................................ /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1
+  save_interval ................................... 1
+  scatter_gather_tensors_in_pipeline .............. True
+  scattered_embeddings ............................ False
+  seed ............................................ 1234
+  seq_length ...................................... 2048
+  sequence_parallel ............................... False
+  sgd_momentum .................................... 0.9
+  short_seq_prob .................................. 0.1
+  skip_train ...................................... False
+  split ........................................... 949,50,1
+  split_transformers .............................. False
+  squared_relu .................................... False
+  standalone_embedding_stage ...................... False
+  start_weight_decay .............................. 0.1
+  swiglu .......................................... True
+  swin_backbone_type .............................. tiny
+  synchronize_each_layer .......................... False
+  tensor_model_parallel_size ...................... 4
+  tensorboard_dir ................................. None
+  tensorboard_log_interval ........................ 1
+  tensorboard_queue_size .......................... 1000
+  test_data_path .................................. None
+  tile_factor ..................................... 1
+  timing_log_level ................................ 0
+  timing_log_option ............................... minmax
+  titles_data_path ................................ None
+  tokenizer_model ................................. None
+  tokenizer_type .................................. GPT2BPETokenizer
+  topk ............................................ 1
+  train_data_exact_num_epochs ..................... None
+  train_data_path ................................. None
+  train_desc_path ................................. None
+  train_doc_idx_path .............................. None
+  train_idx_path .................................. None
+  train_iters ..................................... 10
+  train_sample_idx_path ........................... None
+  train_samples ................................... None
+  train_shuffle_idx_path .......................... None
+  train_tokens .................................... None
+  transformer_impl ................................ local
+  transformer_pipeline_model_parallel_size ........ 1
+  trust_remote_code ............................... False
+  universal_checkpoint ............................ False
+  untie_embeddings_and_output_weights ............. True
+  use_checkpoint_args ............................. False
+  use_checkpoint_opt_param_scheduler .............. False
+  use_contiguous_buffers_in_local_ddp ............. True
+  use_cpu_initialization .......................... None
+  use_dataset_only ................................ False
+  use_distributed_optimizer ....................... False
+  use_flash_attn .................................. False
+  use_flash_attn_builder .......................... False
+  use_flash_attn_triton ........................... False
+  use_flash_attn_v1 ............................... False
+  use_flash_attn_v2 ............................... False
+  use_one_sent_docs ............................... False
+  use_pin_memory .................................. False
+  use_ring_exchange_p2p ........................... False
+  use_rotary_position_embeddings .................. True
+  use_tutel ....................................... False
+  valid_data_path ................................. None
+  variable_seq_lengths ............................ False
+  virtual_pipeline_model_parallel_size ............ None
+  vision_backbone_type ............................ vit
+  vision_pretraining .............................. False
+  vision_pretraining_type ......................... classify
+  vocab_extra_ids ................................. 0
+  vocab_file ...................................... /home/mgossman/restart_perf/dataset/gpt2-vocab.json
+  vocab_size ...................................... None
+  wandb_exp_name .................................. 
+  wandb_project ................................... 
+  wandb_save_dir .................................. 
+  weight_decay .................................... 0.1
+  weight_decay_incr_style ......................... constant
+  world_size ...................................... 4
+  zero_allgather_bucket_size ...................... 0.0
+  zero_contigious_gradients ....................... False
+  zero_reduce_bucket_size ......................... 0.0
+  zero_reduce_scatter ............................. False
+  zero_stage ...................................... 1
+-------------------- end of arguments ---------------------
+setting number of micro-batches to constant 1
+> building GPT2BPETokenizer tokenizer ...
+transformer_inference .. [93m[NO][0m ....... [92m[OKAY][0m
+inference_core_ops ..... [93m[NO][0m ....... [92m[OKAY][0m
+cutlass_ops ............ [93m[NO][0m ....... [92m[OKAY][0m
+quantizer .............. [93m[NO][0m ....... [92m[OKAY][0m
+ragged_device_ops ...... [93m[NO][0m ....... [92m[OKAY][0m
+ragged_ops ............. [93m[NO][0m ....... [92m[OKAY][0m
+random_ltd ............. [93m[NO][0m ....... [92m[OKAY][0m
+[93m [WARNING] [0m sparse_attn requires a torch version >= 1.5 and < 2.0 but detected 2.8
+[93m [WARNING] [0m using untested triton version (3.4.0), only 1.0.0 is known to be compatible
+sparse_attn ............ [93m[NO][0m ....... [93m[NO][0m
+spatial_inference ...... [93m[NO][0m ....... [92m[OKAY][0m
+transformer ............ [93m[NO][0m ....... [92m[OKAY][0m
+stochastic_transformer . [93m[NO][0m ....... [92m[OKAY][0m
+--------------------------------------------------
+DeepSpeed general environment info:
+torch install path ............... ['/home/mgossman/deepspeed_env/lib/python3.11/site-packages/torch']
+torch version .................... 2.8.0+cu128
+deepspeed install path ........... ['/home/mgossman/restart_perf/datastates_deepspeed/DeepSpeed/deepspeed']
+deepspeed info ................... 0.16.6+dbb933ea, dbb933ea, multi-ckpt-engines
+torch cuda version ............... 12.8
+torch hip version ................ None
+nvcc version ..................... 12.8
+deepspeed wheel compiled w. ...... torch 0.0, cuda 0.0
+shared memory (/dev/shm) size .... 251.60 GB
+**** Git info for Megatron: git_hash=6acc370 git_branch=HEAD ****
+ > padded vocab (size: 50257) with 431 dummy tokens (new size: 50688)
+> initializing torch distributed ...
+[2025-10-01 15:57:14,167] [INFO] [comm.py:658:init_distributed] cdb=None
+[2025-10-01 15:57:14,180] [INFO] [comm.py:658:init_distributed] cdb=None
+[2025-10-01 15:57:14,180] [INFO] [comm.py:689:init_distributed] Initializing TorchBackend in DeepSpeed with backend nccl
+[2025-10-01 15:57:14,196] [INFO] [comm.py:658:init_distributed] cdb=None
+[2025-10-01 15:57:14,200] [INFO] [config.py:735:__init__] Config mesh_device None world_size = 1
+[2025-10-01 15:57:14,208] [INFO] [comm.py:658:init_distributed] cdb=None
+[2025-10-01 15:57:14,211] [INFO] [config.py:735:__init__] Config mesh_device None world_size = 1
+[2025-10-01 15:57:14,668] [INFO] [config.py:735:__init__] Config mesh_device None world_size = 1
+> initialized tensor model parallel with size 4
+> initialized pipeline model parallel with size 1
+[2025-10-01 15:57:14,670] [INFO] [config.py:735:__init__] Config mesh_device None world_size = 1
+[2025-10-01 15:57:14,671] [INFO] [checkpointing.py:1004:_configure_using_config_file] {'partition_activations': False, 'contiguous_memory_optimization': False, 'cpu_checkpointing': False, 'number_checkpoints': None, 'synchronize_checkpoint_boundary': False, 'profile': False}
+[2025-10-01 15:57:14,671] [INFO] [checkpointing.py:1125:configure] Activation Checkpointing Information
+[2025-10-01 15:57:14,671] [INFO] [checkpointing.py:1126:configure] ----Partition Activations False, CPU CHECKPOINTING False
+[2025-10-01 15:57:14,671] [INFO] [checkpointing.py:1127:configure] ----contiguous Memory Checkpointing False with 28 total layers
+[2025-10-01 15:57:14,671] [INFO] [checkpointing.py:1128:configure] ----Synchronization False
+[2025-10-01 15:57:14,671] [INFO] [checkpointing.py:1129:configure] ----Profiling time in checkpointing False
+> setting random seeds to 1234 ...
+[2025-10-01 15:57:14,673] [INFO] [checkpointing.py:229:model_parallel_cuda_manual_seed] > initializing model parallel cuda seeds on global rank 0, model parallel rank 0, and data parallel rank 0 with model parallel seed: 3952 and data parallel seed: 1234
+> compiling dataset index builder ...
+make: Entering directory '/home/mgossman/restart_perf/Megatron-DeepSpeed/megatron/data'
+make: Nothing to be done for 'default'.
+make: Leaving directory '/home/mgossman/restart_perf/Megatron-DeepSpeed/megatron/data'
+>>> done with dataset index builder. Compilation time: 0.075 seconds
+WARNING: constraints for invoking optimized fused softmax kernel are not met. We default back to unfused kernel invocations.
+> compiling and loading fused kernels ...
+ninja: no work to do.
+ninja: no work to do.
+ninja: no work to do.
+>>> done with compiling and loading fused kernels. Compilation time: 1.776 seconds
+time to initialize megatron (seconds): 3.562
+[after megatron is initialized] datetime: 2025-10-01 15:57:16 
+building GPT model ...
+[2025-10-01 15:57:16,593] [INFO] [config.py:735:__init__] Config mesh_device None world_size = 1
+[2025-10-01 15:57:16,593] [INFO] [config.py:735:__init__] Config mesh_device None world_size = 1
+[2025-10-01 15:57:16,593] [INFO] [config.py:735:__init__] Config mesh_device None world_size = 1
+ > number of parameters on (tensor, pipeline) model parallel rank (2, 0): 782674944
+[2025-10-01 15:57:16,669] [INFO] [config.py:735:__init__] Config mesh_device None world_size = 1
+ > number of parameters on (tensor, pipeline) model parallel rank (1, 0): 782674944
+[2025-10-01 15:57:16,675] [INFO] [config.py:735:__init__] Config mesh_device None world_size = 1
+ > number of parameters on (tensor, pipeline) model parallel rank (3, 0): 782674944
+[2025-10-01 15:57:16,681] [INFO] [config.py:735:__init__] Config mesh_device None world_size = 1
+[2025-10-01 15:57:16,721] [INFO] [utils.py:781:see_memory_usage] Before Building Model
+[2025-10-01 15:57:16,721] [INFO] [utils.py:782:see_memory_usage] MA 0.0 GB         Max_MA 0.13 GB         CA 0.0 GB         Max_CA 0 GB 
+[2025-10-01 15:57:16,722] [INFO] [utils.py:789:see_memory_usage] CPU Virtual Memory:  used = 21.02 GB, percent = 4.2%
+[2025-10-01 15:57:16,722] [INFO] [config.py:735:__init__] Config mesh_device None world_size = 1
+SEED_LAYERS=False BASE_SEED=1234 SEED_FN=None
+Using topology: {ProcessCoord(pipe=0, data=0, model=0): 0, ProcessCoord(pipe=0, data=0, model=1): 1, ProcessCoord(pipe=0, data=0, model=2): 2, ProcessCoord(pipe=0, data=0, model=3): 3}
+[2025-10-01 15:57:16,724] [INFO] [module.py:397:_partition_layers] Partitioning pipeline stages with method type:transformer
+stage=0 layers=33
+     0: _to_float16
+     1: EmbeddingPipe
+     2: ParallelTransformerLayerPipe
+     3: ParallelTransformerLayerPipe
+     4: ParallelTransformerLayerPipe
+     5: ParallelTransformerLayerPipe
+     6: ParallelTransformerLayerPipe
+     7: ParallelTransformerLayerPipe
+     8: ParallelTransformerLayerPipe
+     9: ParallelTransformerLayerPipe
+    10: ParallelTransformerLayerPipe
+    11: ParallelTransformerLayerPipe
+    12: ParallelTransformerLayerPipe
+    13: ParallelTransformerLayerPipe
+    14: ParallelTransformerLayerPipe
+    15: ParallelTransformerLayerPipe
+    16: ParallelTransformerLayerPipe
+    17: ParallelTransformerLayerPipe
+    18: ParallelTransformerLayerPipe
+    19: ParallelTransformerLayerPipe
+    20: ParallelTransformerLayerPipe
+    21: ParallelTransformerLayerPipe
+    22: ParallelTransformerLayerPipe
+    23: ParallelTransformerLayerPipe
+    24: ParallelTransformerLayerPipe
+    25: ParallelTransformerLayerPipe
+    26: ParallelTransformerLayerPipe
+    27: ParallelTransformerLayerPipe
+    28: ParallelTransformerLayerPipe
+    29: ParallelTransformerLayerPipe
+    30: MixedFusedRMSNorm
+    31: LMHeadPipe
+    32: float16_to_fp32
+  loss: loss_func
+[2025-10-01 15:57:16,755] [INFO] [engine.py:146:__init__] is_pipe_partitioned= True is_grad_partitioned= True
+[2025-10-01 15:57:16,758] [INFO] [engine.py:146:__init__] is_pipe_partitioned= True is_grad_partitioned= True
+[2025-10-01 15:57:16,762] [INFO] [engine.py:146:__init__] is_pipe_partitioned= True is_grad_partitioned= True
+[2025-10-01 15:57:16,902] [INFO] [utils.py:781:see_memory_usage] After Building Model
+[2025-10-01 15:57:16,902] [INFO] [utils.py:782:see_memory_usage] MA 1.48 GB         Max_MA 1.5 GB         CA 1.55 GB         Max_CA 2 GB 
+[2025-10-01 15:57:16,903] [INFO] [utils.py:789:see_memory_usage] CPU Virtual Memory:  used = 21.09 GB, percent = 4.2%
+ > number of parameters on (tensor, pipeline) model parallel rank (0, 0): 782674944
+> learning rate decay style: cosine
+DeepSpeed is enabled.
+[2025-10-01 15:57:16,905] [INFO] [logging.py:107:log_dist] [Rank 0] DeepSpeed info: version=0.16.6+dbb933ea, git-hash=dbb933ea, git-branch=multi-ckpt-engines
+[2025-10-01 15:57:16,905] [INFO] [config.py:735:__init__] Config mesh_device None world_size = 1
+[2025-10-01 15:57:16,947] [INFO] [logging.py:107:log_dist] [Rank 0] DeepSpeed Flops Profiler Enabled: True
+[2025-10-01 15:57:16,947] [INFO] [logging.py:107:log_dist] [Rank 0] Using client Optimizer as basic optimizer
+[2025-10-01 15:57:16,948] [INFO] [logging.py:107:log_dist] [Rank 0] Removing param_group that has no 'params' in the basic Optimizer
+[2025-10-01 15:57:16,950] [INFO] [logging.py:107:log_dist] [Rank 0] DeepSpeed Basic Optimizer = FusedAdam
+[2025-10-01 15:57:16,950] [INFO] [utils.py:59:is_zero_supported_optimizer] Checking ZeRO support for optimizer=FusedAdam type=<class 'apex.optimizers.fused_adam.FusedAdam'>
+[2025-10-01 15:57:16,950] [INFO] [logging.py:107:log_dist] [Rank 0] Creating BF16 optimizer
+[2025-10-01 15:57:17,053] [INFO] [utils.py:781:see_memory_usage] begin bf16_optimizer
+[2025-10-01 15:57:17,053] [INFO] [utils.py:782:see_memory_usage] MA 1.47 GB         Max_MA 1.48 GB         CA 1.55 GB         Max_CA 2 GB 
+[2025-10-01 15:57:17,053] [INFO] [utils.py:789:see_memory_usage] CPU Virtual Memory:  used = 21.1 GB, percent = 4.2%
+[2025-10-01 15:57:17,152] [INFO] [utils.py:781:see_memory_usage] before initializing group 0
+[2025-10-01 15:57:17,153] [INFO] [utils.py:782:see_memory_usage] MA 1.47 GB         Max_MA 1.47 GB         CA 1.55 GB         Max_CA 2 GB 
+[2025-10-01 15:57:17,153] [INFO] [utils.py:789:see_memory_usage] CPU Virtual Memory:  used = 21.1 GB, percent = 4.2%
+[2025-10-01 15:57:17,262] [INFO] [utils.py:781:see_memory_usage] after initializing group 0
+[2025-10-01 15:57:17,263] [INFO] [utils.py:782:see_memory_usage] MA 7.29 GB         Max_MA 7.29 GB         CA 10.3 GB         Max_CA 10 GB 
+[2025-10-01 15:57:17,263] [INFO] [utils.py:789:see_memory_usage] CPU Virtual Memory:  used = 21.11 GB, percent = 4.2%
+[2025-10-01 15:57:17,361] [INFO] [utils.py:781:see_memory_usage] before initializing group 1
+[2025-10-01 15:57:17,362] [INFO] [utils.py:782:see_memory_usage] MA 7.29 GB         Max_MA 7.29 GB         CA 10.3 GB         Max_CA 10 GB 
+[2025-10-01 15:57:17,362] [INFO] [utils.py:789:see_memory_usage] CPU Virtual Memory:  used = 21.11 GB, percent = 4.2%
+[2025-10-01 15:57:17,462] [INFO] [utils.py:781:see_memory_usage] after initializing group 1
+[2025-10-01 15:57:17,462] [INFO] [utils.py:782:see_memory_usage] MA 7.3 GB         Max_MA 7.3 GB         CA 10.3 GB         Max_CA 10 GB 
+[2025-10-01 15:57:17,462] [INFO] [utils.py:789:see_memory_usage] CPU Virtual Memory:  used = 21.1 GB, percent = 4.2%
+[2025-10-01 15:57:17,566] [INFO] [utils.py:781:see_memory_usage] end bf16_ optimizer
+[2025-10-01 15:57:17,567] [INFO] [utils.py:782:see_memory_usage] MA 7.3 GB         Max_MA 7.3 GB         CA 10.3 GB         Max_CA 10 GB 
+[2025-10-01 15:57:17,567] [INFO] [utils.py:789:see_memory_usage] CPU Virtual Memory:  used = 21.1 GB, percent = 4.2%
+[2025-10-01 15:57:17,567] [INFO] [logging.py:107:log_dist] [Rank 0] DeepSpeed Final Optimizer = BF16_Optimizer
+[2025-10-01 15:57:17,567] [INFO] [logging.py:107:log_dist] [Rank 0] DeepSpeed using client LR scheduler
+[2025-10-01 15:57:17,567] [INFO] [logging.py:107:log_dist] [Rank 0] DeepSpeed LR Scheduler = <megatron.optimizer_param_scheduler.OptimizerParamScheduler object at 0x14614cd3fc90>
+[2025-10-01 15:57:17,567] [INFO] [logging.py:107:log_dist] [Rank 0] step=0, skipped=0, lr=[0.0, 0.0], mom=[(0.9, 0.95), (0.9, 0.95)]
+[2025-10-01 15:57:17,568] [INFO] [config.py:1009:print] DeepSpeedEngine configuration:
+[2025-10-01 15:57:17,568] [INFO] [config.py:1013:print]   activation_checkpointing_config  {
+    "partition_activations": false, 
+    "contiguous_memory_optimization": false, 
+    "cpu_checkpointing": false, 
+    "number_checkpoints": null, 
+    "synchronize_checkpoint_boundary": false, 
+    "profile": false
+}
+[2025-10-01 15:57:17,568] [INFO] [config.py:1013:print]   aio_config ................... {'block_size': 1048576, 'queue_depth': 8, 'intra_op_parallelism': 1, 'single_submit': False, 'overlap_events': True, 'use_gds': False}
+[2025-10-01 15:57:17,568] [INFO] [config.py:1013:print]   amp_enabled .................. False
+[2025-10-01 15:57:17,568] [INFO] [config.py:1013:print]   amp_params ................... False
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   autotuning_config ............ {
+    "enabled": false, 
+    "start_step": null, 
+    "end_step": null, 
+    "metric_path": null, 
+    "arg_mappings": null, 
+    "metric": "throughput", 
+    "model_info": null, 
+    "results_dir": "autotuning_results", 
+    "exps_dir": "autotuning_exps", 
+    "overwrite": true, 
+    "fast": true, 
+    "start_profile_step": 3, 
+    "end_profile_step": 5, 
+    "tuner_type": "gridsearch", 
+    "tuner_early_stopping": 5, 
+    "tuner_num_trials": 50, 
+    "model_info_path": null, 
+    "mp_size": 1, 
+    "max_train_batch_size": null, 
+    "min_train_batch_size": 1, 
+    "max_train_micro_batch_size_per_gpu": 1.024000e+03, 
+    "min_train_micro_batch_size_per_gpu": 1, 
+    "num_tuning_micro_batch_sizes": 3
+}
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   bfloat16_enabled ............. True
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   bfloat16_immediate_grad_update  True
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   checkpoint_parallel_write_pipeline  False
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   checkpoint_tag_validation_enabled  True
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   checkpoint_tag_validation_fail  False
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   comms_config ................. <deepspeed.comm.config.DeepSpeedCommsConfig object at 0x14614cd3f0d0>
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   communication_data_type ...... None
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   compression_config ........... {'weight_quantization': {'shared_parameters': {'enabled': False, 'quantizer_kernel': False, 'schedule_offset': 0, 'quantize_groups': 1, 'quantize_verbose': False, 'quantization_type': 'symmetric', 'quantize_weight_in_forward': False, 'rounding': 'nearest', 'fp16_mixed_quantize': False, 'quantize_change_ratio': 0.001}, 'different_groups': {}}, 'activation_quantization': {'shared_parameters': {'enabled': False, 'quantization_type': 'symmetric', 'range_calibration': 'dynamic', 'schedule_offset': 1000}, 'different_groups': {}}, 'sparse_pruning': {'shared_parameters': {'enabled': False, 'method': 'l1', 'schedule_offset': 1000}, 'different_groups': {}}, 'row_pruning': {'shared_parameters': {'enabled': False, 'method': 'l1', 'schedule_offset': 1000}, 'different_groups': {}}, 'head_pruning': {'shared_parameters': {'enabled': False, 'method': 'topk', 'schedule_offset': 1000}, 'different_groups': {}}, 'channel_pruning': {'shared_parameters': {'enabled': False, 'method': 'l1', 'schedule_offset': 1000}, 'different_groups': {}}, 'layer_reduction': {'enabled': False}}
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   curriculum_enabled_legacy .... False
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   curriculum_params_legacy ..... False
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   data_efficiency_config ....... {'enabled': False, 'seed': 1234, 'data_sampling': {'enabled': False, 'num_epochs': 1000, 'num_workers': 0, 'pin_memory': False, 'curriculum_learning': {'enabled': False}, 'dynamic_batching': {'enabled': False, 'lr_scaling_method': 'linear', 'min_batch_size': 1, 'max_batch_size': None, 'sequence_picking_order': 'dataloader', 'verbose': False}}, 'data_routing': {'enabled': False, 'random_ltd': {'enabled': False, 'layer_token_lr_schedule': {'enabled': False}}}}
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   data_efficiency_enabled ...... False
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   dataloader_drop_last ......... False
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   datastates_config ............ {
+    "enabled": null, 
+    "config": {
+    }
+}
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   disable_allgather ............ False
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   dump_state ................... False
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   dynamic_loss_scale_args ...... None
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   eigenvalue_enabled ........... False
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   eigenvalue_gas_boundary_resolution  1
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   eigenvalue_layer_name ........ bert.encoder.layer
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   eigenvalue_layer_num ......... 0
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   eigenvalue_max_iter .......... 100
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   eigenvalue_stability ......... 1e-06
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   eigenvalue_tol ............... 0.01
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   eigenvalue_verbose ........... False
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   elasticity_enabled ........... False
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   flops_profiler_config ........ {
+    "enabled": true, 
+    "recompute_fwd_factor": 0.0, 
+    "profile_step": 1, 
+    "module_depth": -1, 
+    "top_modules": 1, 
+    "detailed": true, 
+    "output_file": null
+}
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   fp16_auto_cast ............... None
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   fp16_enabled ................. False
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   fp16_master_weights_and_gradients  False
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   global_rank .................. 0
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   grad_accum_dtype ............. fp32
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   gradient_accumulation_steps .. 1
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   gradient_clipping ............ 0.0
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   gradient_predivide_factor .... 1.0
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   graph_harvesting ............. False
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   hybrid_engine ................ enabled=False max_out_tokens=512 inference_tp_size=1 release_inference_cache=False pin_parameters=True tp_gather_partition_size=8
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   initial_dynamic_scale ........ 1
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   load_universal_checkpoint .... False
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   loss_scale ................... 1.0
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   memory_breakdown ............. False
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   mics_hierarchial_params_gather  False
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   mics_shard_size .............. -1
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   monitor_config ............... tensorboard=TensorBoardConfig(enabled=False, output_path='', job_name='DeepSpeedJobName') comet=CometConfig(enabled=False, samples_log_interval=100, project=None, workspace=None, api_key=None, experiment_name=None, experiment_key=None, online=None, mode=None) wandb=WandbConfig(enabled=False, group=None, team=None, project='deepspeed') csv_monitor=CSVConfig(enabled=False, output_path='', job_name='DeepSpeedJobName')
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   nebula_config ................ {
+    "enabled": false, 
+    "persistent_storage_path": null, 
+    "persistent_time_interval": 100, 
+    "num_of_version_in_retention": 2, 
+    "enable_nebula_load": true, 
+    "load_path": null
+}
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   none_checkpointing_config .... True
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   optimizer_legacy_fusion ...... False
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   optimizer_name ............... None
+[2025-10-01 15:57:17,569] [INFO] [config.py:1013:print]   optimizer_params ............. None
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   pipeline ..................... {'stages': 'auto', 'partition': 'best', 'seed_layers': False, 'activation_checkpoint_interval': 0, 'pipe_partitioned': True, 'grad_partitioned': True}
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   pld_enabled .................. False
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   pld_params ................... False
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   prescale_gradients ........... False
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   scheduler_name ............... None
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   scheduler_params ............. None
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   seq_parallel_communication_data_type  torch.float32
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   sparse_attention ............. None
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   sparse_gradients_enabled ..... False
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   steps_per_print .............. 1
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   tensor_parallel_config ....... dtype=torch.float16 autotp_size=0 tp_overlap_comm=False tensor_parallel=TPConfig(tp_size=1, tp_grain_size=1, mpu=None, tp_group=None) injection_policy_tuple=None keep_module_on_host=False replace_with_kernel_inject=False
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   timers_config ................ enabled=True synchronized=True
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   torchsnapshot_config ......... False
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   train_batch_size ............. 1
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   train_micro_batch_size_per_gpu  1
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   use_data_before_expert_parallel_  False
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   use_node_local_storage ....... False
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   wall_clock_breakdown ......... True
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   weight_quantization_config ... None
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   world_size ................... 1
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   zero_allow_untested_optimizer  False
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   zero_config .................. stage=1 contiguous_gradients=True reduce_scatter=True reduce_bucket_size=500000000 use_multi_rank_bucket_allreduce=True allgather_partitions=True allgather_bucket_size=500000000 overlap_comm=False load_from_fp32_weights=True elastic_checkpoint=False offload_param=None offload_optimizer=None sub_group_size=1000000000 cpu_offload_param=None cpu_offload_use_pin_memory=None cpu_offload=None prefetch_bucket_size=50000000 param_persistence_threshold=100000 model_persistence_threshold=9223372036854775807 max_live_parameters=1000000000 max_reuse_distance=1000000000 gather_16bit_weights_on_model_save=False module_granularity_threshold=0 use_all_reduce_for_fetch_params=False stage3_gather_fp16_weights_on_model_save=False ignore_unused_parameters=True legacy_stage1=False round_robin_gradients=False zero_hpz_partition_size=1 zero_quantized_weights=False zero_quantized_nontrainable_weights=False zero_quantized_gradients=False zeropp_loco_param=None mics_shard_size=-1 mics_hierarchical_params_gather=False memory_efficient_linear=True pipeline_loading_checkpoint=False override_module_apply=True log_trace_cache_warnings=False
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   zero_enabled ................. True
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   zero_force_ds_cpu_optimizer .. True
+[2025-10-01 15:57:17,570] [INFO] [config.py:1013:print]   zero_optimization_stage ...... 1
+[2025-10-01 15:57:17,570] [INFO] [config.py:999:print_user_config]   json = {
+    "train_batch_size": 1, 
+    "train_micro_batch_size_per_gpu": 1, 
+    "steps_per_print": 1, 
+    "zero_optimization": {
+        "stage": 1
+    }, 
+    "bf16": {
+        "enabled": true
+    }, 
+    "data_types": {
+        "grad_accum_dtype": "fp32"
+    }, 
+    "wall_clock_breakdown": true, 
+    "memory_breakdown": false, 
+    "flops_profiler": {
+        "enabled": true
+    }, 
+    "none_ckpt": true
+}
+[2025-10-01 15:57:17,570] [INFO] [engine.py:105:__init__] CONFIG: micro_batches=1 micro_batch_size=1
+[2025-10-01 15:57:17,570] [INFO] [engine.py:146:__init__] is_pipe_partitioned= True is_grad_partitioned= True
+[2025-10-01 15:57:17,882] [INFO] [engine.py:165:__init__] RANK=1 STAGE=0 LAYERS=33 [0, 33) STAGE_PARAMS=782674944 (782.675M) TOTAL_PARAMS=3130699776 (3130.700M) UNIQUE_PARAMS=3130699776 (3130.700M)
+[2025-10-01 15:57:17,882] [INFO] [engine.py:165:__init__] RANK=0 STAGE=0 LAYERS=33 [0, 33) STAGE_PARAMS=782674944 (782.675M) TOTAL_PARAMS=3130699776 (3130.700M) UNIQUE_PARAMS=3130699776 (3130.700M)
+[2025-10-01 15:57:17,882] [INFO] [engine.py:165:__init__] RANK=3 STAGE=0 LAYERS=33 [0, 33) STAGE_PARAMS=782674944 (782.675M) TOTAL_PARAMS=3130699776 (3130.700M) UNIQUE_PARAMS=3130699776 (3130.700M)
+[2025-10-01 15:57:17,882] [INFO] [engine.py:165:__init__] RANK=2 STAGE=0 LAYERS=33 [0, 33) STAGE_PARAMS=782674944 (782.675M) TOTAL_PARAMS=3130699776 (3130.700M) UNIQUE_PARAMS=3130699776 (3130.700M)
+[2025-10-01 15:57:17,885] [WARNING] [engine.py:2976:load_checkpoint] Unable to find latest file at /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/latest, if trying to load latest checkpoint please ensure this file exists or pass an explicit checkpoint tag when loading a checkpoint.
+[2025-10-01 15:57:17,885] [WARNING] [engine.py:2976:load_checkpoint] Unable to find latest file at /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/latest, if trying to load latest checkpoint please ensure this file exists or pass an explicit checkpoint tag when loading a checkpoint.
+[2025-10-01 15:57:17,885] [WARNING] [engine.py:2976:load_checkpoint] Unable to find latest file at /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/latest, if trying to load latest checkpoint please ensure this file exists or pass an explicit checkpoint tag when loading a checkpoint.
+[2025-10-01 15:57:17,885] [WARNING] [engine.py:2976:load_checkpoint] Unable to find latest file at /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/latest, if trying to load latest checkpoint please ensure this file exists or pass an explicit checkpoint tag when loading a checkpoint.
+WARNING: could not find the metadata file /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1 
+    will not load any checkpoints and will start from random
+(min, max) time across ranks (ms):
+    load-checkpoint ................................: (1.61, 1.62)
+[after model, optimizer, and learning rate scheduler are built] datetime: 2025-10-01 15:57:17 
+> building train, validation, and test datasets ...
+ > datasets target sizes (minimum size):
+    train:      10
+    validation: 0
+    test:       0
+> building train, validation, and test datasets for GPT ...
+Single data path provided for train, valid & test
+ > building dataset index ...
+    reading sizes...
+    reading pointers...
+    reading document index...
+    creating numpy buffer of mmap...
+    creating memory view of numpy buffer...
+ > finished creating indexed dataset in 0.001428 seconds
+    number of documents: 79000
+ > dataset split:
+    train:
+     document indices in [0, 74971) total of 74971 documents
+    validation:
+     document indices in [74971, 78921) total of 3950 documents
+    test:
+     document indices in [78921, 79000) total of 79 documents
+ > loading doc-idx mapping from /home/mgossman/restart_perf/dataset/index-cache/1a671a379c76c07054d6af9971985793_doc_idx.npy
+ > loading sample-idx mapping from /home/mgossman/restart_perf/dataset/index-cache/1a671a379c76c07054d6af9971985793_sample_idx.npy
+ > loading shuffle-idx mapping from /home/mgossman/restart_perf/dataset/index-cache/1a671a379c76c07054d6af9971985793_shuffle_idx.npy
+    loaded indexed file in 0.002 seconds
+    total number of samples: 123691
+    total number of epochs: 1
+ > loading doc-idx mapping from /home/mgossman/restart_perf/dataset/index-cache/f296cb894e31479300660738fc70cd46_doc_idx.npy
+ > loading sample-idx mapping from /home/mgossman/restart_perf/dataset/index-cache/f296cb894e31479300660738fc70cd46_sample_idx.npy
+ > loading shuffle-idx mapping from /home/mgossman/restart_perf/dataset/index-cache/f296cb894e31479300660738fc70cd46_shuffle_idx.npy
+    loaded indexed file in 0.002 seconds
+    total number of samples: 6578
+    total number of epochs: 1
+ > loading doc-idx mapping from /home/mgossman/restart_perf/dataset/index-cache/00226d06389ea57cd5e82bad171c920b_doc_idx.npy
+ > loading sample-idx mapping from /home/mgossman/restart_perf/dataset/index-cache/00226d06389ea57cd5e82bad171c920b_sample_idx.npy
+ > loading shuffle-idx mapping from /home/mgossman/restart_perf/dataset/index-cache/00226d06389ea57cd5e82bad171c920b_shuffle_idx.npy
+    loaded indexed file in 0.001 seconds
+    total number of samples: 212
+    total number of epochs: 1
+> finished creating GPT datasets ...
+[after dataloaders are built] datetime: 2025-10-01 15:57:18 
+done with setup ...
+(min, max) time across ranks (ms):
+    model-and-optimizer-setup ......................: (1317.55, 1323.32)
+    train/valid/test-data-iterators-setup ..........: (382.18, 459.25)
+training ...
+[before the start of training step] datetime: 2025-10-01 15:57:18 
+[2025-10-01 15:57:18,887] [INFO] [logging.py:107:log_dist] [Rank 0] step=1, skipped=0, lr=[0.0003, 0.0003], mom=[(0.9, 0.95), (0.9, 0.95)]
+[2025-10-01 15:57:18,910] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms) | batch_input: 5.25 | fwd_microstep: 237.29 | bwd_microstep: 171.17 | bwd_inner_microstep: 165.70 | bwd_allreduce_microstep: 0.02 | step_microstep: 78.26
+[2025-10-01 15:57:18,910] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms) | fwd: 237.24 | bwd: 171.14 | bwd_inner: 165.68 | bwd_allreduce: 0.02 | step: 78.25
+steps: 1 loss: 11.3867 iter time (s): 0.528 samples/sec: 1.893
+[2025-10-01 15:57:18,911] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms)
+ iteration        1/      10 | consumed samples:            1 | consumed tokens:         2048 | elapsed time per iteration (ms): 530.0 | learning rate: 3.000E-04 | global batch size:     1 | lm loss: 1.138674E+01 | grad norm: 80.822 | num zeros: 0.0 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 1.887 | tokens per gpu per second (tgs): 965.977 | TFLOPs: 24.35 |
+[Rank 3] (after 1 iterations) memory (MB) | allocated: 13612.8720703125 | max allocated: 15114.70556640625 | reserved: 18018.0 | max reserved: 18018.0
+[Rank 1] (after 1 iterations) memory (MB) | allocated: 13612.8720703125 | max allocated: 15114.70556640625 | reserved: 18018.0 | max reserved: 18018.0
+[Rank 2] (after 1 iterations) memory (MB) | allocated: 13612.8720703125 | max allocated: 15114.70556640625 | reserved: 18018.0 | max reserved: 18018.0
+[Rank 0] (after 1 iterations) memory (MB) | allocated: 13612.89990234375 | max allocated: 15114.7333984375 | reserved: 18018.0 | max reserved: 18018.0
+saving checkpoint at iteration       1 to /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1
+[2025-10-01 15:57:18,921] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step1/bf16_zero_pp_rank_0_mp_rank_03_optim_states.pt
+[2025-10-01 15:57:18,921] [INFO] [logging.py:107:log_dist] [Rank 1] Saving model checkpoint: /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step1/mp_rank_01_model_states.pt
+[2025-10-01 15:57:18,921] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step1/bf16_zero_pp_rank_0_mp_rank_01_optim_states.pt
+[2025-10-01 15:57:18,921] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step1/bf16_zero_pp_rank_0_mp_rank_02_optim_states.pt
+[2025-10-01 15:57:18,922] [INFO] [logging.py:107:log_dist] [Rank 0] Saving model checkpoint: /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step1/mp_rank_00_model_states.pt
+[2025-10-01 15:57:18,926] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step1/bf16_zero_pp_rank_0_mp_rank_00_optim_states.pt
+  successfully saved checkpoint at iteration       1 to /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1
+Checkpoint Save GB: 43.83, GB/Sec: 3070.12, Latency(second): 0.014
+(min, max) time across ranks (ms):
+    save-checkpoint ................................: (14.28, 14.29)
+<TIMER:interval-time,0.5483100414276123>
+[2025-10-01 15:57:18,932] [INFO] [profiler.py:82:start_profile] Flops profiler started
+[2025-10-01 15:57:19,192] [INFO] [logging.py:107:log_dist] [Rank 0] step=2, skipped=0, lr=[0.0002918585038060976, 0.0002918585038060976], mom=[(0.9, 0.95), (0.9, 0.95)]
+[2025-10-01 15:57:19,216] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms) | batch_input: 0.83 | fwd_microstep: 82.44 | bwd_microstep: 142.00 | bwd_inner_microstep: 141.91 | bwd_allreduce_microstep: 0.01 | step_microstep: 30.33
+[2025-10-01 15:57:19,216] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms) | fwd: 82.38 | bwd: 141.99 | bwd_inner: 141.90 | bwd_allreduce: 0.01 | step: 30.33
+steps: 2 loss: 11.3861 iter time (s): 0.286 samples/sec: 3.497
+[2025-10-01 15:57:19,217] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms)
+ iteration        2/      10 | consumed samples:            2 | consumed tokens:         4096 | elapsed time per iteration (ms): 305.7 | learning rate: 2.919E-04 | global batch size:     1 | lm loss: 1.138613E+01 | grad norm: 73.603 | num zeros: 0.0 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 3.271 | tokens per gpu per second (tgs): 1674.770 | TFLOPs: 42.21 |
+saving checkpoint at iteration       2 to /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1
+[2025-10-01 15:57:19,225] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step2/bf16_zero_pp_rank_0_mp_rank_03_optim_states.pt
+[2025-10-01 15:57:19,225] [INFO] [logging.py:107:log_dist] [Rank 1] Saving model checkpoint: /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step2/mp_rank_01_model_states.pt
+[2025-10-01 15:57:19,225] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step2/bf16_zero_pp_rank_0_mp_rank_01_optim_states.pt
+[2025-10-01 15:57:19,225] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step2/bf16_zero_pp_rank_0_mp_rank_02_optim_states.pt
+[2025-10-01 15:57:19,226] [INFO] [logging.py:107:log_dist] [Rank 0] Saving model checkpoint: /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step2/mp_rank_00_model_states.pt
+[2025-10-01 15:57:19,229] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step2/bf16_zero_pp_rank_0_mp_rank_00_optim_states.pt
+  successfully saved checkpoint at iteration       2 to /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1
+Checkpoint Save GB: 43.83, GB/Sec: 3003.16, Latency(second): 0.015
+(min, max) time across ranks (ms):
+    save-checkpoint ................................: (14.59, 14.59)
+<TIMER:interval-time,0.3052806854248047>
+[2025-10-01 15:57:19,438] [INFO] [logging.py:107:log_dist] [Rank 0] step=3, skipped=0, lr=[0.00026841599982106197, 0.00026841599982106197], mom=[(0.9, 0.95), (0.9, 0.95)]
+[2025-10-01 15:57:19,463] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms) | batch_input: 0.68 | fwd_microstep: 46.34 | bwd_microstep: 140.80 | bwd_inner_microstep: 140.77 | bwd_allreduce_microstep: 0.01 | step_microstep: 30.43
+[2025-10-01 15:57:19,463] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms) | fwd: 46.33 | bwd: 140.80 | bwd_inner: 140.77 | bwd_allreduce: 0.01 | step: 30.43
+steps: 3 loss: 16.3925 iter time (s): 0.227 samples/sec: 4.402
+[2025-10-01 15:57:19,463] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms)
+ iteration        3/      10 | consumed samples:            3 | consumed tokens:         6144 | elapsed time per iteration (ms): 246.4 | learning rate: 2.684E-04 | global batch size:     1 | lm loss: 1.639249E+01 | grad norm: 217.410 | num zeros: 0.0 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 4.059 | tokens per gpu per second (tgs): 2078.078 | TFLOPs: 52.37 |
+saving checkpoint at iteration       3 to /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1
+[2025-10-01 15:57:19,471] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step3/bf16_zero_pp_rank_0_mp_rank_03_optim_states.pt
+[2025-10-01 15:57:19,472] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step3/bf16_zero_pp_rank_0_mp_rank_02_optim_states.pt
+[2025-10-01 15:57:19,472] [INFO] [logging.py:107:log_dist] [Rank 1] Saving model checkpoint: /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step3/mp_rank_01_model_states.pt
+[2025-10-01 15:57:19,472] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step3/bf16_zero_pp_rank_0_mp_rank_01_optim_states.pt
+[2025-10-01 15:57:19,472] [INFO] [logging.py:107:log_dist] [Rank 0] Saving model checkpoint: /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step3/mp_rank_00_model_states.pt
+[2025-10-01 15:57:19,475] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step3/bf16_zero_pp_rank_0_mp_rank_00_optim_states.pt
+  successfully saved checkpoint at iteration       3 to /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1
+Checkpoint Save GB: 43.83, GB/Sec: 3875.77, Latency(second): 0.011
+(min, max) time across ranks (ms):
+    save-checkpoint ................................: (11.31, 11.31)
+<TIMER:interval-time,0.24312758445739746>
+[2025-10-01 15:57:19,681] [INFO] [logging.py:107:log_dist] [Rank 0] step=4, skipped=0, lr=[0.00023249999999999996, 0.00023249999999999996], mom=[(0.9, 0.95), (0.9, 0.95)]
+[2025-10-01 15:57:19,706] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms) | batch_input: 0.70 | fwd_microstep: 46.41 | bwd_microstep: 140.77 | bwd_inner_microstep: 140.74 | bwd_allreduce_microstep: 0.01 | step_microstep: 30.32
+[2025-10-01 15:57:19,706] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms) | fwd: 46.37 | bwd: 140.77 | bwd_inner: 140.74 | bwd_allreduce: 0.01 | step: 30.32
+steps: 4 loss: 14.0696 iter time (s): 0.227 samples/sec: 4.403
+[2025-10-01 15:57:19,706] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms)
+ iteration        4/      10 | consumed samples:            4 | consumed tokens:         8192 | elapsed time per iteration (ms): 242.9 | learning rate: 2.325E-04 | global batch size:     1 | lm loss: 1.406962E+01 | grad norm: 39.580 | num zeros: 0.0 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 4.116 | tokens per gpu per second (tgs): 2107.494 | TFLOPs: 53.12 |
+saving checkpoint at iteration       4 to /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1
+[2025-10-01 15:57:19,714] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step4/bf16_zero_pp_rank_0_mp_rank_03_optim_states.pt
+[2025-10-01 15:57:19,714] [INFO] [logging.py:107:log_dist] [Rank 1] Saving model checkpoint: /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step4/mp_rank_01_model_states.pt
+[2025-10-01 15:57:19,714] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step4/bf16_zero_pp_rank_0_mp_rank_01_optim_states.pt
+[2025-10-01 15:57:19,714] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step4/bf16_zero_pp_rank_0_mp_rank_02_optim_states.pt
+[2025-10-01 15:57:19,714] [INFO] [logging.py:107:log_dist] [Rank 0] Saving model checkpoint: /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step4/mp_rank_00_model_states.pt
+[2025-10-01 15:57:19,717] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step4/bf16_zero_pp_rank_0_mp_rank_00_optim_states.pt
+  successfully saved checkpoint at iteration       4 to /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1
+Checkpoint Save GB: 43.83, GB/Sec: 3914.81, Latency(second): 0.011
+(min, max) time across ranks (ms):
+    save-checkpoint ................................: (11.20, 11.20)
+<TIMER:interval-time,0.24291372299194336>
+[2025-10-01 15:57:19,925] [INFO] [logging.py:107:log_dist] [Rank 0] step=5, skipped=0, lr=[0.0001884425039850356, 0.0001884425039850356], mom=[(0.9, 0.95), (0.9, 0.95)]
+[2025-10-01 15:57:19,949] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms) | batch_input: 0.65 | fwd_microstep: 46.68 | bwd_microstep: 141.06 | bwd_inner_microstep: 141.03 | bwd_allreduce_microstep: 0.01 | step_microstep: 30.31
+[2025-10-01 15:57:19,949] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms) | fwd: 46.66 | bwd: 141.06 | bwd_inner: 141.03 | bwd_allreduce: 0.01 | step: 30.31
+steps: 5 loss: 12.9535 iter time (s): 0.228 samples/sec: 4.394
+[2025-10-01 15:57:19,950] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms)
+ iteration        5/      10 | consumed samples:            5 | consumed tokens:        10240 | elapsed time per iteration (ms): 243.3 | learning rate: 1.884E-04 | global batch size:     1 | lm loss: 1.295354E+01 | grad norm: 339.124 | num zeros: 0.0 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 4.110 | tokens per gpu per second (tgs): 2104.223 | TFLOPs: 53.03 |
+saving checkpoint at iteration       5 to /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1
+[2025-10-01 15:57:19,957] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step5/bf16_zero_pp_rank_0_mp_rank_03_optim_states.pt
+[2025-10-01 15:57:19,957] [INFO] [logging.py:107:log_dist] [Rank 1] Saving model checkpoint: /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step5/mp_rank_01_model_states.pt
+[2025-10-01 15:57:19,957] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step5/bf16_zero_pp_rank_0_mp_rank_02_optim_states.pt
+[2025-10-01 15:57:19,957] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step5/bf16_zero_pp_rank_0_mp_rank_01_optim_states.pt
+[2025-10-01 15:57:19,958] [INFO] [logging.py:107:log_dist] [Rank 0] Saving model checkpoint: /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step5/mp_rank_00_model_states.pt
+[2025-10-01 15:57:19,961] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step5/bf16_zero_pp_rank_0_mp_rank_00_optim_states.pt
+  successfully saved checkpoint at iteration       5 to /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1
+Checkpoint Save GB: 43.83, GB/Sec: 3511.19, Latency(second): 0.012
+(min, max) time across ranks (ms):
+    save-checkpoint ................................: (12.48, 12.49)
+<TIMER:interval-time,0.24469375610351562>
+[2025-10-01 15:57:20,169] [INFO] [logging.py:107:log_dist] [Rank 0] step=6, skipped=0, lr=[0.0001415574960149644, 0.0001415574960149644], mom=[(0.9, 0.95), (0.9, 0.95)]
+[2025-10-01 15:57:20,194] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms) | batch_input: 0.68 | fwd_microstep: 46.45 | bwd_microstep: 140.85 | bwd_inner_microstep: 140.82 | bwd_allreduce_microstep: 0.01 | step_microstep: 30.27
+[2025-10-01 15:57:20,194] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms) | fwd: 46.44 | bwd: 140.85 | bwd_inner: 140.82 | bwd_allreduce: 0.01 | step: 30.27
+steps: 6 loss: 13.5177 iter time (s): 0.227 samples/sec: 4.402
+[2025-10-01 15:57:20,194] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms)
+ iteration        6/      10 | consumed samples:            6 | consumed tokens:        12288 | elapsed time per iteration (ms): 244.2 | learning rate: 1.416E-04 | global batch size:     1 | lm loss: 1.351766E+01 | grad norm: 22.885 | num zeros: 0.0 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 4.095 | tokens per gpu per second (tgs): 2096.826 | TFLOPs: 52.85 |
+saving checkpoint at iteration       6 to /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1
+[2025-10-01 15:57:20,201] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step6/bf16_zero_pp_rank_0_mp_rank_03_optim_states.pt
+[2025-10-01 15:57:20,201] [INFO] [logging.py:107:log_dist] [Rank 1] Saving model checkpoint: /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step6/mp_rank_01_model_states.pt
+[2025-10-01 15:57:20,202] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step6/bf16_zero_pp_rank_0_mp_rank_02_optim_states.pt
+[2025-10-01 15:57:20,202] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step6/bf16_zero_pp_rank_0_mp_rank_01_optim_states.pt
+[2025-10-01 15:57:20,202] [INFO] [logging.py:107:log_dist] [Rank 0] Saving model checkpoint: /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step6/mp_rank_00_model_states.pt
+[2025-10-01 15:57:20,206] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step6/bf16_zero_pp_rank_0_mp_rank_00_optim_states.pt
+  successfully saved checkpoint at iteration       6 to /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1
+Checkpoint Save GB: 43.83, GB/Sec: 3402.91, Latency(second): 0.013
+(min, max) time across ranks (ms):
+    save-checkpoint ................................: (12.88, 12.88)
+<TIMER:interval-time,0.24462628364562988>
+[2025-10-01 15:57:20,414] [INFO] [logging.py:107:log_dist] [Rank 0] step=7, skipped=0, lr=[9.750000000000001e-05, 9.750000000000001e-05], mom=[(0.9, 0.95), (0.9, 0.95)]
+[2025-10-01 15:57:20,438] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms) | batch_input: 0.65 | fwd_microstep: 46.41 | bwd_microstep: 140.89 | bwd_inner_microstep: 140.86 | bwd_allreduce_microstep: 0.01 | step_microstep: 30.39
+[2025-10-01 15:57:20,438] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms) | fwd: 46.40 | bwd: 140.89 | bwd_inner: 140.86 | bwd_allreduce: 0.01 | step: 30.39
+steps: 7 loss: 17.5169 iter time (s): 0.227 samples/sec: 4.401
+[2025-10-01 15:57:20,439] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms)
+ iteration        7/      10 | consumed samples:            7 | consumed tokens:        14336 | elapsed time per iteration (ms): 244.6 | learning rate: 9.750E-05 | global batch size:     1 | lm loss: 1.751685E+01 | grad norm: 78.961 | num zeros: 0.0 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 4.088 | tokens per gpu per second (tgs): 2093.205 | TFLOPs: 52.76 |
+saving checkpoint at iteration       7 to /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1
+[2025-10-01 15:57:20,447] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step7/bf16_zero_pp_rank_0_mp_rank_03_optim_states.pt
+[2025-10-01 15:57:20,447] [INFO] [logging.py:107:log_dist] [Rank 1] Saving model checkpoint: /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step7/mp_rank_01_model_states.pt
+[2025-10-01 15:57:20,447] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step7/bf16_zero_pp_rank_0_mp_rank_01_optim_states.pt
+[2025-10-01 15:57:20,447] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step7/bf16_zero_pp_rank_0_mp_rank_02_optim_states.pt
+[2025-10-01 15:57:20,447] [INFO] [logging.py:107:log_dist] [Rank 0] Saving model checkpoint: /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step7/mp_rank_00_model_states.pt
+[2025-10-01 15:57:20,451] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step7/bf16_zero_pp_rank_0_mp_rank_00_optim_states.pt
+  successfully saved checkpoint at iteration       7 to /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1
+Checkpoint Save GB: 43.83, GB/Sec: 3374.24, Latency(second): 0.013
+(min, max) time across ranks (ms):
+    save-checkpoint ................................: (12.99, 12.99)
+<TIMER:interval-time,0.24481582641601562>
+[2025-10-01 15:57:20,659] [INFO] [logging.py:107:log_dist] [Rank 0] step=8, skipped=0, lr=[6.158400017893797e-05, 6.158400017893797e-05], mom=[(0.9, 0.95), (0.9, 0.95)]
+[2025-10-01 15:57:20,683] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms) | batch_input: 0.70 | fwd_microstep: 46.42 | bwd_microstep: 140.90 | bwd_inner_microstep: 140.87 | bwd_allreduce_microstep: 0.01 | step_microstep: 30.31
+[2025-10-01 15:57:20,683] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms) | fwd: 46.37 | bwd: 140.90 | bwd_inner: 140.87 | bwd_allreduce: 0.01 | step: 30.31
+steps: 8 loss: 12.1550 iter time (s): 0.227 samples/sec: 4.401
+[2025-10-01 15:57:20,684] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms)
+ iteration        8/      10 | consumed samples:            8 | consumed tokens:        16384 | elapsed time per iteration (ms): 244.8 | learning rate: 6.158E-05 | global batch size:     1 | lm loss: 1.215498E+01 | grad norm: 7.464 | num zeros: 0.0 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 4.085 | tokens per gpu per second (tgs): 2091.700 | TFLOPs: 52.72 |
+saving checkpoint at iteration       8 to /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1
+[2025-10-01 15:57:20,691] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step8/bf16_zero_pp_rank_0_mp_rank_03_optim_states.pt
+[2025-10-01 15:57:20,691] [INFO] [logging.py:107:log_dist] [Rank 1] Saving model checkpoint: /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step8/mp_rank_01_model_states.pt
+[2025-10-01 15:57:20,691] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step8/bf16_zero_pp_rank_0_mp_rank_01_optim_states.pt
+[2025-10-01 15:57:20,691] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step8/bf16_zero_pp_rank_0_mp_rank_02_optim_states.pt
+[2025-10-01 15:57:20,692] [INFO] [logging.py:107:log_dist] [Rank 0] Saving model checkpoint: /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step8/mp_rank_00_model_states.pt
+[2025-10-01 15:57:20,695] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step8/bf16_zero_pp_rank_0_mp_rank_00_optim_states.pt
+  successfully saved checkpoint at iteration       8 to /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1
+Checkpoint Save GB: 43.83, GB/Sec: 3395.24, Latency(second): 0.013
+(min, max) time across ranks (ms):
+    save-checkpoint ................................: (12.91, 12.91)
+<TIMER:interval-time,0.24477386474609375>
+[2025-10-01 15:57:20,903] [INFO] [logging.py:107:log_dist] [Rank 0] step=9, skipped=0, lr=[3.814149619390238e-05, 3.814149619390238e-05], mom=[(0.9, 0.95), (0.9, 0.95)]
+[2025-10-01 15:57:20,928] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms) | batch_input: 0.62 | fwd_microstep: 46.29 | bwd_microstep: 140.88 | bwd_inner_microstep: 140.85 | bwd_allreduce_microstep: 0.01 | step_microstep: 30.32
+[2025-10-01 15:57:20,928] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms) | fwd: 46.18 | bwd: 140.88 | bwd_inner: 140.85 | bwd_allreduce: 0.01 | step: 30.32
+steps: 9 loss: 11.9271 iter time (s): 0.227 samples/sec: 4.405
+[2025-10-01 15:57:20,928] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms)
+ iteration        9/      10 | consumed samples:            9 | consumed tokens:        18432 | elapsed time per iteration (ms): 244.5 | learning rate: 3.814E-05 | global batch size:     1 | lm loss: 1.192712E+01 | grad norm: 7.309 | num zeros: 0.0 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 4.091 | tokens per gpu per second (tgs): 2094.356 | TFLOPs: 52.79 |
+saving checkpoint at iteration       9 to /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1
+[2025-10-01 15:57:20,936] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step9/bf16_zero_pp_rank_0_mp_rank_03_optim_states.pt
+[2025-10-01 15:57:20,936] [INFO] [logging.py:107:log_dist] [Rank 1] Saving model checkpoint: /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step9/mp_rank_01_model_states.pt
+[2025-10-01 15:57:20,936] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step9/bf16_zero_pp_rank_0_mp_rank_01_optim_states.pt
+[2025-10-01 15:57:20,936] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step9/bf16_zero_pp_rank_0_mp_rank_02_optim_states.pt
+[2025-10-01 15:57:20,936] [INFO] [logging.py:107:log_dist] [Rank 0] Saving model checkpoint: /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step9/mp_rank_00_model_states.pt
+[2025-10-01 15:57:20,940] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step9/bf16_zero_pp_rank_0_mp_rank_00_optim_states.pt
+  successfully saved checkpoint at iteration       9 to /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1
+Checkpoint Save GB: 43.83, GB/Sec: 3542.45, Latency(second): 0.012
+(min, max) time across ranks (ms):
+    save-checkpoint ................................: (12.37, 12.37)
+<TIMER:interval-time,0.24399185180664062>
+[2025-10-01 15:57:21,147] [INFO] [logging.py:107:log_dist] [Rank 0] step=10, skipped=0, lr=[3e-05, 3e-05], mom=[(0.9, 0.95), (0.9, 0.95)]
+[2025-10-01 15:57:21,172] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms) | batch_input: 0.63 | fwd_microstep: 46.29 | bwd_microstep: 140.87 | bwd_inner_microstep: 140.84 | bwd_allreduce_microstep: 0.01 | step_microstep: 30.35
+[2025-10-01 15:57:21,172] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms) | fwd: 46.28 | bwd: 140.87 | bwd_inner: 140.84 | bwd_allreduce: 0.01 | step: 30.35
+steps: 10 loss: 11.9654 iter time (s): 0.227 samples/sec: 4.404
+[2025-10-01 15:57:21,172] [INFO] [logging.py:107:log_dist] [Rank 0] time (ms)
+ iteration       10/      10 | consumed samples:           10 | consumed tokens:        20480 | elapsed time per iteration (ms): 243.9 | learning rate: 3.000E-05 | global batch size:     1 | lm loss: 1.196544E+01 | grad norm: 6.035 | num zeros: 0.0 | actual seqlen:  2048 | number of skipped iterations:   0 | number of nan iterations:   0 | samples per second: 4.100 | tokens per gpu per second (tgs): 2099.198 | TFLOPs: 52.91 |
+saving checkpoint at iteration      10 to /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1
+[2025-10-01 15:57:21,179] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step10/bf16_zero_pp_rank_0_mp_rank_03_optim_states.pt
+[2025-10-01 15:57:21,180] [INFO] [logging.py:107:log_dist] [Rank 1] Saving model checkpoint: /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step10/mp_rank_01_model_states.pt
+[2025-10-01 15:57:21,180] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step10/bf16_zero_pp_rank_0_mp_rank_01_optim_states.pt
+[2025-10-01 15:57:21,180] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step10/bf16_zero_pp_rank_0_mp_rank_02_optim_states.pt
+[2025-10-01 15:57:21,180] [INFO] [logging.py:107:log_dist] [Rank 0] Saving model checkpoint: /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step10/mp_rank_00_model_states.pt
+[2025-10-01 15:57:21,184] [INFO] [engine.py:3708:_save_zero_checkpoint] zero checkpoint saved /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1/global_step10/bf16_zero_pp_rank_0_mp_rank_00_optim_states.pt
+  successfully saved checkpoint at iteration      10 to /grand/VeloC/mikailg/DeepSpeed-restart-perf/modelsize3-tp4_pp1_dp1
+Checkpoint Save GB: 43.83, GB/Sec: 3520.94, Latency(second): 0.012
+(min, max) time across ranks (ms):
+    save-checkpoint ................................: (12.45, 12.45)
+<TIMER:interval-time,0.24409127235412598>
+[after training is done] datetime: 2025-10-01 15:57:21 
+<<<only_iter:2.809816598892212>>>
+<<<only_iter:2.8098373413085938>>>
+<<<only_iter:2.8098044395446777>>>
+<<<only_iter:2.8090906143188477>>>
+<TIMER:only-iter:2.8091750144958496>
+<<<wait_flush:2.809931993484497>>><<<wait_flush:2.8099498748779297>>><<<wait_flush:2.8099148273468018>>>
+
+
+<<<wait_flush:2.809196949005127>>>
+<TIMER:wait-flush,2.8092753887176514>
+<TIMER:full-time,7.645622491836548>
+[2025-10-01 15:57:23,629] [INFO] [launch.py:351:main] Process 1862251 exits successfully.
+[2025-10-01 15:57:23,629] [INFO] [launch.py:351:main] Process 1862249 exits successfully.
+[2025-10-01 15:57:23,630] [INFO] [launch.py:351:main] Process 1862250 exits successfully.
+[2025-10-01 15:57:25,630] [INFO] [launch.py:351:main] Process 1862248 exits successfully.
+total 0

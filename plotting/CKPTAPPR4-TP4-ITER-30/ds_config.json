@@ -1,0 +1,18 @@
+{
+    "train_batch_size": 1,
+    "train_micro_batch_size_per_gpu": 1,
+    "steps_per_print": 1,
+    "zero_optimization": {
+        "stage": 1
+    },
+    "bf16": {
+        "enabled": true
+    },
+    "data_types": {
+        "grad_accum_dtype": "fp32"
+    },
+    "wall_clock_breakdown": true,
+    "memory_breakdown": false,
+    "flops_profiler": {
+        "enabled": true
+    }, "datastates_ckpt": { "host_cache_size": 16, "parser_threads": 8 }}

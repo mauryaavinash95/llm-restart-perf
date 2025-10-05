@@ -1,0 +1,312 @@
+[
+    {
+        "layer_id": 1,
+        "offset": 0,
+        "size": 77856768
+    },
+    {
+        "layer_id": 2,
+        "offset": 77856768,
+        "size": 6144
+    },
+    {
+        "layer_id": 3,
+        "offset": 77864960,
+        "size": 6144
+    },
+    {
+        "layer_id": 4,
+        "offset": 77873152,
+        "size": 6144
+    },
+    {
+        "layer_id": 5,
+        "offset": 77881344,
+        "size": 6144
+    },
+    {
+        "layer_id": 6,
+        "offset": 77889536,
+        "size": 6144
+    },
+    {
+        "layer_id": 7,
+        "offset": 77897728,
+        "size": 6144
+    },
+    {
+        "layer_id": 8,
+        "offset": 77905920,
+        "size": 6144
+    },
+    {
+        "layer_id": 9,
+        "offset": 77914112,
+        "size": 6144
+    },
+    {
+        "layer_id": 10,
+        "offset": 77922304,
+        "size": 6144
+    },
+    {
+        "layer_id": 11,
+        "offset": 77930496,
+        "size": 6144
+    },
+    {
+        "layer_id": 12,
+        "offset": 77938688,
+        "size": 6144
+    },
+    {
+        "layer_id": 13,
+        "offset": 77946880,
+        "size": 6144
+    },
+    {
+        "layer_id": 14,
+        "offset": 77955072,
+        "size": 6144
+    },
+    {
+        "layer_id": 15,
+        "offset": 77963264,
+        "size": 6144
+    },
+    {
+        "layer_id": 16,
+        "offset": 77971456,
+        "size": 6144
+    },
+    {
+        "layer_id": 17,
+        "offset": 77979648,
+        "size": 6144
+    },
+    {
+        "layer_id": 18,
+        "offset": 77987840,
+        "size": 6144
+    },
+    {
+        "layer_id": 19,
+        "offset": 77996032,
+        "size": 6144
+    },
+    {
+        "layer_id": 20,
+        "offset": 78004224,
+        "size": 6144
+    },
+    {
+        "layer_id": 21,
+        "offset": 78012416,
+        "size": 6144
+    },
+    {
+        "layer_id": 22,
+        "offset": 78020608,
+        "size": 6144
+    },
+    {
+        "layer_id": 23,
+        "offset": 78028800,
+        "size": 6144
+    },
+    {
+        "layer_id": 24,
+        "offset": 78036992,
+        "size": 6144
+    },
+    {
+        "layer_id": 25,
+        "offset": 78045184,
+        "size": 6144
+    },
+    {
+        "layer_id": 26,
+        "offset": 78053376,
+        "size": 6144
+    },
+    {
+        "layer_id": 27,
+        "offset": 78061568,
+        "size": 6144
+    },
+    {
+        "layer_id": 28,
+        "offset": 78069760,
+        "size": 6144
+    },
+    {
+        "layer_id": 29,
+        "offset": 78077952,
+        "size": 6144
+    },
+    {
+        "layer_id": 30,
+        "offset": 78086144,
+        "size": 6144
+    },
+    {
+        "layer_id": 31,
+        "offset": 78094336,
+        "size": 77856768
+    },
+    {
+        "layer_id": 1,
+        "offset": 155951104,
+        "size": 77856768
+    },
+    {
+        "layer_id": 2,
+        "offset": 233807872,
+        "size": 6144
+    },
+    {
+        "layer_id": 3,
+        "offset": 233816064,
+        "size": 6144
+    },
+    {
+        "layer_id": 4,
+        "offset": 233824256,
+        "size": 6144
+    },
+    {
+        "layer_id": 5,
+        "offset": 233832448,
+        "size": 6144
+    },
+    {
+        "layer_id": 6,
+        "offset": 233840640,
+        "size": 6144
+    },
+    {
+        "layer_id": 7,
+        "offset": 233848832,
+        "size": 6144
+    },
+    {
+        "layer_id": 8,
+        "offset": 233857024,
+        "size": 6144
+    },
+    {
+        "layer_id": 9,
+        "offset": 233865216,
+        "size": 6144
+    },
+    {
+        "layer_id": 10,
+        "offset": 233873408,
+        "size": 6144
+    },
+    {
+        "layer_id": 11,
+        "offset": 233881600,
+        "size": 6144
+    },
+    {
+        "layer_id": 12,
+        "offset": 233889792,
+        "size": 6144
+    },
+    {
+        "layer_id": 13,
+        "offset": 233897984,
+        "size": 6144
+    },
+    {
+        "layer_id": 14,
+        "offset": 233906176,
+        "size": 6144
+    },
+    {
+        "layer_id": 15,
+        "offset": 233914368,
+        "size": 6144
+    },
+    {
+        "layer_id": 16,
+        "offset": 233922560,
+        "size": 6144
+    },
+    {
+        "layer_id": 17,
+        "offset": 233930752,
+        "size": 6144
+    },
+    {
+        "layer_id": 18,
+        "offset": 233938944,
+        "size": 6144
+    },
+    {
+        "layer_id": 19,
+        "offset": 233947136,
+        "size": 6144
+    },
+    {
+        "layer_id": 20,
+        "offset": 233955328,
+        "size": 6144
+    },
+    {
+        "layer_id": 21,
+        "offset": 233963520,
+        "size": 6144
+    },
+    {
+        "layer_id": 22,
+        "offset": 233971712,
+        "size": 6144
+    },
+    {
+        "layer_id": 23,
+        "offset": 233979904,
+        "size": 6144
+    },
+    {
+        "layer_id": 24,
+        "offset": 233988096,
+        "size": 6144
+    },
+    {
+        "layer_id": 25,
+        "offset": 233996288,
+        "size": 6144
+    },
+    {
+        "layer_id": 26,
+        "offset": 234004480,
+        "size": 6144
+    },
+    {
+        "layer_id": 27,
+        "offset": 234012672,
+        "size": 6144
+    },
+    {
+        "layer_id": 28,
+        "offset": 234020864,
+        "size": 6144
+    },
+    {
+        "layer_id": 29,
+        "offset": 234029056,
+        "size": 6144
+    },
+    {
+        "layer_id": 30,
+        "offset": 234037248,
+        "size": 6144
+    },
+    {
+        "layer_id": 31,
+        "offset": 234045440,
+        "size": 77856768
+    }
+]
