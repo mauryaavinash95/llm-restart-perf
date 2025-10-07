@@ -41,6 +41,13 @@ struct chunk_writes_t {
     void *buf;
 };
 
+struct write_req {
+    int fd;
+    char* buf;
+    size_t offset;
+    size_t remaining;
+};
+
 // Random buffer fill
 void fill_random(void* buf, size_t size) {
     std::mt19937_64 rng(std::random_device{}());
@@ -92,52 +99,76 @@ std::vector<chunk_writes_t> prep_writes(const std::string& base_path, int rank, 
 }
 
 void submit_writes(io_uring& ring, const std::vector<chunk_writes_t>& chunks) {
-    for (const auto& c : chunks) {
+    for (auto& c : chunks) {
+        write_req* req = new write_req{c.fd, static_cast<char*>(c.buf), c.offset, c.size};
         struct io_uring_sqe* sqe = io_uring_get_sqe(&ring);
         if (!sqe) {
             std::cerr << "SQE ring full — increase QUEUE_DEPTH\n";
             break;
         }
-        io_uring_prep_write(sqe, c.fd, c.buf, c.size, c.offset);
+        io_uring_prep_write(sqe, c.fd, req->buf, req->remaining, req->offset);
+        io_uring_sqe_set_data(sqe, req);
     }
     io_uring_submit(&ring);
 }
 
-void wait_for_complete(io_uring& ring, size_t submitted) {
-    for (size_t i = 0; i < submitted; i++) {
-        struct io_uring_cqe* cqe;
+// Wait for completions and handle partial writes
+void wait_for_complete(io_uring& ring, unsigned submitted_req) {
+    struct io_uring_cqe* cqe;
+    unsigned processed = 0;
+    while (processed < submitted_req) {
         int ret = io_uring_wait_cqe(&ring, &cqe);
         if (ret < 0) {
             perror("io_uring_wait_cqe");
             exit(1);
         }
 
-        if (cqe->res < 0) {
-            std::cerr << "Write failed: " << strerror(-cqe->res) << "\n";
-        }
+        write_req* req = static_cast<write_req*>(io_uring_cqe_get_data(cqe));
+        ssize_t written = cqe->res;
         io_uring_cqe_seen(&ring, cqe);
+        processed++;
+
+        if (written < 0) {
+            std::cerr << "Write failed: " << strerror(-written) << "\n";
+            delete req;
+            exit(1);
+        }
+
+        req->buf += written;
+        req->offset += written;
+        req->remaining -= written;
+
+        if (req->remaining > 0) {
+            // partial write, resubmit
+            struct io_uring_sqe* sqe = io_uring_get_sqe(&ring);
+            assert(sqe);
+            io_uring_prep_write(sqe, req->fd, req->buf, req->remaining, req->offset);
+            io_uring_sqe_set_data(sqe, req);
+            io_uring_submit(&ring);
+            submitted_req++;
+        } else {
+            // fully written
+            delete req;
+        }
     }
 }
 
 
-
 double run_io_uring_write(io_uring& ring, int fd, void* buf, size_t size, size_t offset=0) {
-    size_t written = 0, submitted = 0;
+    size_t submitted = 0;
     unsigned to_submit = 0;
     size_t chunk = CHUNK_SIZE;
     double start = MPI_Wtime();
     while (submitted < size && to_submit < QUEUE_DEPTH) {
         size_t this_chunk = std::min(chunk, size - submitted);
+        write_req* req = new write_req{fd, static_cast<char*>(buf) + submitted, offset + submitted, this_chunk};
         io_uring_sqe* sqe = io_uring_get_sqe(&ring);
         assert(sqe);
-        io_uring_prep_write(sqe, fd, (char*)buf + submitted, this_chunk, offset + submitted);
+        io_uring_prep_write(sqe, fd, req->buf, req->remaining, req->offset);
+        io_uring_sqe_set_data(sqe, req);
         submitted += this_chunk;
         to_submit++;
     }
-    io_uring_sqe* sqe = io_uring_get_sqe(&ring);
-    io_uring_prep_fsync(sqe, fd, 0);
-    io_uring_submit_and_wait(&ring, 1);
-    to_submit++;
 
     int ret = io_uring_submit(&ring);
     if (ret < 0) {
@@ -145,20 +176,7 @@ double run_io_uring_write(io_uring& ring, int fd, void* buf, size_t size, size_t
         exit(1);
     }
 
-    for (unsigned i = 0; i < to_submit; i++) {
-        io_uring_cqe* cqe;
-        int ret = io_uring_wait_cqe(&ring, &cqe);
-        if (ret < 0) {
-            perror("io_uring_wait_cqe");
-            exit(1);
-        }
-        if (cqe->res < 0) {
-            std::cerr << "Async write failed: " << strerror(-cqe->res) << std::endl;
-            exit(1);
-        }
-        written += cqe->res;
-        io_uring_cqe_seen(&ring, cqe);
-    }
+    wait_for_complete(ring, to_submit);
 
     double end = MPI_Wtime();
     return end - start;
