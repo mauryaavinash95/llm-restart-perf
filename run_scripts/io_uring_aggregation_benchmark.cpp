@@ -22,7 +22,7 @@ using json = nlohmann::json;
 enum class FileMode {
     ChunkPerFile,   // (1)
     OnePerGPU,      // (2)
-    TwoGPUsPerFile, // (3)
+    //TwoGPUsPerFile, // (3)
     AllGPUsOneFile  // (4)
 };
 
@@ -30,9 +30,8 @@ constexpr size_t KB = 1024;
 constexpr size_t MB = 1024 * KB;
 constexpr int QUEUE_DEPTH = 512;   // io_uring queue depth
 constexpr size_t CHUNK_SIZE = 128 * MB; // size of each write chunk
-constexpr int RING_PER_NODE = 1;
-constexpr int RING_PER_PROC = 2;
-constexpr int RING_PER_2NODES = 3;
+constexpr size_t SIM_FILE_SIZE = 2048 * MB;
+constexpr int WRITE = 1;
 
 struct chunk_writes_t {
     int fd; 
@@ -71,8 +70,7 @@ void* alloc_pinned(size_t size, size_t alignment = 4096) {
     if (posix_memalign(&ptr, alignment, size) != 0) {
         perror("posix_memalign");
         exit(1);
-    }
-    fill_random(ptr, size);
+    }  
     if (mlock(ptr, size) != 0) {
         perror("mlock"); // not fatal, but memory not pinned
     }
@@ -182,12 +180,43 @@ double run_io_uring_write(io_uring& ring, int fd, void* buf, size_t size, size_t
     return end - start;
 }
 
+unsigned prep_writes_general(io_uring& ring, int fd, void* buf, size_t size, size_t offset=0) {
+    size_t submitted = 0;
+    unsigned to_submit = 0;
+    while (submitted < size && to_submit < QUEUE_DEPTH) {
+        size_t chunk_size = std::min(CHUNK_SIZE, size - submitted);
+        write_req* req = new write_req{fd, static_cast<char*>(buf) + submitted, offset + submitted, chunk_size};
+        io_uring_sqe* sqe = io_uring_get_sqe(&ring);
+        assert(sqe);
+        io_uring_prep_write(sqe, fd, req->buf, req->remaining, req->offset);
+        io_uring_sqe_set_data(sqe, req);
+        submitted += chunk_size;
+        to_submit++;
+    }
+    return to_submit;
+}
+
+unsigned prep_reads_general(io_uring& ring, int fd, void* buf, size_t size, size_t offset=0) {
+    size_t submitted = 0;
+    unsigned to_submit = 0;
+    while (submitted < size && to_submit < QUEUE_DEPTH) {
+        size_t chunk_size = std::min(CHUNK_SIZE, size - submitted);
+        write_req* req = new write_req{fd, static_cast<char*>(buf) + submitted, offset + submitted, chunk_size};
+        io_uring_sqe* sqe = io_uring_get_sqe(&ring);
+        assert(sqe);
+        io_uring_prep_read(sqe, fd, req->buf, req->remaining, req->offset);
+        io_uring_sqe_set_data(sqe, req);
+        submitted += chunk_size;
+        to_submit++;
+    }
+    return to_submit;
+}
 
 std::string strategy_name(FileMode mode) {
     switch (mode) {
         case FileMode::ChunkPerFile: return "chunk_per_file";
         case FileMode::OnePerGPU: return "one_per_gpu";
-        case FileMode::TwoGPUsPerFile: return "two_gpus_per_file";
+        //case FileMode::TwoGPUsPerFile: return "two_gpus_per_file";
         case FileMode::AllGPUsOneFile: return "all_gpus_one_file";
         default: return "unknown";
     }
@@ -196,6 +225,8 @@ std::string strategy_name(FileMode mode) {
 int main(int argc, char** argv) {
     MPI_Init(&argc, &argv);
     std::string test_str = argv[1];
+    //int mb = std::atoi(argv[2]);
+    int bench_mode = std::atoi(argv[2]);
 
     int rank, world_size;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -204,12 +235,12 @@ int main(int argc, char** argv) {
     std::vector<FileMode> strategies = {
         FileMode::ChunkPerFile,
         FileMode::OnePerGPU,
-        FileMode::TwoGPUsPerFile,
+        //FileMode::TwoGPUsPerFile,
         FileMode::AllGPUsOneFile
     };
 
-    std::vector<size_t> sizes = {128, 256, 512, 1024}; // MB (shorter for test)
-    constexpr int trials = 2;
+    std::vector<size_t> sizes = {128, 256, 512, 1024, 2048, 4096, 8192}; // MB (shorter for test)
+    constexpr int trials = 4;
     std::string base_path = "/grand/VeloC/mikailg/file_scalability";
 
     if (rank==0) 
@@ -226,6 +257,9 @@ int main(int argc, char** argv) {
             std::vector<double> local_times;
             for (int t = 0; t < trials; t++) {
                 void* buf = alloc_pinned(size);
+                if(bench_mode == WRITE)
+                    fill_random(buf, size);
+
                 MPI_Barrier(MPI_COMM_WORLD);
 
                 std::string filename;
@@ -234,23 +268,33 @@ int main(int argc, char** argv) {
 
                 switch (mode) {
                     case FileMode::ChunkPerFile: {
-                        // each chunk is its own file
-                        io_uring ring; 
-                        if (io_uring_queue_init(QUEUE_DEPTH, &ring, 0) < 0) { 
-                            perror("io_uring_queue_init"); 
-                            exit(1); 
+                        io_uring ring;
+                        if (io_uring_queue_init(QUEUE_DEPTH, &ring, 0) < 0) { perror("io_uring_queue_init"); exit(1); }
+                        size_t n_chunks = (size + CHUNK_SIZE - 1) / CHUNK_SIZE;
+                        unsigned submitted_req = 0;
+                        std::vector<int> fds(n_chunks);
+                        for (size_t c = 0; c < n_chunks; c++) {
+                            size_t chunk_size = std::min(CHUNK_SIZE, size - c * CHUNK_SIZE);
+                            filename = base_path + "/ChunkPerFile_rank" + std::to_string(rank) + "_chunk" + std::to_string(c) + 
+                            "_trial" + std::to_string(t) + ".bin";
+                            fds[c] = open(filename.c_str(), O_CREAT | O_RDWR | O_DIRECT | O_TRUNC, 0644);
+                            if (fds[c] < 0) { perror("open"); exit(1); }
+                            if(bench_mode == WRITE)
+                                submitted_req += prep_writes_general(ring, fds[c], static_cast<char*>(buf) + c * CHUNK_SIZE, chunk_size, offset);
+                            else
+                                submitted_req += prep_reads_general(ring, fds[c], static_cast<char*>(buf) + c * CHUNK_SIZE, chunk_size, offset);
                         }
-                        auto chunks = prep_writes(base_path, rank, t, mb, size, buf);
-                        double start = MPI_Wtime();
-                        submit_writes(ring, chunks);
-                        wait_for_complete(ring, chunks.size());
-                        for(auto &c : chunks){
-                            fsync(c.fd);
-                            close(c.fd);
+                        auto start = MPI_Wtime();
+                        int ret = io_uring_submit(&ring);
+                        if (ret < 0) {
+                            perror("io_uring_submit");
+                            exit(1);
                         }
-                        double end = MPI_Wtime();
-                        local_times.push_back(end-start);
+                        wait_for_complete(ring, submitted_req);
+                        double end = MPI_Wtime() - start;
+                        for (auto f : fds) { fsync(f); close(f); }
                         io_uring_queue_exit(&ring);
+                        local_times.push_back(end);
                         break;
                     }
                     case FileMode::OnePerGPU: {
@@ -259,6 +303,7 @@ int main(int argc, char** argv) {
                             perror("io_uring_queue_init"); 
                             exit(1); 
                         }
+                        size_t submitted_req = 0;
                         filename = base_path + "/" + approach + "_rank" + std::to_string(rank)
                                    + "_size" + std::to_string(mb) + "_trial" + std::to_string(t) + ".bin";
                         fd = open(filename.c_str(), O_CREAT | O_RDWR | O_DIRECT | O_TRUNC, 0644); 
@@ -266,52 +311,62 @@ int main(int argc, char** argv) {
                             perror("open"); 
                             exit(1); 
                         }
-                        double sec = run_io_uring_write(ring, fd, buf, size, 0);
-                        double start = MPI_Wtime();
-                        fsync(fd);
-                        double sync_time = MPI_Wtime() - start;
-                        close(fd);
-                        io_uring_queue_exit(&ring);
-                        local_times.push_back(sec + sync_time);
-                        break;
-                    }
-                    case FileMode::TwoGPUsPerFile: {
-                        io_uring ring; 
-                        if (io_uring_queue_init(QUEUE_DEPTH, &ring, 0) < 0) { 
-                            perror("io_uring_queue_init"); 
-                            exit(1); 
-                        }
-                        int group = rank / 2; // 2 ranks per file
-                        filename = base_path + "/" + approach + "_group" + std::to_string(group)
-                                   + "_size" + std::to_string(mb) + "_trial" + std::to_string(t) + ".bin";
-                        offset = (rank % 2) * size; // rank 0 writes [0..size), rank1 [size..2*size)
-                        if((rank % 2) == 0) 
-                            fd = open(filename.c_str(), O_CREAT | O_RDWR | O_DIRECT | O_TRUNC, 0644); 
+                        if(bench_mode == WRITE)
+                            submitted_req += prep_writes_general(ring, fd, buf, size, offset);
                         else
-                            fd = open(filename.c_str(), O_CREAT | O_RDWR | O_DIRECT, 0644); 
-                        if (fd < 0) { 
-                            perror("open"); 
-                            exit(1); 
+                            submitted_req += prep_reads_general(ring, fd, buf, size, offset);
+                        auto start = MPI_Wtime();
+                        int ret = io_uring_submit(&ring);
+                        if (ret < 0) {
+                            perror("io_uring_submit");
+                            exit(1);
                         }
-                        MPI_Barrier(MPI_COMM_WORLD);
-                        double sec = run_io_uring_write(ring, fd, buf, size, offset);
-                        double start = MPI_Wtime();
+                        wait_for_complete(ring, submitted_req);
+                        double end = MPI_Wtime() - start;
                         fsync(fd);
-                        double sync_time = MPI_Wtime() - start;
                         close(fd);
                         io_uring_queue_exit(&ring);
-                        local_times.push_back(sec + sync_time);
+                        local_times.push_back(end);
                         break;
                     }
+                    // case FileMode::TwoGPUsPerFile: {
+                    //     io_uring ring; 
+                    //     if (io_uring_queue_init(QUEUE_DEPTH, &ring, 0) < 0) { 
+                    //         perror("io_uring_queue_init"); 
+                    //         exit(1); 
+                    //     }
+                    //     int group = rank / 2; // 2 ranks per file
+                    //     filename = base_path + "/" + approach + "_group" + std::to_string(group)
+                    //                + "_size" + std::to_string(mb) + "_trial" + std::to_string(t) + ".bin";
+                    //     offset = (rank % 2) * size; // rank 0 writes [0..size), rank1 [size..2*size)
+                    //     if((rank % 2) == 0) 
+                    //         fd = open(filename.c_str(), O_CREAT | O_RDWR | O_DIRECT | O_TRUNC, 0644); 
+                    //     else
+                    //         fd = open(filename.c_str(), O_CREAT | O_RDWR | O_DIRECT, 0644); 
+                    //     if (fd < 0) { 
+                    //         perror("open"); 
+                    //         exit(1); 
+                    //     }
+                    //     MPI_Barrier(MPI_COMM_WORLD);
+                    //     double sec = run_io_uring_write(ring, fd, buf, size, offset);
+                    //     double start = MPI_Wtime();
+                    //     fsync(fd);
+                    //     double sync_time = MPI_Wtime() - start;
+                    //     close(fd);
+                    //     io_uring_queue_exit(&ring);
+                    //     local_times.push_back(sec + sync_time);
+                    //     break;
+                    // }
                     case FileMode::AllGPUsOneFile: {
                         io_uring ring; 
                         if (io_uring_queue_init(QUEUE_DEPTH, &ring, 0) < 0) { 
                             perror("io_uring_queue_init"); 
                             exit(1); 
                         }
+                        offset = rank * size;
+                        unsigned submitted_req = 0;
                         filename = base_path + "/" + approach + "_all_size" + std::to_string(mb)
                                    + "_trial" + std::to_string(t) + ".bin";
-                        offset = rank * size;
                         if(rank == 0) {
                             fd = open(filename.c_str(), O_CREAT | O_RDWR | O_DIRECT | O_TRUNC, 0644); 
                         }
@@ -322,17 +377,26 @@ int main(int argc, char** argv) {
                             perror("open"); 
                             exit(1); 
                         }
-                        MPI_Barrier(MPI_COMM_WORLD);
-                        double sec = run_io_uring_write(ring, fd, buf, size, offset);
-                        double start = MPI_Wtime();
+                        if(bench_mode == WRITE)
+                            submitted_req += prep_writes_general(ring, fd, buf, size, offset);
+                        else
+                            submitted_req += prep_reads_general(ring, fd, buf, size, offset);
+                        auto start = MPI_Wtime();
+                        int ret = io_uring_submit(&ring);
+                        if (ret < 0) {
+                            perror("io_uring_submit");
+                            exit(1);
+                        }
+                        wait_for_complete(ring, submitted_req);
+                        double end = MPI_Wtime() - start;
                         fsync(fd);
-                        double sync_time = MPI_Wtime() - start;
                         close(fd);
                         io_uring_queue_exit(&ring);
-                        local_times.push_back(sec + sync_time);
+                        local_times.push_back(end);
                         break;
                     }
                 }
+                
                 free(buf);
             }
 
